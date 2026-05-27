@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotellmysteriet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="hm-app">
+    <div class="hm-container">
+        <div class="hm-header">
+            <h1>Hotellmysteriet</h1>
+            <div class="hm-subtitle">Tidtaker</div>
+            <div class="hm-divider"></div>
+        </div>
+        
+        <div id="screen-start" class="hm-screen active">
+            <div class="hm-intro" id="start-intro">Løs mysteriet raskest mulig. Dere får oppgaver underveis — hint er tilgjengelig, men koster 5 minutter i strafftid.</div>
+            <div id="mystery-name-display" style="display:none;"></div>
+            <div class="hm-field" id="mystery-select-field">
+                <div class="hm-label">Velg mysterium</div>
+                <select id="mystery-select" class="hm-select"></select>
+            </div>
+            <div class="hm-field">
+                <div class="hm-label">Lagets navn</div>
+                <input type="text" id="team-name" class="hm-input" placeholder="Skriv inn lagnavnet..." maxlength="30" autocomplete="off">
+            </div>
+            <button class="hm-btn hm-btn-primary" id="btn-start" disabled>Start mysteriet</button>
+            <br><br>
+            <button class="hm-btn hm-btn-secondary" id="btn-show-leaderboard">Se Leaderboard</button>
+        </div>
+        
+        <div id="screen-intro" class="hm-screen">
+            <div class="hm-task-card" style="text-align:left;">
+                <div class="hm-task-number">Saksoversikt</div>
+                <div class="hm-task-text" id="intro-text" style="white-space: pre-wrap;"></div>
+            </div>
+            <button class="hm-btn hm-btn-primary" id="btn-start-investigation">Start etterforskningen</button>
+        </div>
+        
+        <div id="screen-task" class="hm-screen">
+            <div class="hm-timer-bar">
+                <span class="hm-timer-bar-team" id="task-team-name"></span>
+                <span class="hm-timer-bar-time" id="task-timer">00:00:00</span>
+                <span class="hm-timer-toggle-small" id="task-timer-toggle">skjul</span>
+            </div>
+            <div class="hm-progress" id="task-progress"></div>
+            <div class="hm-task-card">
+                <div class="hm-task-number" id="task-number"></div>
+                <div class="hm-task-text" id="task-text"></div>
+            </div>
+            <div id="task-hint-area"></div>
+            <div class="hm-answer-row">
+                <input type="text" class="hm-answer-input" id="task-answer" placeholder="Svaret..." autocomplete="off">
+                <button class="hm-answer-submit" id="task-submit">Svar</button>
+            </div>
+            <div class="hm-error-msg" id="task-error"></div>
+        </div>
+        
+        <div id="screen-success" class="hm-screen">
+            <div class="hm-success-icon" id="success-icon"></div>
+            <div class="hm-success-title" id="success-title"></div>
+            <div class="hm-success-text" id="success-text"></div>
+            <div id="success-penalty"></div>
+            <button class="hm-btn hm-btn-primary" id="btn-next-task">Neste oppgave</button>
+        </div>
+        
+        <div id="screen-result" class="hm-screen">
+            <div class="hm-congrats">Gratulerer!</div>
+            <div class="hm-final-message" id="result-final-message"></div>
+            
+            <div class="hm-result-summary-card">
+                <div class="hm-result-label">Deres tid</div>
+                <div class="hm-result-time" id="result-time">00:00:00</div>
+                <div class="hm-rank" id="result-rank"></div>
+                <div class="hm-result-detail" id="result-detail"></div>
+                <div class="hm-result-penalty" id="result-penalty"></div>
+            </div>
+            
+            <div id="hm-feedback-section" class="hm-feedback-box">
+                <h3>Hva syntes dere om mysteriet?</h3>
+                <div class="hm-stars" id="feedback-stars">
+                    <span data-value="1">★</span>
+                    <span data-value="2">★</span>
+                    <span data-value="3">★</span>
+                    <span data-value="4">★</span>
+                    <span data-value="5">★</span>
+                </div>
+                <textarea id="feedback-text" class="hm-textarea" placeholder="Hva kunne blitt bedre? (Valgfritt)"></textarea>
+                <button class="hm-btn hm-btn-primary" id="btn-submit-feedback" style="font-size: 0.85rem; padding: 12px 24px;">Send tilbakemelding</button>
+            </div>
+            <div id="hm-feedback-thanks" style="display:none;" class="hm-feedback-box">
+                <h3 style="margin-bottom: 0; color: #2e7d32;">Takk for tilbakemeldingen!</h3>
+            </div>
+
+            <div class="hm-leaderboard">
+                <h2>Leaderboard</h2>
+                <ul class="hm-lb-list" id="result-leaderboard-list"></ul>
+            </div>
+            <br>
+            <button class="hm-btn hm-btn-secondary" id="btn-new-game">Nytt spill</button>
+        </div>
+        
+        <div id="screen-leaderboard" class="hm-screen">
+            <div class="hm-leaderboard">
+                <h2>Leaderboard</h2>
+                <div class="hm-filter" id="leaderboard-filter"></div>
+                <ul class="hm-lb-list" id="leaderboard-list"></ul>
+            </div>
+            <br>
+            <button class="hm-btn hm-btn-secondary" id="btn-back-start">Tilbake</button>
+            
+            <div id="admin-panel" class="hm-admin-panel" style="display:none;">
+                <h3>Admin</h3>
+                <p style="font-size: 0.8rem; color: rgba(245,240,232,0.6); margin-bottom: 15px;">Her kan du slette enkeltlag fra valgt mysterium, eller åpne dashbordet for å se statistikk.</p>
+                <div id="admin-entries"></div>
+                <br>
+                <button class="hm-btn hm-btn-primary" id="btn-open-dashboard" style="font-size: 0.8rem; padding: 8px 16px; margin-bottom: 10px; width: 100%;">Åpne Dashboard</button>
+                <button class="hm-btn hm-btn-danger" id="btn-clear-all" style="font-size: 0.8rem; padding: 8px 16px; width: 100%;">Slett absolutt ALLE data</button>
+            </div>
+        </div>
+        
+        <div id="screen-dashboard" class="hm-screen">
+            <div class="hm-header">
+                <h2 style="font-family: 'Playfair Display', serif; color: #c9a84c;">Admin Dashboard</h2>
+                <div class="hm-divider"></div>
+            </div>
+            <div id="dashboard-content" style="width: 100%; max-height: 60vh; overflow-y: auto; padding-right: 10px;">
+                </div>
+            <br>
+            <button class="hm-btn hm-btn-secondary" id="btn-close-dashboard">Tilbake til Leaderboard</button>
+        </div>
+        
+    </div>
+    <span class="hm-admin-link" id="admin-toggle">admin</span>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
