@@ -245,6 +245,8 @@ async function init() {
             selectField.style.display = "none"; nameDisplay.style.display = "block";
             nameDisplay.innerHTML = `<div class="hm-mystery-name">${escapeHtml(found.name)}</div>`;
             document.title = found.name;
+            const headerMysteryName = document.getElementById('header-mystery-name');
+            if (headerMysteryName) { headerMysteryName.textContent = found.name; headerMysteryName.style.display = 'block'; }
         }
     }
 
@@ -484,9 +486,9 @@ function checkAnswer() {
 
 function showSuccess() {
     const taskNum = state.currentTask + 1; const total = state.mystery.tasks.length;
-    document.getElementById("success-icon").textContent = "\u2705";
+    document.getElementById("success-icon").textContent = "\u2726";
     document.getElementById("success-title").textContent = `Oppgave ${taskNum} løst!`;
-    document.getElementById("success-text").textContent = `Dere er nå opp oppgave ${taskNum}/${total}.`;
+    document.getElementById("success-text").textContent = `Oppgave ${taskNum} av ${total} fullført.`;
     const penaltyEl = document.getElementById("success-penalty");
     if (state.hintShownForTask) { penaltyEl.innerHTML = '<div class="hm-penalty-tag">+5 min strafftid for hint</div>'; } 
     else { penaltyEl.innerHTML = ""; }
