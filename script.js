@@ -254,7 +254,7 @@ async function init() {
         const placeholderOpt = document.createElement("option");
         placeholderOpt.value = ""; placeholderOpt.textContent = "Velg mysterium...";
         placeholderOpt.disabled = true; placeholderOpt.selected = true;
-        select.appendChild(placeholderOpt); select.style.color = "rgba(245, 240, 232, 0.5)";
+        select.appendChild(placeholderOpt); select.style.color = "rgba(26, 15, 6, 0.4)";
         CONFIG.mysteries.forEach(m => {
             const opt = document.createElement("option"); opt.value = m.id; opt.textContent = m.name; select.appendChild(opt);
         });
@@ -273,7 +273,7 @@ async function init() {
     teamInput.addEventListener("keydown", (e) => { if (e.key === "Enter" && !btnStart.disabled) btnStart.click(); });
 
     if (!state.preselected) {
-        select.addEventListener("change", (e) => { state.mysteryId = e.target.value; select.style.color = "#f5f0e8"; checkReadyToStart(); });
+        select.addEventListener("change", (e) => { state.mysteryId = e.target.value; select.style.color = "#1a0f06"; checkReadyToStart(); });
     } else { checkReadyToStart(); }
 
     btnStart.addEventListener("click", startGame);
