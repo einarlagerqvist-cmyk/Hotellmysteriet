@@ -10,8 +10,8 @@
 <div id="hm-app">
     <div class="hm-container">
         <div class="hm-header">
-            <h1>Hotellmysteriet</h1>
-            <div class="hm-subtitle">Tidtaker</div>
+            <h1 id="app-title">Hotellmysteriet</h1>
+            <div class="hm-subtitle" id="app-subtitle">Tidtaker</div>
             <div class="hm-divider"></div>
             <div id="header-mystery-name" class="hm-mystery-subtitle" style="display:none;"></div>
         </div>
@@ -20,11 +20,11 @@
             <div class="hm-intro" id="start-intro">Løs mysteriet raskest mulig. Dere får oppgaver underveis — hint er tilgjengelig, men koster 5 minutter i strafftid.</div>
             <div id="mystery-name-display" style="display:none;"></div>
             <div class="hm-field" id="mystery-select-field">
-                <div class="hm-label">Velg mysterium</div>
+                <div class="hm-label" id="label-mystery">Velg mysterium</div>
                 <select id="mystery-select" class="hm-select"></select>
             </div>
             <div class="hm-field">
-                <div class="hm-label">Lagets navn</div>
+                <div class="hm-label" id="label-team">Lagets navn</div>
                 <input type="text" id="team-name" class="hm-input" placeholder="Skriv inn lagnavnet..." maxlength="30" autocomplete="off">
             </div>
             <button class="hm-btn hm-btn-primary" id="btn-start" disabled>Start mysteriet</button>
@@ -34,7 +34,7 @@
         
         <div id="screen-intro" class="hm-screen">
             <div class="hm-task-card" style="text-align:left;">
-                <div class="hm-task-number">Saksoversikt</div>
+                <div class="hm-task-number" id="label-case-overview">Saksoversikt</div>
                 <div class="hm-task-text" id="intro-text" style="white-space: pre-wrap;"></div>
             </div>
             <button class="hm-btn hm-btn-primary" id="btn-start-investigation">Start etterforskningen</button>
@@ -68,11 +68,11 @@
         </div>
         
         <div id="screen-result" class="hm-screen">
-            <div class="hm-congrats">Gratulerer!</div>
+            <div class="hm-congrats" id="label-congrats">Gratulerer!</div>
             <div class="hm-final-message" id="result-final-message"></div>
             
             <div class="hm-result-summary-card">
-                <div class="hm-result-label">Deres tid</div>
+                <div class="hm-result-label" id="label-your-time">Deres tid</div>
                 <div class="hm-result-time" id="result-time">00:00:00</div>
                 <div class="hm-rank" id="result-rank"></div>
                 <div class="hm-result-detail" id="result-detail"></div>
@@ -80,7 +80,7 @@
             </div>
             
             <div id="hm-feedback-section" class="hm-feedback-box">
-                <h3>Hva syntes dere om mysteriet?</h3>
+                <h3 id="label-feedback-title">Hva syntes dere om mysteriet?</h3>
                 <div class="hm-stars" id="feedback-stars">
                     <span data-value="1">★</span>
                     <span data-value="2">★</span>
@@ -92,7 +92,7 @@
                 <button class="hm-btn hm-btn-primary" id="btn-submit-feedback" style="font-size: 0.85rem; padding: 12px 24px;">Send tilbakemelding</button>
             </div>
             <div id="hm-feedback-thanks" style="display:none;" class="hm-feedback-box">
-                <h3 style="margin-bottom: 0; color: #2e7d32;">Takk for tilbakemeldingen!</h3>
+                <h3 id="label-feedback-thanks" style="margin-bottom: 0; color: #2e7d32;">Takk for tilbakemeldingen!</h3>
             </div>
 
             <div class="hm-leaderboard">
@@ -113,8 +113,8 @@
             <button class="hm-btn hm-btn-secondary" id="btn-back-start">Tilbake</button>
             
             <div id="admin-panel" class="hm-admin-panel" style="display:none;">
-                <h3>Admin</h3>
-                <p style="font-size: 0.8rem; color: rgba(245,240,232,0.6); margin-bottom: 15px;">Her kan du slette enkeltlag fra valgt mysterium, eller åpne dashbordet for å se statistikk.</p>
+                <h3 id="label-admin-title">Admin</h3>
+                <p id="label-admin-desc" style="font-size: 0.8rem; color: rgba(245,240,232,0.6); margin-bottom: 15px;">Her kan du slette enkeltlag fra valgt mysterium, eller åpne dashbordet for å se statistikk.</p>
                 <div id="admin-entries"></div>
                 <br>
                 <button class="hm-btn hm-btn-primary" id="btn-open-dashboard" style="font-size: 0.8rem; padding: 8px 16px; margin-bottom: 10px; width: 100%;">Åpne Dashboard</button>
