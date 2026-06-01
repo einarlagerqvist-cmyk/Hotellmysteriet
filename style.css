@@ -116,9 +116,8 @@
 #hm-app .hm-lb-time { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #4a3118; flex-shrink: 0; }
 #hm-app .hm-lb-total { font-size: 0.7rem; color: rgba(26, 15, 6, 0.35); text-align: right; }
 #hm-app .hm-no-entries { text-align: center; color: rgba(26, 15, 6, 0.4); font-style: italic; padding: 20px; }
-#hm-app .hm-filter { margin-bottom: 20px; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-#hm-app .hm-filter::-webkit-scrollbar { display: none; }
-#hm-app .hm-filter-btn { padding: 8px 16px; border: 1px solid rgba(107, 76, 46, 0.3); background: transparent; color: #1a0f06; border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 0.8rem; cursor: pointer; flex-shrink: 0; white-space: nowrap; transition: all 0.2s; }
+#hm-app .hm-filter { margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+#hm-app .hm-filter-btn { padding: 8px 16px; border: 1px solid rgba(107, 76, 46, 0.3); background: transparent; color: #1a0f06; border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
 #hm-app .hm-filter-btn.active { background: #6b4c2e; color: #f0e6d2; border-color: #6b4c2e; }
 
 /* ADMIN PANEL & DASHBOARD */
