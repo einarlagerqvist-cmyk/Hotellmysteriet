@@ -642,18 +642,18 @@ async function openAdminDashboard() {
 async function showLeaderboard() {
     showScreen("leaderboard");
     const filterDiv = document.getElementById("leaderboard-filter"); filterDiv.innerHTML = "";
-    if (state.preselected) {
-        const placeholder = document.createElement("span"); filterDiv.appendChild(placeholder);
-        loadLeaderboard(state.mysteryId, placeholder);
-    } else {
-        const allBtn = document.createElement("button"); allBtn.className = "hm-filter-btn active"; allBtn.textContent = "Alle";
-        allBtn.addEventListener("click", () => loadLeaderboard(null, allBtn)); filterDiv.appendChild(allBtn);
-        CONFIG.mysteries.forEach(m => {
-            const btn = document.createElement("button"); btn.className = "hm-filter-btn"; btn.textContent = m.name;
-            btn.addEventListener("click", () => loadLeaderboard(m.id, btn)); filterDiv.appendChild(btn);
-        });
-        loadLeaderboard(null, allBtn);
-    }
+
+    const allBtn = document.createElement("button"); allBtn.className = "hm-filter-btn"; allBtn.textContent = "Alle";
+    allBtn.addEventListener("click", () => loadLeaderboard(null, allBtn)); filterDiv.appendChild(allBtn);
+
+    let defaultBtn = allBtn;
+    CONFIG.mysteries.forEach(m => {
+        const btn = document.createElement("button"); btn.className = "hm-filter-btn"; btn.textContent = m.name;
+        btn.addEventListener("click", () => loadLeaderboard(m.id, btn)); filterDiv.appendChild(btn);
+        if (state.preselected && m.id === state.mysteryId) defaultBtn = btn;
+    });
+
+    loadLeaderboard(state.preselected ? state.mysteryId : null, defaultBtn);
 }
 async function loadLeaderboard(mysteryId, activeBtn) {
     document.querySelectorAll(".hm-filter-btn").forEach(b => b.classList.remove("active"));
