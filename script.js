@@ -303,7 +303,8 @@ const CONFIG = {
                 {
                     question: "You must find out who ordered Clara's death. Read the letter signed 'Rex' and the poem about a statue.\n\nWhen your group has agreed on a name, enter it here.\n\nOpen envelope 4.",
                     answer: ["King Haakon VII", "Haakon VII", "King Haakon", "Haakon 7"],
-                    hint: "The poem tells you to walk up the boulevard and read the name upon the pedestal of the king. The document states he represents 'Rex'. He is not in the park, but just beside it looking at the fortress."
+                    hint: "The poem tells you to walk up the boulevard and read the name upon the pedestal of the king. The document states he represents 'Rex'. He is not in the park, but just beside it looking at the fortress.",
+                    audio: { src: "audio/oslo/rex-letter.mp3", ambient: "audio/oslo/harbor-ambience.mp3" }
                 }
             ],
             finalMessage: "Congratulations! You have solved The Oslo Mystery. You retraced Clara's steps from the monument at the harbor to her unmarked grave at Skarpenord Bastion. By reading the intercepted telegrams and secret letters, you deduced that 'Rex' ordered her removed to protect the Crown. The bronze statue of King Haakon VII stands as a reminder of the one who sealed her fate. Justice has finally been brought to light!"
@@ -679,6 +680,7 @@ function resumeGame(session) {
 }
 
 function showTask(isResume = false) {
+    if (state.stopAudio) { state.stopAudio(); state.stopAudio = null; }
     const task = state.mystery.tasks[state.currentTask];
     const total = state.mystery.tasks.length;
     state.hintShownForTask = false;
@@ -692,6 +694,67 @@ function showTask(isResume = false) {
     }
     document.getElementById("task-number").textContent = T('taskOf', state.currentTask + 1, total);
     document.getElementById("task-text").textContent = task.question;
+
+    // Audio player — remove old, inject new if task has audio
+    const existingPlayer = document.getElementById('task-audio-player');
+    if (existingPlayer) existingPlayer.remove();
+    if (task.audio) {
+        const audioEl = document.createElement('div');
+        audioEl.id = 'task-audio-player';
+        audioEl.className = 'hm-audio-player';
+        audioEl.innerHTML = `
+            <div class="hm-audio-divider"><span>Evidence</span></div>
+            <button class="hm-btn-audio" id="btn-play-audio">
+                <span class="hm-audio-icon">✦</span>
+                <span class="hm-audio-label">Hear the letter</span>
+            </button>`;
+        document.querySelector('.hm-task-card').appendChild(audioEl);
+
+        let ambientAudio = null, letterAudio = null, fadeInterval = null;
+
+        function stopAudio() {
+            if (letterAudio) { letterAudio.pause(); letterAudio = null; }
+            if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
+            if (ambientAudio) { ambientAudio.pause(); ambientAudio = null; }
+            const btn = document.getElementById('btn-play-audio');
+            if (btn) { btn.classList.remove('playing'); btn.querySelector('.hm-audio-label').textContent = 'Hear the letter'; }
+        }
+        state.stopAudio = stopAudio;
+
+        document.getElementById('btn-play-audio').addEventListener('click', function () {
+            if (this.classList.contains('playing')) { stopAudio(); return; }
+
+            ambientAudio = new Audio(task.audio.ambient);
+            ambientAudio.loop = true;
+            ambientAudio.volume = 0.22;
+            ambientAudio.play().catch(() => {});
+
+            letterAudio = new Audio(task.audio.src);
+            letterAudio.volume = 1.0;
+            letterAudio.play().catch(() => {});
+
+            this.classList.add('playing');
+            this.querySelector('.hm-audio-label').textContent = 'Playing...';
+
+            letterAudio.addEventListener('ended', () => {
+                const startVol = ambientAudio ? ambientAudio.volume : 0;
+                let steps = 0;
+                fadeInterval = setInterval(() => {
+                    steps++;
+                    if (ambientAudio && ambientAudio.volume > 0.02) {
+                        ambientAudio.volume = Math.max(0, startVol - steps * 0.025);
+                    } else {
+                        if (ambientAudio) { ambientAudio.pause(); ambientAudio = null; }
+                        clearInterval(fadeInterval); fadeInterval = null;
+                    }
+                }, 80);
+                const btn = document.getElementById('btn-play-audio');
+                if (btn) { btn.classList.remove('playing'); btn.querySelector('.hm-audio-label').textContent = 'Hear the letter'; }
+                letterAudio = null;
+            });
+        });
+    }
+
     const hintArea = document.getElementById("task-hint-area");
     hintArea.innerHTML = `<button class="hm-btn hm-btn-hint" id="btn-show-hint">${T('showHint')}</button><br><button class="hm-btn hm-btn-giveup" id="btn-giveup" style="display:none;">${T('giveUpBtn')}</button>`;
 
