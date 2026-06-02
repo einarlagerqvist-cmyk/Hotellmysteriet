@@ -709,7 +709,7 @@ function showTask(isResume = false) {
                 <span class="hm-audio-icon">✦</span>
                 <span class="hm-audio-label">Hear the letter</span>
             </button>`;
-        document.querySelector('.hm-task-card').appendChild(audioEl);
+        document.querySelector('#screen-task .hm-task-card').appendChild(audioEl);
 
         let ambientAudio = null, letterAudio = null, fadeInterval = null;
 
