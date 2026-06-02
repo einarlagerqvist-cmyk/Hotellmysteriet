@@ -727,35 +727,38 @@ function showTask(isResume = false) {
         document.getElementById('btn-play-audio').addEventListener('click', function () {
             if (this.classList.contains('playing')) { stopAudio(); return; }
 
+            const btn = this;
+
             ambientAudio = new Audio(task.audio.ambient);
             ambientAudio.loop = true;
             ambientAudio.volume = 0.45;
-            ambientAudio.play().catch(() => {});
 
-            setTimeout(() => {
-                letterAudio = new Audio(task.audio.src);
-                letterAudio.volume = 1.0;
-                letterAudio.play().catch(() => {});
-                letterAudio.addEventListener('ended', () => {
-                    const startVol = ambientAudio ? ambientAudio.volume : 0;
-                    let steps = 0;
-                    fadeInterval = setInterval(() => {
-                        steps++;
-                        if (ambientAudio && ambientAudio.volume > 0.02) {
-                            ambientAudio.volume = Math.max(0, startVol - steps * 0.025);
-                        } else {
-                            if (ambientAudio) { ambientAudio.pause(); ambientAudio = null; }
-                            clearInterval(fadeInterval); fadeInterval = null;
-                        }
-                    }, 80);
-                    const btn = document.getElementById('btn-play-audio');
-                    if (btn) { btn.classList.remove('playing'); btn.querySelector('.hm-audio-label').textContent = 'Hear the letter'; }
-                    letterAudio = null;
-                });
-            }, 600);
+            letterAudio = new Audio(task.audio.src);
+            letterAudio.volume = 1.0;
 
-            this.classList.add('playing');
-            this.querySelector('.hm-audio-label').textContent = 'Playing...';
+            Promise.all([ambientAudio.play(), letterAudio.play()])
+                .then(() => {
+                    btn.classList.add('playing');
+                    btn.querySelector('.hm-audio-label').textContent = 'Playing...';
+                })
+                .catch(() => { ambientAudio = null; letterAudio = null; });
+
+            letterAudio.addEventListener('ended', () => {
+                const startVol = ambientAudio ? ambientAudio.volume : 0;
+                let steps = 0;
+                fadeInterval = setInterval(() => {
+                    steps++;
+                    if (ambientAudio && ambientAudio.volume > 0.02) {
+                        ambientAudio.volume = Math.max(0, startVol - steps * 0.025);
+                    } else {
+                        if (ambientAudio) { ambientAudio.pause(); ambientAudio = null; }
+                        clearInterval(fadeInterval); fadeInterval = null;
+                    }
+                }, 80);
+                const b = document.getElementById('btn-play-audio');
+                if (b) { b.classList.remove('playing'); b.querySelector('.hm-audio-label').textContent = 'Hear the letter'; }
+                letterAudio = null;
+            });
         });
     }
 
