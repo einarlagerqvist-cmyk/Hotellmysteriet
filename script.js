@@ -728,20 +728,21 @@ function showTask(isResume = false) {
             if (this.classList.contains('playing')) { stopAudio(); return; }
 
             const btn = this;
+            btn.classList.add('playing');
+            btn.querySelector('.hm-audio-label').textContent = 'Playing...';
 
             ambientAudio = new Audio(task.audio.ambient);
             ambientAudio.loop = true;
-            ambientAudio.volume = 0.45;
+            ambientAudio.volume = 0.6;
+            ambientAudio.play().catch(() => { ambientAudio = null; });
 
             letterAudio = new Audio(task.audio.src);
             letterAudio.volume = 1.0;
-
-            Promise.all([ambientAudio.play(), letterAudio.play()])
-                .then(() => {
-                    btn.classList.add('playing');
-                    btn.querySelector('.hm-audio-label').textContent = 'Playing...';
-                })
-                .catch(() => { ambientAudio = null; letterAudio = null; });
+            letterAudio.play().catch(() => {
+                letterAudio = null;
+                btn.classList.remove('playing');
+                btn.querySelector('.hm-audio-label').textContent = 'Hear the letter';
+            });
 
             letterAudio.addEventListener('ended', () => {
                 const startVol = ambientAudio ? ambientAudio.volume : 0;
