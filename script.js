@@ -282,6 +282,7 @@ const CONFIG = {
         },
         {
             id: "oslo",
+            onlyEn: true,
             name: "The Oslo Mystery",
             intro: "The year is 1905. A young maid named Clara has vanished from the Royal Palace. Officially, she ran away to America with a lover. But a suitcase found drifting in the harbor tells a different story. Inside lies Clara's diary. She carried a secret that could topple the monarchy. You are the only one who can retrace her steps, crack the codes, and reveal what happened to the young girl.",
             tasks: [
