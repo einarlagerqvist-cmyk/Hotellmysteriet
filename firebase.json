@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "site": "hotellmysteriet",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      ".git/**",
+      ".firebase/**",
+      "CLAUDE.md",
+      "Mysterier",
+      "Mysterier/**"
+    ]
+  }
+}
