@@ -286,7 +286,7 @@ const CONFIG = {
             name: "The Oslo Mystery",
             en: {
                 name: "The Oslo Mystery",
-                intro: "The year is 1899. A young maid named Clara has vanished from the Royal Palace. Officially, she ran away to America with a lover. But a suitcase found drifting in the harbor tells a different story. Inside lies Clara's diary. She carried a secret that could topple the monarchy. You are the only one who can retrace her steps, crack the codes, and reveal what happened to the young girl.",
+                intro: "The year is 1905. A young maid named Clara has vanished from the Royal Palace. Officially, she ran away to America with a lover. But a suitcase found drifting in the harbor tells a different story. Inside lies Clara's diary. She carried a secret that could topple the monarchy. You are the only one who can retrace her steps, crack the codes, and reveal what happened to the young girl.",
                 tasks: [
                     {
                         question: "Your first task.\n\nClara wrote in her diary the night before she disappeared. She described the place where she was told to wait. Find that place.\n\nWhat is the name of the monument where Clara waited?\n\nOpen envelope 1.",
@@ -294,7 +294,7 @@ const CONFIG = {
                         hint: "The statue depicts a kneeling, naked woman facing the water. It is located near the modern harbor and the Munch Museum."
                     },
                     {
-                        question: "You are standing where Clara waited. She never made it further.\n\nA soldier wrote a letter he never intended anyone to find. It was discovered among a dead captain's belongings in 1902, and buried without investigation.\n\nRead it carefully. It tells you where Clara was taken, and where she was buried. Find that place. What animal is on the object?\n\nOpen envelope 2.",
+                        question: "You are standing where Clara waited. She never made it further.\n\nA soldier wrote a letter he never intended anyone to find. It was discovered among a dead captain's belongings in 1907, and buried without investigation.\n\nRead it carefully. It tells you where Clara was taken, and where she was buried. Find that place. What animal is on the object?\n\nOpen envelope 2.",
                         answer: ["elephant", "elefant"],
                         hint: "There's an animal on the cannon."
                     },
