@@ -85,6 +85,9 @@
 #hm-app .hm-success-icon { font-size: 2.5rem; margin-bottom: 15px; color: #6b4c2e; }
 #hm-app .hm-success-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #6b4c2e; margin-bottom: 10px; }
 #hm-app .hm-success-text { font-size: 0.95rem; color: rgba(26, 15, 6, 0.6); margin-bottom: 25px; line-height: 1.5; }
+#hm-app .hm-reward-box { margin: 0 auto 25px; max-width: 340px; }
+#hm-app .hm-reward-img { width: 100%; height: auto; display: block; border-radius: 10px; box-shadow: 0 6px 22px rgba(26, 15, 6, 0.28); }
+#hm-app .hm-reward-download { margin-top: 14px; }
 #hm-app .hm-penalty-tag { display: inline-block; background: rgba(122, 28, 28, 0.2); color: #7a1c1c; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; margin-bottom: 15px; }
 #hm-app .hm-congrats { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #6b4c2e; margin-bottom: 20px; }
 #hm-app .hm-final-message { font-size: 1rem; color: #1a0f06; line-height: 1.6; text-align: left; white-space: pre-wrap; margin-bottom: 30px; padding: 0 10px; }

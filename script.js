@@ -30,6 +30,7 @@ const UI_TEXT = {
         hintPenalty: '+5 min strafftid for hint',
         lastTask: 'Siste oppgave!',
         nextTask: 'Neste oppgave',
+        downloadReward: '⬇ Last ned kupong',
         congrats: 'Gratulerer!',
         yourTime: 'Deres tid',
         feedbackTitle: 'Hva syntes dere om mysteriet?',
@@ -97,6 +98,7 @@ const UI_TEXT = {
         hintPenalty: '+5 min penalty for hint',
         lastTask: 'Last task!',
         nextTask: 'Next task',
+        downloadReward: '⬇ Download coupon',
         congrats: 'Congratulations!',
         yourTime: 'Your time',
         feedbackTitle: 'What did you think of the mystery?',
@@ -301,7 +303,8 @@ const CONFIG = {
                 {
                     question: "You can now open the third envelope and see Clara's destiny. What can you see?",
                     answer: ["cranium", "head", "skull", "a cranium", "a head", "a skull"],
-                    hint: "Try to look through the picture, behind it, to find the object."
+                    hint: "Try to look through the picture, behind it, to find the object.",
+                    reward: { image: "img/oslo/via-village.jpg", download: "Via-Village-Oslo-Mystery.jpg", alt: "10% discount at VIA Village Foodcourt — discount code: Via Oslo Mystery" }
                 },
                 {
                     question: "You must find out who ordered Clara's death. Read the letter signed 'Rex' and the poem about a statue.\n\nWhen your group has agreed on a name, enter it here.\n\nOpen envelope 4.",
@@ -784,6 +787,16 @@ function showTask(isResume = false) {
     showScreen("task"); document.getElementById("task-answer").focus();
 }
 
+function rewardHtml(task) {
+    const r = task && task.reward;
+    if (!r || !r.image) return "";
+    return `
+        <div class="hm-reward-box">
+            <a href="${r.image}" target="_blank" rel="noopener"><img class="hm-reward-img" src="${r.image}" alt="${escapeHtml(r.alt || '')}"></a>
+            <a class="hm-btn hm-btn-secondary hm-reward-download" href="${r.image}" download="${escapeHtml(r.download || 'kupong.jpg')}">${T('downloadReward')}</a>
+        </div>`;
+}
+
 function giveUp(task) {
     if (!confirm(T('giveUpConfirm'))) return;
     state.gaveUpCount++;
@@ -797,6 +810,7 @@ function giveUp(task) {
     const hintArea = document.getElementById("task-hint-area");
     hintArea.innerHTML = `
         <div class="hm-giveup-box"><div class="hm-giveup-label">${T('giveUpLabel')}</div><div class="hm-giveup-answer">${escapeHtml(correctAnswer)}</div><div class="hm-giveup-penalty">${T('giveUpPenalty')}</div></div>
+        ${rewardHtml(task)}
     `;
     const isLast = state.currentTask === state.mystery.tasks.length - 1;
     const continueBtn = document.createElement("button");
@@ -835,6 +849,7 @@ function showSuccess() {
     const penaltyEl = document.getElementById("success-penalty");
     if (state.hintShownForTask) { penaltyEl.innerHTML = `<div class="hm-penalty-tag">${T('hintPenalty')}</div>`; }
     else { penaltyEl.innerHTML = ""; }
+    document.getElementById("success-reward").innerHTML = rewardHtml(state.mystery.tasks[state.currentTask]);
     document.getElementById("btn-next-task").textContent = (state.currentTask + 1 === total - 1) ? T('lastTask') : T('nextTask');
     showScreen("success");
 }
