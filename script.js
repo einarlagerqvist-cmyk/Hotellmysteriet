@@ -292,7 +292,8 @@ const CONFIG = {
                     question: "Your first task.\n\nClara wrote in her diary the night before she disappeared. She described the place where she was told to wait. Find that place.\n\nWhat is the name of the monument where Clara waited?\n\nOpen envelope 1.",
                     answer: ["The Mother", "Mother", "Moren"],
                     hint: "The statue depicts a kneeling, naked woman facing the water. It is located near the modern harbor and the Munch Museum.",
-                    audio: { src: "audio/oslo/clara-diary.mp3", ambient: "audio/oslo/writing-ambience.mp3" }
+                    audio: { src: "audio/oslo/clara-diary.mp3", ambient: "audio/oslo/writing-ambience.mp3" },
+                    reward: { image: "img/oslo/hakone-coffee.jpg", download: "Hakone-Coffee-Oslo-Mystery.jpg", alt: "Oslo Mystery voucher — 10% discount at Hakone Coffee. Show this at the counter when ordering." }
                 },
                 {
                     question: "You are standing where Clara waited. She never made it further.\n\nA soldier wrote a letter he never intended anyone to find. It was discovered among a dead captain's belongings in 1907, and buried without investigation.\n\nRead it carefully. It tells you where Clara was taken, and where she was buried. Find that place. What animal is on the object?\n\nOpen envelope 2.",
