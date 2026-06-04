@@ -298,7 +298,8 @@ const CONFIG = {
                     question: "You are standing where Clara waited. She never made it further.\n\nA soldier wrote a letter he never intended anyone to find. It was discovered among a dead captain's belongings in 1907, and buried without investigation.\n\nRead it carefully. It tells you where Clara was taken, and where she was buried. Find that place. What animal is on the object?\n\nOpen envelope 2.",
                     answer: ["elephant", "elefant"],
                     hint: "There's an animal on the cannon.",
-                    audio: { src: "audio/oslo/soldier-letter.mp3", ambient: "audio/oslo/fortress-ambience.mp3" }
+                    audio: { src: "audio/oslo/soldier-letter.mp3", ambient: "audio/oslo/fortress-ambience.mp3" },
+                    reward: { image: "img/oslo/brim-explorer.jpg", download: "Brim-Explorer-Oslo-Mystery.jpg", alt: "Promotion code OSLOMYSTERY — discount on a silent fjord cruise with Brim Explorer (brimexplorer.com)" }
                 },
                 {
                     question: "You can now open the third envelope and see Clara's destiny. What can you see?",
