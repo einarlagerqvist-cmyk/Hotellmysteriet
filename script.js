@@ -305,7 +305,7 @@ const CONFIG = {
                 },
                 {
                     question: "You must find out who ordered Clara's death. Read the letter signed 'Rex' and the poem about a statue.\n\nWhen your group has agreed on a name, enter it here.\n\nOpen envelope 4.",
-                    answer: ["King Haakon VII", "Haakon VII", "King Haakon", "Haakon 7"],
+                    answer: ["King Haakon VII", "Haakon VII", "King Haakon", "Haakon 7", "Haakon", "Kong Haakon VII", "Kong Haakon", "Kong Haakon 7", "Håkon VII", "Kong Håkon VII", "Håkon", "Håkon 7", "Kong Håkon"],
                     hint: "The poem tells you to walk up the boulevard and read the name upon the pedestal of the king. The document states he represents 'Rex'. He is not in the park, but just beside it looking at the fortress.",
                     audio: { src: "audio/oslo/rex-letter.mp3", ambient: "audio/oslo/harbor-ambience.mp3" }
                 }
