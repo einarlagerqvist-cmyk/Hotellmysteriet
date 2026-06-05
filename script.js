@@ -333,7 +333,7 @@ const CONFIG = {
                     answer: ["taushetsplikt", "taushet", "legen hadde taushetsplikt"],
                     hint: "Lytt nøye til hva som skjer rett etter at legen beskriver Bakken som 'spent'.",
                     audio: {
-                        src: "audio/are/arnesen-telefon.mp3",
+                        src: "audio/are/arnesen-telefon-v2.mp3",
                         ambient: "audio/are/kassett-ambience.mp3",
                         label: "▶ Spill av kassettopptak",
                         playingLabel: "Spiller...",
