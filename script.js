@@ -312,7 +312,8 @@ const CONFIG = {
                     question: "You must find out who ordered Clara's death. Read the letter signed 'Rex' and the poem about a statue.\n\nWhen your group has agreed on a name, enter it here.\n\nOpen envelope 4.",
                     answer: ["King Haakon VII", "Haakon VII", "King Haakon", "Haakon 7", "Haakon", "Kong Haakon VII", "Kong Haakon", "Kong Haakon 7", "Håkon VII", "Kong Håkon VII", "Håkon", "Håkon 7", "Kong Håkon"],
                     hint: "The poem tells you to walk up the boulevard and read the name upon the pedestal of the king. The document states he represents 'Rex'. He is not in the park, but just beside it looking at the fortress.",
-                    audio: { src: "audio/oslo/rex-letter.mp3", ambient: "audio/oslo/harbor-ambience.mp3" }
+                    audio: { src: "audio/oslo/rex-letter.mp3", ambient: "audio/oslo/harbor-ambience.mp3" },
+                    reward: { image: "img/oslo/nasjonalmuseet-kafe.jpg", download: "Nasjonalmuseet-Kafe-Oslo-Mystery.jpg", alt: "Oslo Mystery voucher — 10% discount for food at the National Museum's own café (Nasjonalmuseet kafé)." }
                 }
             ],
             finalMessage: "Congratulations! You have solved The Oslo Mystery. You retraced Clara's steps from the monument at the harbor to her unmarked grave at Skarpenord Bastion. By reading the intercepted telegrams and secret letters, you deduced that 'Rex' ordered her removed to protect the Crown. The bronze statue of King Haakon VII stands as a reminder of the one who sealed her fate. Justice has finally been brought to light!"
@@ -809,12 +810,12 @@ function giveUp(task) {
     const correctAnswer = answers[0];
     document.querySelector(".hm-answer-row").style.display = "none";
     document.getElementById("task-error").textContent = "";
+    const isLast = state.currentTask === state.mystery.tasks.length - 1;
     const hintArea = document.getElementById("task-hint-area");
     hintArea.innerHTML = `
         <div class="hm-giveup-box"><div class="hm-giveup-label">${T('giveUpLabel')}</div><div class="hm-giveup-answer">${escapeHtml(correctAnswer)}</div><div class="hm-giveup-penalty">${T('giveUpPenalty')}</div></div>
-        ${rewardHtml(task)}
+        ${isLast ? "" : rewardHtml(task)}
     `;
-    const isLast = state.currentTask === state.mystery.tasks.length - 1;
     const continueBtn = document.createElement("button");
     continueBtn.className = "hm-btn hm-btn-primary";
     continueBtn.textContent = isLast ? T('seeResult') : T('nextTask');
@@ -879,6 +880,7 @@ async function finishGame() {
         penaltyEl.textContent = T('actualTime', formatTime(state.elapsed), formatTime(penalty));
     } else { detailEl.textContent = T('noHints'); penaltyEl.textContent = ""; }
     document.getElementById("result-final-message").textContent = state.mystery.finalMessage;
+    document.getElementById("result-reward").innerHTML = rewardHtml(state.mystery.tasks[state.currentTask]);
     const entries = await Storage.getEntries(state.mysteryId);
     entries.sort((a, b) => (a.totalTime || a.time) - (b.totalTime || b.time));
     const rank = entries.findIndex(e => e.team === state.teamName && e.totalTime === totalTime) + 1;
