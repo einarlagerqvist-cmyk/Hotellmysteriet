@@ -317,6 +317,36 @@ const CONFIG = {
                 }
             ],
             finalMessage: "Congratulations! You have solved The Oslo Mystery. You retraced Clara's steps from the monument at the harbor to her unmarked grave at Skarpenord Bastion. By reading the intercepted telegrams and secret letters, you deduced that 'Rex' ordered her removed to protect the Crown. The bronze statue of King Haakon VII stands as a reminder of the one who sealed her fate. Justice has finally been brought to light!"
+        },
+        {
+            id: "are",
+            name: "Mysteriet på Fengselshotellet",
+            intro: "Natt til 15. november 1986 ble Terje Bakken funnet død i cellen sin på Are fengsel. Politiet konkluderte raskt med selvmord.\n\nMen ikke alle er overbeviste.\n\nDere har fått tilgang til politiets avhørsdokumenter og et lydopptak fra etterforskningen. Les nøye. Lytt godt. Noen lyver.",
+            tasks: [
+                {
+                    question: "TODO: Oppgave 1",
+                    answer: ["TODO"],
+                    hint: "TODO"
+                },
+                {
+                    question: "Åpne konvolutten merket «LYDOPPTAK — ARE-1986-0114-A».\n\nLegen som besøkte fengselet mandag kveld hevder at Bakken ikke viste tegn til at han vurderte å ta livet sitt.\n\nHva sa Arnesen at Bakken spurte ham om under konsultasjonen?",
+                    answer: ["taushetsplikt", "taushet", "legen hadde taushetsplikt"],
+                    hint: "Lytt nøye til hva som skjer rett etter at legen beskriver Bakken som 'spent'.",
+                    audio: {
+                        src: "audio/are/arnesen-telefon.mp3",
+                        ambient: "audio/are/kassett-ambience.mp3",
+                        label: "▶ Spill av kassettopptak",
+                        playingLabel: "Spiller...",
+                        divider: "Lydbevis"
+                    }
+                },
+                {
+                    question: "TODO: Hvem drepte Terje Bakken?",
+                    answer: ["TODO"],
+                    hint: "TODO"
+                }
+            ],
+            finalMessage: "TODO: Avslutningstekst når gjerningsmannen er avslørt."
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
@@ -711,11 +741,13 @@ function showTask(isResume = false) {
         const audioEl = document.createElement('div');
         audioEl.id = 'task-audio-player';
         audioEl.className = 'hm-audio-player';
+        const audioLabel = task.audio.label || 'Hear the letter';
+        const audioDivider = task.audio.divider || 'Evidence';
         audioEl.innerHTML = `
-            <div class="hm-audio-divider"><span>Evidence</span></div>
+            <div class="hm-audio-divider"><span>${audioDivider}</span></div>
             <button class="hm-btn-audio" id="btn-play-audio">
                 <span class="hm-audio-icon">✦</span>
-                <span class="hm-audio-label">Hear the letter</span>
+                <span class="hm-audio-label">${audioLabel}</span>
             </button>`;
         document.querySelector('#screen-task .hm-task-card').appendChild(audioEl);
 
@@ -726,7 +758,7 @@ function showTask(isResume = false) {
             if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
             if (ambientAudio) { ambientAudio.pause(); ambientAudio = null; }
             const btn = document.getElementById('btn-play-audio');
-            if (btn) { btn.classList.remove('playing'); btn.querySelector('.hm-audio-label').textContent = 'Hear the letter'; }
+            if (btn) { btn.classList.remove('playing'); btn.querySelector('.hm-audio-label').textContent = audioLabel; }
         }
         state.stopAudio = stopAudio;
 
@@ -735,7 +767,7 @@ function showTask(isResume = false) {
 
             const btn = this;
             btn.classList.add('playing');
-            btn.querySelector('.hm-audio-label').textContent = 'Playing...';
+            btn.querySelector('.hm-audio-label').textContent = task.audio.playingLabel || 'Playing...';
 
             ambientAudio = new Audio(task.audio.ambient);
             ambientAudio.loop = true;
@@ -763,7 +795,7 @@ function showTask(isResume = false) {
                     }
                 }, 80);
                 const b = document.getElementById('btn-play-audio');
-                if (b) { b.classList.remove('playing'); b.querySelector('.hm-audio-label').textContent = 'Hear the letter'; }
+                if (b) { b.classList.remove('playing'); b.querySelector('.hm-audio-label').textContent = audioLabel; }
                 letterAudio = null;
             });
         });
