@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nettverksspillet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="ns-app">
+    <div class="ns-container">
+
+        <!-- HEADER -->
+        <div class="ns-header">
+            <div class="ns-logo">N</div>
+            <h1 id="app-title">Nettverksspillet</h1>
+            <div class="ns-tagline">Møt nye mennesker. Vinn konferansen.</div>
+        </div>
+
+        <!-- SCREEN: Bli med -->
+        <div id="screen-landing" class="ns-screen active">
+            <div class="ns-card">
+                <div class="ns-field">
+                    <label class="ns-label" for="event-code">Arrangementskode</label>
+                    <input type="text" id="event-code" class="ns-input" placeholder="F.eks. CMYK26" maxlength="10" autocomplete="off" style="text-transform:uppercase">
+                </div>
+                <div class="ns-field">
+                    <label class="ns-label" for="player-name">Ditt navn</label>
+                    <input type="text" id="player-name" class="ns-input" placeholder="Fullt navn..." maxlength="40" autocomplete="off">
+                </div>
+                <button class="ns-btn ns-btn-primary" id="btn-join" disabled>Bli med</button>
+            </div>
+            <div style="text-align:center; margin-top:16px;">
+                <button class="ns-btn ns-btn-ghost" id="btn-show-admin-login">Arrangørtilgang</button>
+            </div>
+        </div>
+
+        <!-- SCREEN: Velg modus -->
+        <div id="screen-mode" class="ns-screen">
+            <div class="ns-event-banner" id="mode-event-name"></div>
+            <div class="ns-intro-text">Hei, <strong id="mode-player-name"></strong>! Hvordan vil du delta?</div>
+            <div class="ns-mode-cards">
+                <div class="ns-mode-card" id="mode-card-individual" onclick="selectMode('individual')">
+                    <div class="ns-mode-icon">👤</div>
+                    <div class="ns-mode-title">Individuelt</div>
+                    <div class="ns-mode-desc">Konkurrer på egenhånd</div>
+                </div>
+                <div class="ns-mode-card" id="mode-card-team" onclick="selectMode('team')">
+                    <div class="ns-mode-icon">👥</div>
+                    <div class="ns-mode-title">Lag</div>
+                    <div class="ns-mode-desc">Samarbeid med andre</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN: Lag -->
+        <div id="screen-team" class="ns-screen">
+            <div class="ns-back-link" onclick="showScreen('mode')">← Tilbake</div>
+            <div class="ns-section-title">Velg lag</div>
+            <div id="team-list" class="ns-team-list"></div>
+            <div class="ns-divider-text">eller opprett nytt</div>
+            <div class="ns-card">
+                <div class="ns-field">
+                    <label class="ns-label">Nytt lag</label>
+                    <input type="text" id="new-team-name" class="ns-input" placeholder="Lagnavn..." maxlength="30" autocomplete="off">
+                </div>
+                <button class="ns-btn ns-btn-primary" id="btn-create-team">Opprett lag</button>
+            </div>
+        </div>
+
+        <!-- SCREEN: Utfordringer -->
+        <div id="screen-challenges" class="ns-screen">
+            <div class="ns-challenges-header">
+                <div class="ns-challenges-info">
+                    <div class="ns-player-badge" id="challenges-player-badge"></div>
+                    <div class="ns-event-label" id="challenges-event-name"></div>
+                </div>
+                <div class="ns-score-circle">
+                    <div class="ns-score-number" id="score-number">0</div>
+                    <div class="ns-score-label">poeng</div>
+                </div>
+            </div>
+            <div class="ns-progress-bar">
+                <div class="ns-progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="ns-progress-text" id="progress-text"></div>
+            <div id="challenge-list" class="ns-challenge-list"></div>
+            <div class="ns-bottom-bar">
+                <button class="ns-btn ns-btn-outline" id="btn-show-leaderboard">Ledertavle</button>
+            </div>
+        </div>
+
+        <!-- SCREEN: Ledertavle -->
+        <div id="screen-leaderboard" class="ns-screen">
+            <div class="ns-back-link" id="btn-back-leaderboard">← Tilbake</div>
+            <div class="ns-section-title">Ledertavle</div>
+            <div id="leaderboard-tabs" class="ns-tabs" style="display:none">
+                <button class="ns-tab active" id="tab-individual" onclick="switchTab('individual')">Individuelt</button>
+                <button class="ns-tab" id="tab-team" onclick="switchTab('team')">Lag</button>
+            </div>
+            <div id="leaderboard-individual" class="ns-leaderboard-list"></div>
+            <div id="leaderboard-team" class="ns-leaderboard-list" style="display:none"></div>
+        </div>
+
+        <!-- SCREEN: Admin-innlogging -->
+        <div id="screen-admin-login" class="ns-screen">
+            <div class="ns-back-link" onclick="showScreen('landing')">← Tilbake</div>
+            <div class="ns-section-title">Arrangørtilgang</div>
+            <div class="ns-card">
+                <div class="ns-field">
+                    <label class="ns-label">Arrangementskode</label>
+                    <input type="text" id="admin-event-code" class="ns-input" placeholder="Kode..." maxlength="10" style="text-transform:uppercase" autocomplete="off">
+                </div>
+                <div class="ns-field">
+                    <label class="ns-label">Adminpassord</label>
+                    <input type="password" id="admin-password" class="ns-input" placeholder="Passord..." autocomplete="off">
+                </div>
+                <button class="ns-btn ns-btn-primary" id="btn-admin-login">Logg inn</button>
+                <div class="ns-error" id="admin-login-error"></div>
+            </div>
+            <div class="ns-divider-text" style="margin:20px 0">eller</div>
+            <button class="ns-btn ns-btn-secondary" id="btn-go-create-event">Opprett nytt arrangement</button>
+        </div>
+
+        <!-- SCREEN: Opprett arrangement -->
+        <div id="screen-create-event" class="ns-screen">
+            <div class="ns-back-link" onclick="showScreen('admin-login')">← Tilbake</div>
+            <div class="ns-section-title">Nytt arrangement</div>
+            <div class="ns-card">
+                <div class="ns-field">
+                    <label class="ns-label">Navn på arrangementet</label>
+                    <input type="text" id="create-event-name" class="ns-input" placeholder="F.eks. CMYK Konferanse 2026" maxlength="60" autocomplete="off">
+                </div>
+                <div class="ns-field">
+                    <label class="ns-label">Arrangementskode</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="create-event-code" class="ns-input" placeholder="F.eks. CMYK26" maxlength="10" style="text-transform:uppercase; flex:1" autocomplete="off">
+                        <button class="ns-btn ns-btn-outline" id="btn-generate-code" style="width:auto; white-space:nowrap; padding:14px 16px;">Generer</button>
+                    </div>
+                </div>
+                <div class="ns-field">
+                    <label class="ns-label">Adminpassord</label>
+                    <input type="password" id="create-admin-password" class="ns-input" placeholder="Velg et passord..." autocomplete="new-password">
+                </div>
+                <div class="ns-field">
+                    <label class="ns-label">Deltakermodus</label>
+                    <select id="create-event-mode" class="ns-select">
+                        <option value="both">Individuelt og lag</option>
+                        <option value="individual">Kun individuelt</option>
+                        <option value="team">Kun lag</option>
+                    </select>
+                </div>
+                <button class="ns-btn ns-btn-primary" id="btn-confirm-create">Opprett arrangement</button>
+                <div class="ns-error" id="create-event-error"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN: Admin-dashboard -->
+        <div id="screen-admin" class="ns-screen">
+            <div class="ns-admin-header">
+                <div class="ns-admin-event-name" id="admin-event-display-name"></div>
+                <div class="ns-admin-code-badge" id="admin-event-code-badge"></div>
+                <button class="ns-btn ns-btn-ghost" onclick="adminLogout()" style="color:rgba(255,255,255,0.7); margin-top:4px;">Logg ut</button>
+            </div>
+
+            <div class="ns-admin-section">
+                <div class="ns-admin-section-title">Utfordringer</div>
+                <div id="admin-challenge-list"></div>
+                <div class="ns-card" style="margin-top:12px;">
+                    <div class="ns-field">
+                        <label class="ns-label">Ny utfordring</label>
+                        <input type="text" id="new-challenge-text" class="ns-input" placeholder="Finn noen som..." maxlength="120" autocomplete="off">
+                    </div>
+                    <div style="display:flex; gap:10px; margin-bottom:16px;">
+                        <div style="flex:1">
+                            <label class="ns-label">Poeng</label>
+                            <input type="number" id="new-challenge-points" class="ns-input" value="1" min="1" max="10">
+                        </div>
+                        <div style="flex:2">
+                            <label class="ns-label">Kategori</label>
+                            <select id="new-challenge-category" class="ns-select">
+                                <option value="finn">Finn noen</option>
+                                <option value="snakk">Snakk med</option>
+                                <option value="del">Del noe</option>
+                                <option value="spesiell">Spesiell</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="ns-btn ns-btn-primary" id="btn-add-challenge">Legg til</button>
+                </div>
+                <button class="ns-btn ns-btn-secondary" id="btn-add-defaults" style="margin-top:10px;">Legg til standardutfordringer (15 stk)</button>
+            </div>
+
+            <div class="ns-admin-section">
+                <div class="ns-admin-section-title">Deltakere</div>
+                <div id="admin-participant-list"></div>
+                <button class="ns-btn ns-btn-secondary" id="btn-refresh-participants" style="margin-top:10px;">Oppdater liste</button>
+            </div>
+
+            <div class="ns-admin-section">
+                <button class="ns-btn ns-btn-danger" id="btn-delete-event">Slett arrangement</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
