@@ -37,6 +37,7 @@ const DEFAULT_CHALLENGES = [
 //  STATE
 // ============================================================
 let db = null;
+let storage = null;
 
 const state = {
     eventCode: null,
@@ -69,8 +70,10 @@ async function initFirebase() {
     if (db) return;
     await loadScript("https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js");
     await loadScript("https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js");
+    await loadScript("https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js");
     firebase.initializeApp(FB_CONFIG);
     db = firebase.database();
+    storage = firebase.storage();
 }
 
 function loadScript(src) {
@@ -299,7 +302,9 @@ function renderChallenges() {
     });
 
     sorted.forEach(([cId, c]) => {
-        const isDone = !!completed[cId];
+        const completedVal = completed[cId];
+        const isDone = !!completedVal;
+        const photoUrl = typeof completedVal === 'string' ? completedVal : null;
         const pts = c.points || 1;
         totalPoints += pts;
         totalCount++;
@@ -318,8 +323,16 @@ function renderChallenges() {
                     <span class="ns-challenge-points">+${pts}p</span>
                 </div>
             </div>
+            ${photoUrl ? `<img class="ns-selfie-thumb" src="${escHtml(photoUrl)}" alt="Selfie" onclick="openLightbox(event, '${escHtml(photoUrl)}')">` : ''}
         `;
-        el.addEventListener('click', () => toggleChallenge(cId, pts, isDone));
+        el.addEventListener('click', (e) => {
+            if (e.target.classList.contains('ns-selfie-thumb')) return;
+            if (isDone) {
+                unCompleteChallenge(cId, pts, photoUrl);
+            } else {
+                openSelfieModal(cId, pts, c.text);
+            }
+        });
         listEl.appendChild(el);
     });
 
@@ -329,24 +342,105 @@ function renderChallenges() {
     document.getElementById('score-number').textContent = earnedPoints;
 }
 
-async function toggleChallenge(cId, points, currentlyDone) {
-    const base = `events/${state.eventCode}/participants/${state.participantId}`;
+// ============================================================
+//  SELFIE-MODAL
+// ============================================================
+let _selfie = { cId: null, pts: 0, file: null };
 
-    if (currentlyDone) {
-        await db.ref(`${base}/completedChallenges/${cId}`).remove();
-        delete state.participantData.completedChallenges[cId];
-        state.participantData.score = Math.max(0, (state.participantData.score || 0) - points);
-    } else {
-        await db.ref(`${base}/completedChallenges/${cId}`).set(true);
-        state.participantData.completedChallenges[cId] = true;
-        state.participantData.score = (state.participantData.score || 0) + points;
-        showToast(`+${points} poeng`);
+function openSelfieModal(cId, pts, text) {
+    _selfie = { cId, pts, file: null };
+    document.getElementById('modal-challenge-text').textContent = text;
+    document.getElementById('modal-preview').style.display = 'none';
+    document.getElementById('modal-placeholder').style.display = '';
+    document.getElementById('btn-confirm-selfie').style.display = 'none';
+    document.getElementById('modal-upload-status').textContent = '';
+    document.getElementById('selfie-input').value = '';
+    document.getElementById('selfie-modal').style.display = 'flex';
+}
+
+function closeSelfieModal() {
+    document.getElementById('selfie-modal').style.display = 'none';
+    _selfie = { cId: null, pts: 0, file: null };
+}
+
+function triggerCamera() {
+    document.getElementById('selfie-input').click();
+}
+
+function onPhotoSelected(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    _selfie.file = file;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        const preview = document.getElementById('modal-preview');
+        preview.src = ev.target.result;
+        preview.style.display = 'block';
+        document.getElementById('modal-placeholder').style.display = 'none';
+        document.getElementById('btn-confirm-selfie').style.display = '';
+    };
+    reader.readAsDataURL(file);
+}
+
+async function confirmSelfie() {
+    if (!_selfie.file || !_selfie.cId) return;
+
+    const statusEl = document.getElementById('modal-upload-status');
+    const confirmBtn = document.getElementById('btn-confirm-selfie');
+    confirmBtn.disabled = true;
+    statusEl.textContent = 'Laster opp...';
+
+    try {
+        const path = `events/${state.eventCode}/${state.participantId}/${_selfie.cId}`;
+        const ref = storage.ref(path);
+        await ref.put(_selfie.file, { contentType: _selfie.file.type });
+        const photoUrl = await ref.getDownloadURL();
+
+        await completeChallenge(_selfie.cId, _selfie.pts, photoUrl);
+        closeSelfieModal();
+        showToast(`+${_selfie.pts} poeng`);
+    } catch (err) {
+        console.error(err);
+        statusEl.textContent = 'Opplasting feilet — prøv igjen.';
+        confirmBtn.disabled = false;
     }
+}
 
+async function completeChallenge(cId, points, photoUrl) {
+    const base = `events/${state.eventCode}/participants/${state.participantId}`;
+    const value = photoUrl || true;
+    await db.ref(`${base}/completedChallenges/${cId}`).set(value);
+    state.participantData.completedChallenges[cId] = value;
+    state.participantData.score = (state.participantData.score || 0) + points;
     await db.ref(`${base}/score`).set(state.participantData.score);
     renderChallenges();
-
     if (state.teamId) updateTeamScore();
+}
+
+async function unCompleteChallenge(cId, points, photoUrl) {
+    const base = `events/${state.eventCode}/participants/${state.participantId}`;
+    await db.ref(`${base}/completedChallenges/${cId}`).remove();
+    delete state.participantData.completedChallenges[cId];
+    state.participantData.score = Math.max(0, (state.participantData.score || 0) - points);
+    await db.ref(`${base}/score`).set(state.participantData.score);
+    if (photoUrl) {
+        try { await storage.ref(`events/${state.eventCode}/${state.participantId}/${cId}`).delete(); } catch {}
+    }
+    renderChallenges();
+    if (state.teamId) updateTeamScore();
+}
+
+// ============================================================
+//  LIGHTBOX
+// ============================================================
+function openLightbox(e, url) {
+    e.stopPropagation();
+    const lb = document.createElement('div');
+    lb.className = 'ns-lightbox';
+    lb.innerHTML = `<img src="${escHtml(url)}" alt="Selfie">`;
+    lb.addEventListener('click', () => lb.remove());
+    document.body.appendChild(lb);
 }
 
 async function updateTeamScore() {
@@ -678,4 +772,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-delete-event').addEventListener('click', deleteEvent);
     document.getElementById('btn-show-leaderboard').addEventListener('click', showLeaderboard);
     document.getElementById('btn-refresh-participants').addEventListener('click', loadAdminParticipants);
+
+    // Selfie-modal
+    document.getElementById('btn-take-selfie').addEventListener('click', triggerCamera);
+    document.getElementById('btn-confirm-selfie').addEventListener('click', confirmSelfie);
+    document.getElementById('btn-cancel-selfie').addEventListener('click', closeSelfieModal);
+    document.getElementById('selfie-input').addEventListener('change', onPhotoSelected);
 });

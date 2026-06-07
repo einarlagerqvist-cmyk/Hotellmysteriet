@@ -205,6 +205,27 @@
     </div>
 </div>
 
+<!-- SELFIE-MODAL -->
+<div id="selfie-modal" class="ns-modal-overlay" style="display:none">
+    <div class="ns-modal-card">
+        <div class="ns-modal-challenge-text" id="modal-challenge-text"></div>
+        <div class="ns-modal-photo-area" id="modal-photo-area">
+            <div class="ns-modal-photo-placeholder" id="modal-placeholder">
+                <div class="ns-camera-icon">📸</div>
+                <div class="ns-camera-hint">Ta en selfie sammen med personen du møtte!</div>
+            </div>
+            <img id="modal-preview" class="ns-modal-preview" style="display:none" alt="Selfie-forhåndsvisning">
+        </div>
+        <input type="file" id="selfie-input" accept="image/*" capture="user" style="display:none">
+        <button class="ns-btn ns-btn-primary" id="btn-take-selfie">📷 Ta selfie</button>
+        <div id="modal-upload-status" class="ns-upload-status"></div>
+        <div style="display:flex; gap:10px; margin-top:8px;">
+            <button class="ns-btn ns-btn-secondary" id="btn-confirm-selfie" style="display:none">Fullfør utfordring</button>
+            <button class="ns-btn ns-btn-ghost" id="btn-cancel-selfie" style="color:var(--text-muted)">Avbryt</button>
+        </div>
+    </div>
+</div>
+
 <script src="app.js"></script>
 </body>
 </html>

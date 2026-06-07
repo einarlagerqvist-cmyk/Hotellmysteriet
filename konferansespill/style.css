@@ -311,6 +311,68 @@ body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--tex
 .ns-error { color: var(--danger); font-size: 0.85rem; margin-top: 12px; min-height: 20px; text-align: center; }
 .ns-empty { text-align: center; color: var(--text-muted); padding: 32px 20px; font-size: 0.9rem; }
 
+/* SELFIE MODAL */
+.ns-modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(10, 20, 40, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: flex-end; justify-content: center;
+    animation: nsFadeIn 0.2s ease-out;
+}
+
+.ns-modal-card {
+    background: var(--white); border-radius: 24px 24px 0 0;
+    padding: 28px 24px 40px;
+    width: 100%; max-width: 480px;
+    animation: nsSlideUp 0.3s ease-out;
+}
+
+@keyframes nsSlideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.ns-modal-challenge-text {
+    font-size: 1rem; font-weight: 600; color: var(--navy);
+    line-height: 1.5; margin-bottom: 20px; text-align: center;
+}
+
+.ns-modal-photo-area {
+    border-radius: 16px; overflow: hidden; margin-bottom: 20px;
+    background: var(--bg); border: 2px dashed var(--border);
+    min-height: 180px; display: flex; align-items: center; justify-content: center;
+}
+
+.ns-modal-photo-placeholder { text-align: center; padding: 32px 20px; }
+.ns-camera-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.ns-camera-hint { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+
+.ns-modal-preview { width: 100%; max-height: 280px; object-fit: cover; display: block; }
+
+.ns-upload-status {
+    font-size: 0.85rem; color: var(--text-muted); text-align: center;
+    min-height: 20px; margin-bottom: 4px;
+}
+
+/* SELFIE THUMBNAIL i utfordringsliste */
+.ns-selfie-thumb {
+    width: 48px; height: 48px; border-radius: 10px;
+    object-fit: cover; flex-shrink: 0;
+    border: 2px solid rgba(46, 125, 50, 0.3);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+.ns-selfie-thumb:hover { transform: scale(1.05); }
+
+/* LIGHTBOX for å vise fullbilde */
+.ns-lightbox {
+    position: fixed; inset: 0; z-index: 600;
+    background: rgba(0,0,0,0.92);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+}
+.ns-lightbox img { max-width: 96vw; max-height: 90vh; border-radius: 12px; object-fit: contain; }
+
 /* TOAST */
 .ns-toast {
     position: fixed; bottom: 84px; left: 50%;
