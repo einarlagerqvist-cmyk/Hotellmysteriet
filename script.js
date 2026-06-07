@@ -1,3 +1,5 @@
+import { formatTime, normalizeAnswer, escapeHtml, isCorrectAnswer, calculateTotalTime, createT, localStore } from './lib.js';
+
 // ============================================================
 //  LANGUAGE SYSTEM
 // ============================================================
@@ -142,11 +144,7 @@ const UI_TEXT = {
     }
 };
 
-function T(key, ...args) {
-    const dict = UI_TEXT[LANG] || UI_TEXT.no;
-    const val = dict[key] !== undefined ? dict[key] : (UI_TEXT.no[key] || key);
-    return typeof val === 'function' ? val(...args) : val;
-}
+const T = createT(LANG, UI_TEXT);
 
 function getMystery(m) {
     if (LANG === 'en' && m.en) return { ...m, ...m.en };
@@ -378,42 +376,7 @@ let state = {
 //  STORAGE (Tider og Tilbakemeldinger)
 // ============================================================
 const Storage = {
-    _local: {
-        getEntries(mysteryId) {
-            const all = JSON.parse(localStorage.getItem("hotellmysteriet_times") || "{}");
-            if (mysteryId) return (all[mysteryId] || []);
-            let entries = [];
-            for (const [mid, arr] of Object.entries(all)) entries = entries.concat(arr.map(e => ({ ...e, mysteryId: mid })));
-            return entries;
-        },
-        saveEntry(mysteryId, entry) {
-            const all = JSON.parse(localStorage.getItem("hotellmysteriet_times") || "{}");
-            if (!all[mysteryId]) all[mysteryId] = [];
-            all[mysteryId].push(entry);
-            localStorage.setItem("hotellmysteriet_times", JSON.stringify(all));
-        },
-        deleteEntry(mysteryId, index) {
-            const all = JSON.parse(localStorage.getItem("hotellmysteriet_times") || "{}");
-            if (all[mysteryId]) { all[mysteryId].splice(index, 1); localStorage.setItem("hotellmysteriet_times", JSON.stringify(all)); }
-        },
-        clearAll() {
-            localStorage.removeItem("hotellmysteriet_times");
-            localStorage.removeItem("hotellmysteriet_feedback");
-        },
-        getFeedback(mysteryId) {
-            const all = JSON.parse(localStorage.getItem("hotellmysteriet_feedback") || "{}");
-            if (mysteryId) return (all[mysteryId] || []);
-            let entries = [];
-            for (const [mid, arr] of Object.entries(all)) entries = entries.concat(arr.map(e => ({ ...e, mysteryId: mid })));
-            return entries;
-        },
-        saveFeedback(mysteryId, feedback) {
-            const all = JSON.parse(localStorage.getItem("hotellmysteriet_feedback") || "{}");
-            if (!all[mysteryId]) all[mysteryId] = [];
-            all[mysteryId].push(feedback);
-            localStorage.setItem("hotellmysteriet_feedback", JSON.stringify(all));
-        }
-    },
+    _local: localStore,
     _firebase: null,
     async init() {
         if (CONFIG.useFirebase && CONFIG.firebaseConfig.apiKey) {
@@ -499,10 +462,6 @@ const SessionStore = {
 // ============================================================
 //  HELPERS
 // ============================================================
-function formatTime(ms) {
-    const t = Math.floor(ms / 1000);
-    return `${String(Math.floor(t / 3600)).padStart(2, "0")}:${String(Math.floor((t % 3600) / 60)).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`;
-}
 function showScreen(id) {
     document.querySelectorAll(".hm-screen").forEach(s => s.classList.remove("active"));
     document.getElementById(`screen-${id}`).classList.add("active");
@@ -512,9 +471,6 @@ function getMysteryName(id) {
     if (!m) return id;
     return getMystery(m).name || m.name;
 }
-function escapeHtml(str) { const d = document.createElement("div"); d.textContent = str; return d.innerHTML; }
-function normalizeAnswer(str) { return str.trim().toUpperCase().replace(/\s+/g, ""); }
-
 function applyLanguage() {
     document.documentElement.lang = LANG;
     document.title = T('appTitle');
@@ -862,9 +818,7 @@ function giveUp(task) {
 function checkAnswer() {
     const input = document.getElementById("task-answer");
     const task = state.mystery.tasks[state.currentTask];
-    const answer = normalizeAnswer(input.value);
-    const answers = Array.isArray(task.answer) ? task.answer : [task.answer];
-    if (answers.some(a => answer === normalizeAnswer(a))) {
+    if (isCorrectAnswer(input.value, task.answer)) {
         input.classList.add("correct"); document.getElementById("task-error").textContent = "";
         state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
         const isLast = state.currentTask === state.mystery.tasks.length - 1;
@@ -892,10 +846,7 @@ function showSuccess() {
 async function finishGame() {
     clearInterval(state.timerInterval); SessionStore.clear();
     state.elapsed = Date.now() - state.startTime;
-    const hintPenalty = state.hintsUsed * CONFIG.penaltyPerHint;
-    const giveUpPenalty = state.gaveUpCount * CONFIG.penaltyPerGiveUp;
-    const penalty = hintPenalty + giveUpPenalty;
-    const totalTime = state.elapsed + penalty;
+    const { penalty, totalTime } = calculateTotalTime(state.elapsed, state.hintsUsed, state.gaveUpCount, CONFIG.penaltyPerHint, CONFIG.penaltyPerGiveUp);
     const entry = {
         team: state.teamName, time: state.elapsed, hints: state.hintsUsed, gaveUp: state.gaveUpCount,
         penalty: penalty, totalTime: totalTime, date: new Date().toISOString().split("T")[0],
