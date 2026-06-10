@@ -325,21 +325,35 @@ const CONFIG = {
             tasks: [
                 {
                     question: "Det er noen i avhørene som ikke forteller sannheten. Hvem lyver?",
-                    answer: ["Nygård", "Sissel Nygård", "Nygård og Moen", "Moen", "Harald Moen", "nygård og moen", "moen og nygård"],
+                    answer: ["Nygård", "Sissel Nygård", "Moen", "Harald Moen",
+                             "Nygård og Moen", "Moen og Nygård",
+                             "Sissel Nygård og Harald Moen", "Harald Moen og Sissel Nygård",
+                             "Nygård, Moen", "Moen, Nygård", "Sissel og Harald", "Harald og Sissel",
+                             "begge", "begge to", "begge lyver"],
                     hint: "Les nyhetsbrevet fra fengselsadministrasjonen nøye. Sammenlign med alibi-forklaringene.",
                     followUp: {
                         question: "Hva løy de om?",
-                        answer: ["vaskeriet", "at de var på vaskeriet", "vaskeriet var stengt", "vaskeriet stengt"],
+                        answer: ["vaskeriet", "vaskeri",
+                                 "at de var på vaskeriet", "vaskeriet var stengt", "vaskeriet stengt",
+                                 "vaskeri stengt", "stengt vaskeriet",
+                                 "vaskeriet var stengt mandag", "vaskeriet stengt mandag",
+                                 "vaskeriet var stengt den mandagen"],
                         hint: "Nyhetsbrevet for uke 46 inneholder viktig informasjon om vaskeriet."
                     }
                 },
                 {
                     question: "Var Terje Bakkens død et selvmord?",
-                    answer: ["nei", "no"],
+                    answer: ["nei", "no", "nei det var ikke selvmord", "nei, det var ikke selvmord",
+                             "ikke selvmord", "det var ikke selvmord", "drap", "nei det var drap"],
                     hint: "Se på inventarlisten i åstedsrapporten og tenk på festepunktets høyde.",
                     followUp: {
                         question: "Hva i cellen avslørte at det ikke kunne være selvmord?",
-                        answer: ["stol", "krakk", "stige", "ingen stol", "mangler stol", "ingenting å stå på", "intet å stå på", "ikke stol", "ikke krakk"],
+                        answer: ["stol", "krakk", "stige",
+                                 "ingen stol", "mangler stol", "ingen krakk",
+                                 "ingenting å stå på", "intet å stå på", "ikke noe å stå på", "ingenting å stå",
+                                 "ikke stol", "ikke krakk",
+                                 "for høyt", "nådde ikke opp",
+                                 "ingen ting å stå på", "ingenting å stå med", "ingenting å stå opp på"],
                         hint: "Festepunktet er 272 cm over gulvet. Hva ville Bakken trenge for å nå dit opp?"
                     }
                 },
@@ -358,16 +372,29 @@ const CONFIG = {
                 },
                 {
                     question: "Finn lappen som er gjemt i cellen. Hva er den fullstendige setningen på den?",
-                    answer: ["Dette er for datteren min", "dette er for datteren min"],
+                    answer: ["Dette er for datteren min",
+                             "dette er til datteren min",
+                             "det er for datteren min",
+                             "dette er for dattera mi",
+                             "dette er for dattera min",
+                             "dette er for min datter",
+                             "for datteren min"],
                     hint: "Se deg godt rundt i cellen."
                 },
                 {
                     question: "Hvem drepte Terje Bakken?",
-                    answer: ["Knut Arnesen", "Arnesen", "knut arnesen"],
+                    answer: ["Knut Arnesen", "Arnesen", "Knut",
+                             "lege Arnesen", "lege Knut Arnesen",
+                             "dr Arnesen", "dr. Arnesen", "doktor Arnesen"],
                     hint: "Hvem er Linns far? Hvem hadde tilgang, motiv og var på stedet?",
                     followUp: {
                         question: "Hva var motivet?",
-                        answer: ["Linn", "datteren", "hevn", "Linn Arnesen", "dattera", "for datteren", "for linn", "linns død", "linn arnesen"],
+                        answer: ["Linn", "datteren", "hevn", "Linn Arnesen", "dattera",
+                                 "for datteren", "for linn", "linns død", "linn arnesen",
+                                 "hevn for linn", "hevn for datteren", "hevn for dattera",
+                                 "datteren linn", "dattera linn",
+                                 "hevne linn", "hevne datteren",
+                                 "for dattera", "linn sin død", "linns skjebne"],
                         hint: "Se på brevet signert L.A. og avisartikkelen fra Fredrikstad Blad."
                     }
                 }
