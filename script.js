@@ -347,8 +347,8 @@ const CONFIG = {
                     type: "serial-murder",
                     question: "Nå som dere vet at Bakken ble drept, har vi grunn til å tro at gjerningsmannen har slått til før.\n\nLes gjennom alle fem saksmappene. Tre er faktisk drap — ikke selvmord. Velg de saksmappene som er drap, og beskriv kort hva som avslørte det.",
                     cases: [
-                        { id: "akershus", label: "Akershus — Mikkelsen (1981)", isMurder: true },
-                        { id: "hordaland", label: "Hordaland — Solberg (1983)", isMurder: true },
+                        { id: "akershus", label: "Akershus — Mikkelsen (1981)", isMurder: true, clue: ["blod", "hender", "hendene"] },
+                        { id: "hordaland", label: "Hordaland — Solberg (1983)", isMurder: true, clue: ["hånd", "hånden", "venstre", "høyre"] },
                         { id: "hedmark",  label: "Hedmark — Antonsen (1985)",  isMurder: true },
                         { id: "ostfold",  label: "Østfold — Stensrud (1979)",  isMurder: false },
                         { id: "rogaland", label: "Rogaland — Lie (1984)",      isMurder: false }
@@ -1034,6 +1034,11 @@ function renderSerialMurderUI(task) {
         }
         if (missedMurders.length > 0) {
             errorEl.textContent = `${missedMurders.length} drap gjenstår — les saksmappene på nytt.`; return;
+        }
+        const wrongClue = task.cases.find(c => c.isMurder && c.clue && selected[c.id] &&
+            !c.clue.some(kw => inputs[c.id].value.toLowerCase().includes(kw.toLowerCase())));
+        if (wrongClue) {
+            errorEl.textContent = 'Forklaringen stemmer ikke for én eller flere saker — les nøyere.'; return;
         }
 
         errorEl.textContent = '';
