@@ -154,6 +154,19 @@
 #hm-app .hm-audio-icon { font-size: 1rem; line-height: 1; display: inline-block; }
 #hm-app .hm-btn-audio.playing .hm-audio-icon { animation: hmAudioPulse 1.8s ease-in-out infinite; }
 
+/* SERIAL MURDER TASK */
+#hm-app .hm-serial-btn {
+    width: 100%; padding: 12px 16px; background: rgba(107, 76, 46, 0.07);
+    border: 1px solid rgba(107, 76, 46, 0.22); border-radius: 8px; cursor: pointer;
+    font-family: 'Special Elite', cursive; font-size: 0.9rem; color: #4a3118;
+    letter-spacing: 0.5px; text-align: left; transition: all 0.2s;
+}
+#hm-app .hm-serial-btn:hover { background: rgba(107, 76, 46, 0.13); border-color: rgba(107, 76, 46, 0.4); }
+#hm-app .hm-serial-btn-active { background: rgba(107, 76, 46, 0.18) !important; border-color: #6b4c2e !important; color: #1a0f06; }
+#hm-app .hm-serial-btn-correct { background: rgba(46, 125, 50, 0.12) !important; border-color: #2e7d32 !important; color: #1a3d1c !important; }
+#hm-app .hm-serial-btn-wrong { background: rgba(122, 28, 28, 0.12) !important; border-color: #7a1c1c !important; color: #4a0c0c !important; }
+#hm-app .hm-serial-btn-missed { border-color: rgba(201, 168, 76, 0.6) !important; background: rgba(201, 168, 76, 0.08) !important; }
+
 /* ANIMATIONS */
 @keyframes hmFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes hmShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }

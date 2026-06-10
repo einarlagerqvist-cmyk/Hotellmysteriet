@@ -321,32 +321,58 @@ const CONFIG = {
         {
             id: "are",
             name: "Mysteriet på Fengselshotellet",
-            intro: "Natt til 15. november 1986 ble Terje Bakken funnet død i cellen sin på Are fengsel. Politiet konkluderte raskt med selvmord.\n\nMen ikke alle er overbeviste.\n\nDere har fått tilgang til politiets avhørsdokumenter og et lydopptak fra etterforskningen. Les nøye. Lytt godt. Noen lyver.",
+            intro: "Natt til 15. november 1986 ble Terje Bakken funnet død i cellen sin på Are fengsel. Politiet konkluderte raskt med selvmord.\n\nMen ikke alle er overbeviste.\n\nDere har fått tilgang til politiets avhørsdokumenter. Les nøye. Noen lyver.",
             tasks: [
                 {
-                    question: "TODO: Oppgave 1",
-                    answer: ["TODO"],
-                    hint: "TODO"
-                },
-                {
-                    question: "Åpne konvolutten merket «LYDOPPTAK — ARE-1986-0114-A».\n\nLegen som besøkte fengselet mandag kveld hevder at Bakken ikke viste tegn til at han vurderte å ta livet sitt.\n\nHva sa Arnesen at Bakken spurte ham om under konsultasjonen?",
-                    answer: ["taushetsplikt", "taushet", "legen hadde taushetsplikt"],
-                    hint: "Lytt nøye til hva som skjer rett etter at legen beskriver Bakken som 'spent'.",
-                    audio: {
-                        src: "audio/are/arnesen-telefon-v3.mp3",
-                        ambient: "audio/are/kassett-ambience.mp3",
-                        label: "▶ Spill av kassettopptak",
-                        playingLabel: "Spiller...",
-                        divider: "Lydbevis"
+                    question: "Det er noen i avhørene som ikke forteller sannheten. Hvem lyver?",
+                    answer: ["Nygård", "Sissel Nygård", "Nygård og Moen", "Moen", "Harald Moen", "nygård og moen", "moen og nygård"],
+                    hint: "Les nyhetsbrevet fra fengselsadministrasjonen nøye. Sammenlign med alibi-forklaringene.",
+                    followUp: {
+                        question: "Hva løy de om?",
+                        answer: ["vaskeriet", "at de var på vaskeriet", "vaskeriet var stengt", "vaskeriet stengt"],
+                        hint: "Nyhetsbrevet for uke 46 inneholder viktig informasjon om vaskeriet."
                     }
                 },
                 {
-                    question: "TODO: Hvem drepte Terje Bakken?",
-                    answer: ["TODO"],
-                    hint: "TODO"
+                    question: "Var Terje Bakkens død et selvmord?",
+                    answer: ["nei", "no"],
+                    hint: "Se på inventarlisten i åstedsrapporten og tenk på festepunktets høyde.",
+                    followUp: {
+                        question: "Hva i cellen avslørte at det ikke kunne være selvmord?",
+                        answer: ["stol", "krakk", "stige", "ingen stol", "mangler stol", "ingenting å stå på", "intet å stå på", "ikke stol", "ikke krakk"],
+                        hint: "Festepunktet er 272 cm over gulvet. Hva ville Bakken trenge for å nå dit opp?"
+                    }
+                },
+                {
+                    type: "serial-murder",
+                    question: "Nå som dere vet at Bakken ble drept, har vi grunn til å tro at gjerningsmannen har slått til før.\n\nLes gjennom alle fem saksmappene. Tre er faktisk drap — ikke selvmord. Velg de saksmappene som er drap, og beskriv kort hva som avslørte det.",
+                    cases: [
+                        { id: "akershus", label: "Akershus — Mikkelsen (1981)", isMurder: true },
+                        { id: "hordaland", label: "Hordaland — Solberg (1983)", isMurder: true },
+                        { id: "hedmark",  label: "Hedmark — Antonsen (1985)",  isMurder: true },
+                        { id: "ostfold",  label: "Østfold — Stensrud (1979)",  isMurder: false },
+                        { id: "rogaland", label: "Rogaland — Lie (1984)",      isMurder: false }
+                    ],
+                    answer: ["Mikkelsen, Solberg og Antonsen"],
+                    hint: "To av saksmappene inneholder forensiske funn som gjør selvmord fysisk umulig. Den tredje har et annet uvanlig funn."
+                },
+                {
+                    question: "Finn lappen som er gjemt i cellen. Hva er den fullstendige setningen på den?",
+                    answer: ["Dette er for datteren min", "dette er for datteren min"],
+                    hint: "Se deg godt rundt i cellen."
+                },
+                {
+                    question: "Hvem drepte Terje Bakken?",
+                    answer: ["Knut Arnesen", "Arnesen", "knut arnesen"],
+                    hint: "Hvem er Linns far? Hvem hadde tilgang, motiv og var på stedet?",
+                    followUp: {
+                        question: "Hva var motivet?",
+                        answer: ["Linn", "datteren", "hevn", "Linn Arnesen", "dattera", "for datteren", "for linn", "linns død", "linn arnesen"],
+                        hint: "Se på brevet signert L.A. og avisartikkelen fra Fredrikstad Blad."
+                    }
                 }
             ],
-            finalMessage: "TODO: Avslutningstekst når gjerningsmannen er avslørt."
+            finalMessage: "Dere har løst det.\n\nTerje Bakken ble drept av lege Knut Arnesen. Arnesen hadde reist fra fengsel til fengsel i årevis — og tatt loven i egne hender. Motivet var hevn for datteren Linn, misbrukt av Bakken og andre innsatte da hun var tenåring. Anmeldelsen ble henlagt. Linn tok livet sitt 12. april 1981.\n\nArnesen sørget for at de aldri kom ut. Tre mord. Tre fengsler. Ett navn.\n\nSakene ble aldri løst av politiet. Men dere så det ingen andre orket å se."
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
@@ -371,7 +397,8 @@ let state = {
     isAdmin: false, preselected: false,
     currentRating: 0,
     taskStats: [],
-    taskStartTime: null
+    taskStartTime: null,
+    followUpMode: false
 };
 
 // ============================================================
@@ -723,6 +750,9 @@ function showTask(isResume = false) {
     const task = state.mystery.tasks[state.currentTask];
     const total = state.mystery.tasks.length;
     state.hintShownForTask = false;
+    state.followUpMode = false;
+    const existingSerial = document.getElementById('serial-murder-container');
+    if (existingSerial) existingSerial.remove();
     if (!isResume) { state.taskStartTime = Date.now(); SessionStore.save(); }
 
     const progressEl = document.getElementById("task-progress"); progressEl.innerHTML = "";
@@ -816,10 +846,19 @@ function showTask(isResume = false) {
         document.getElementById("btn-giveup").addEventListener("click", () => giveUp(task));
     });
 
-    document.getElementById("task-answer").value = "";
-    document.getElementById("task-answer").className = "hm-answer-input";
-    document.getElementById("task-error").textContent = "";
-    showScreen("task"); document.getElementById("task-answer").focus();
+    const answerRow = document.querySelector('#screen-task .hm-answer-row');
+    if (task.type === 'serial-murder') {
+        answerRow.style.display = 'none';
+        document.getElementById("task-error").textContent = "";
+        renderSerialMurderUI(task);
+        showScreen("task");
+    } else {
+        answerRow.style.display = 'flex';
+        document.getElementById("task-answer").value = "";
+        document.getElementById("task-answer").className = "hm-answer-input";
+        document.getElementById("task-error").textContent = "";
+        showScreen("task"); document.getElementById("task-answer").focus();
+    }
 }
 
 function rewardHtml(task) {
@@ -838,8 +877,12 @@ function giveUp(task) {
     state.taskStats[state.currentTask].gaveUp = true;
     state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
     SessionStore.save();
-    const answers = Array.isArray(task.answer) ? task.answer : [task.answer];
+    const answers = (state.followUpMode && task.followUp)
+        ? (Array.isArray(task.followUp.answer) ? task.followUp.answer : [task.followUp.answer])
+        : (Array.isArray(task.answer) ? task.answer : [task.answer]);
     const correctAnswer = answers[0];
+    const serialContainer = document.getElementById('serial-murder-container');
+    if (serialContainer) serialContainer.style.display = 'none';
     document.querySelector(".hm-answer-row").style.display = "none";
     document.getElementById("task-error").textContent = "";
     const isLast = state.currentTask === state.mystery.tasks.length - 1;
@@ -862,18 +905,145 @@ function giveUp(task) {
 function checkAnswer() {
     const input = document.getElementById("task-answer");
     const task = state.mystery.tasks[state.currentTask];
+    if (task.type === 'serial-murder') return;
     const answer = normalizeAnswer(input.value);
-    const answers = Array.isArray(task.answer) ? task.answer : [task.answer];
-    if (answers.some(a => answer === normalizeAnswer(a))) {
+    const activeAnswers = (state.followUpMode && task.followUp)
+        ? (Array.isArray(task.followUp.answer) ? task.followUp.answer : [task.followUp.answer])
+        : (Array.isArray(task.answer) ? task.answer : [task.answer]);
+    if (activeAnswers.some(a => answer === normalizeAnswer(a))) {
         input.classList.add("correct"); document.getElementById("task-error").textContent = "";
-        state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
-        const isLast = state.currentTask === state.mystery.tasks.length - 1;
-        if (isLast) { finishGame(); } else { showSuccess(); }
+        if (!state.followUpMode && task.followUp) {
+            enterFollowUpMode(task);
+        } else {
+            state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
+            const isLast = state.currentTask === state.mystery.tasks.length - 1;
+            if (isLast) { finishGame(); } else { showSuccess(); }
+        }
     } else {
         input.classList.remove("wrong"); void input.offsetWidth; input.classList.add("wrong");
         document.getElementById("task-error").textContent = T('wrongAnswer');
         setTimeout(() => { input.classList.remove("wrong"); }, 600);
     }
+}
+
+function enterFollowUpMode(task) {
+    state.followUpMode = true;
+    const input = document.getElementById("task-answer");
+    input.value = ""; input.classList.remove("correct", "wrong");
+    document.getElementById("task-error").textContent = "";
+    document.getElementById("task-text").textContent = task.followUp.question;
+    const hintArea = document.getElementById("task-hint-area");
+    hintArea.innerHTML = `<button class="hm-btn hm-btn-hint" id="btn-show-hint">${T('showHint')}</button>`;
+    document.getElementById("btn-show-hint").addEventListener("click", () => {
+        if (!state.hintShownForTask) {
+            state.hintsUsed++; state.hintShownForTask = true;
+            state.taskStats[state.currentTask].hints = 1; SessionStore.save();
+        }
+        hintArea.innerHTML = `
+            <div class="hm-hint-box"><div class="hm-hint-warning">${T('hintLabel')}</div><div class="hm-hint-text">${escapeHtml(task.followUp.hint)}</div></div>
+            <button class="hm-btn hm-btn-giveup" id="btn-giveup">${T('giveUpBtn')}</button>`;
+        document.getElementById("btn-giveup").addEventListener("click", () => giveUp(task));
+    });
+    input.focus();
+}
+
+function renderSerialMurderUI(task) {
+    const container = document.createElement('div');
+    container.id = 'serial-murder-container';
+    container.style.cssText = 'width:100%; margin: 0 0 16px 0;';
+
+    const selected = {}, inputs = {};
+
+    task.cases.forEach(c => {
+        const wrap = document.createElement('div');
+        wrap.style.marginBottom = '10px';
+
+        const btn = document.createElement('button');
+        btn.className = 'hm-serial-btn';
+        btn.textContent = c.label;
+        btn.dataset.id = c.id;
+
+        const inputWrap = document.createElement('div');
+        inputWrap.style.cssText = 'display:none; margin-top:8px; padding:0 4px;';
+
+        const inp = document.createElement('input');
+        inp.type = 'text'; inp.className = 'hm-answer-input';
+        inp.style.cssText = 'text-transform:none; letter-spacing:0; font-size:0.9rem;';
+        inp.placeholder = 'Hva avslørte at dette var mord?';
+        inp.autocomplete = 'off';
+        inputs[c.id] = inp;
+        inputWrap.appendChild(inp);
+
+        btn.addEventListener('click', () => {
+            selected[c.id] = !selected[c.id];
+            btn.classList.toggle('hm-serial-btn-active', !!selected[c.id]);
+            btn.classList.remove('hm-serial-btn-correct', 'hm-serial-btn-wrong', 'hm-serial-btn-missed');
+            inputWrap.style.display = selected[c.id] ? 'block' : 'none';
+            if (selected[c.id]) inp.focus();
+        });
+
+        wrap.appendChild(btn); wrap.appendChild(inputWrap);
+        container.appendChild(wrap);
+    });
+
+    // Hint area — overwrite what showTask set up
+    const hintArea = document.getElementById("task-hint-area");
+    hintArea.innerHTML = `<button class="hm-btn hm-btn-hint" id="btn-show-hint">${T('showHint')}</button><br><button class="hm-btn hm-btn-giveup" id="btn-giveup" style="display:none;">${T('giveUpBtn')}</button>`;
+    document.getElementById("btn-show-hint").addEventListener("click", () => {
+        if (!state.hintShownForTask) {
+            state.hintsUsed++; state.hintShownForTask = true;
+            state.taskStats[state.currentTask].hints = 1; SessionStore.save();
+        }
+        hintArea.innerHTML = `
+            <div class="hm-hint-box"><div class="hm-hint-warning">${T('hintLabel')}</div><div class="hm-hint-text">${escapeHtml(task.hint)}</div></div>
+            <button class="hm-btn hm-btn-giveup" id="btn-giveup">${T('giveUpBtn')}</button>`;
+        document.getElementById("btn-giveup").addEventListener("click", () => giveUp(task));
+    });
+
+    // Submit button
+    const submitBtn = document.createElement('button');
+    submitBtn.className = 'hm-btn hm-btn-primary';
+    submitBtn.textContent = 'Bekreft';
+    submitBtn.style.cssText = 'margin-top:16px; width:100%;';
+
+    const errorEl = document.getElementById("task-error");
+
+    submitBtn.addEventListener('click', () => {
+        const murderIds = task.cases.filter(c => c.isMurder).map(c => c.id);
+        const selectedIds = Object.keys(selected).filter(id => selected[id]);
+        const wronglySelected = selectedIds.filter(id => !murderIds.includes(id));
+        const missedMurders = murderIds.filter(id => !selectedIds.includes(id));
+        const emptyInputs = selectedIds.filter(id => !inputs[id].value.trim());
+
+        // Visual feedback per button
+        task.cases.forEach(c => {
+            const btn = container.querySelector(`[data-id="${c.id}"]`);
+            btn.classList.remove('hm-serial-btn-correct', 'hm-serial-btn-wrong', 'hm-serial-btn-missed');
+            if (selected[c.id]) {
+                btn.classList.add(c.isMurder ? 'hm-serial-btn-correct' : 'hm-serial-btn-wrong');
+            } else if (c.isMurder) {
+                btn.classList.add('hm-serial-btn-missed');
+            }
+        });
+
+        if (wronglySelected.length > 0) {
+            errorEl.textContent = 'Du har valgt én eller flere saker som faktisk var selvmord.'; return;
+        }
+        if (emptyInputs.length > 0) {
+            errorEl.textContent = 'Forklar hva som avslørte drapet for hver valgt sak.'; return;
+        }
+        if (missedMurders.length > 0) {
+            errorEl.textContent = `${missedMurders.length} drap gjenstår — les saksmappene på nytt.`; return;
+        }
+
+        errorEl.textContent = '';
+        state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
+        const isLast = state.currentTask === state.mystery.tasks.length - 1;
+        if (isLast) { finishGame(); } else { showSuccess(); }
+    });
+
+    container.appendChild(submitBtn);
+    hintArea.parentNode.insertBefore(container, hintArea);
 }
 
 function showSuccess() {
