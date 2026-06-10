@@ -1246,3 +1246,4 @@ function renderLeaderboardList(listId, entries, highlightTeam, highlightTotalTim
 }
 // GO!
 init();
+// test
