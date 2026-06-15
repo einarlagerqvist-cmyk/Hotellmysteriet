@@ -325,7 +325,7 @@ const CONFIG = {
             tasks: [
                 {
                     question: "Det er noen i avhørene som ikke forteller sannheten. Hvem lyver?",
-                    audio: { src: "audio/are/arnesen-telefon-v3.mp3", ambient: "audio/are/kassett-ambience.mp3", label: "Spill av lydopptaket", divider: "Lydopptak — Knut Arnesen" },
+                    audio: { src: "audio/are/arnesen-telefon-v4.mp3", label: "Spill av lydopptaket", divider: "Lydopptak — Knut Arnesen" },
                     answer: ["Nygård", "Sissel Nygård", "SisselNygård", "Sissel",
                              "Moen", "Harald Moen", "HaraldMoen", "Harald",
                              "begge", "begge to", "begge lyver",
