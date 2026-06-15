@@ -325,25 +325,31 @@ const CONFIG = {
             tasks: [
                 {
                     question: "Det er noen i avhørene som ikke forteller sannheten. Hvem lyver?",
-                    answer: ["Nygård", "Sissel Nygård", "SisselNygård",
-                             "Moen", "Harald Moen", "HaraldMoen",
+                    answer: ["Nygård", "Sissel Nygård", "SisselNygård", "Sissel",
+                             "Moen", "Harald Moen", "HaraldMoen", "Harald",
+                             "begge", "begge to", "begge lyver",
                              "Nygård og Moen", "Moen og Nygård", "NygårdogMoen", "MoenogNygård",
                              "Nygård og Moen lyver", "Moen og Nygård lyver",
                              "Sissel Nygård og Harald Moen", "Harald Moen og Sissel Nygård",
                              "SisselNygård og HaraldMoen", "HaraldMoen og SisselNygård",
                              "Sissel Nygård og HaraldMoen", "HaraldMoen og Sissel Nygård",
+                             "Sissel og Moen", "Moen og Sissel",
+                             "Harald og Nygård", "Nygård og Harald",
                              "Nygård, Moen", "Moen, Nygård",
+                             "Sissel, Harald", "Harald, Sissel",
                              "Nygård / Moen", "Moen / Nygård",
                              "Nygård & Moen", "Moen & Nygård",
                              "Sissel og Harald", "Harald og Sissel"],
                     hint: "Les nyhetsbrevet fra fengselsadministrasjonen nøye. Sammenlign med alibi-forklaringene.",
                     followUp: {
                         question: "Hva løy de om?",
-                        answer: ["vaskeriet", "vaskeri",
+                        answer: ["vaskeriet", "vaskeri", "vask",
                                  "at de var på vaskeriet", "vaskeriet var stengt", "vaskeriet stengt",
                                  "vaskeri stengt", "stengt vaskeriet",
                                  "vaskeriet var stengt mandag", "vaskeriet stengt mandag",
                                  "vaskeriet var stengt den mandagen",
+                                 "de var ikke på vaskeriet", "ikke på vaskeriet",
+                                 "vasket ikke", "de vasket ikke",
                                  "vasking av klær", "vaske klær", "klesvask", "klesvasken",
                                  "klesvask stengt", "klesvasken var stengt",
                                  "vasking av klær stengt", "vasket klær", "klesvask var stengt"],
@@ -355,8 +361,11 @@ const CONFIG = {
                     answer: ["nei", "no", "nope", "nein", "nah", "neida", "nei da",
                              "nei det var ikke selvmord", "nei, det var ikke selvmord",
                              "nei absolutt ikke", "nei, absolutt ikke",
-                             "ikke selvmord", "det var ikke selvmord", "drap", "nei det var drap",
-                             "det var drap", "aldri", "absolutt ikke"],
+                             "ikke selvmord", "det var ikke selvmord",
+                             "drap", "mord", "nei det var drap", "nei det var mord",
+                             "det var drap", "det var mord",
+                             "han ble drept", "han ble myrdet",
+                             "aldri", "absolutt ikke", "overhodet ikke"],
                     hint: "Se på inventarlisten i åstedsrapporten og tenk på festepunktets høyde.",
                     followUp: {
                         question: "Hva i cellen avslørte at det ikke kunne være selvmord?",
@@ -369,28 +378,38 @@ const CONFIG = {
                                  "ikke noe å stå på", "ingenting å stå",
                                  "ingen ting å stå på", "ingenting å stå med", "ingenting å stå opp på",
                                  "for høyt", "forhøyt", "høyden", "for høy",
+                                 "for lav", "for kort", "for lavt",
                                  "nådde ikke opp", "nåddeikkeop", "nådde ikke",
-                                 "272", "festepunktet", "festepunktet for høyt"],
-                        hint: "Festepunktet er 272 cm over gulvet. Hva ville Bakken trenge for å nå dit opp?"
+                                 "rekker ikke opp", "rekker ikke",
+                                 "272", "283", "festepunktet", "festepunktet for høyt"],
+                        hint: "Festepunktet er 283 cm over gulvet. Hva ville Bakken trenge for å nå dit opp?"
                     }
                 },
                 {
                     type: "serial-murder",
                     question: "Nå som dere vet at Bakken ble drept, har vi grunn til å tro at gjerningsmannen har slått til før.\n\nLes gjennom alle fem saksmappene. Tre er faktisk drap — ikke selvmord. Velg de saksmappene som er drap, og beskriv kort hva som avslørte det.",
                     cases: [
-                        { id: "akershus", label: "Akershus — Mikkelsen (1981)", isMurder: true, clue: ["blod", "hender", "hendene"] },
-                        { id: "hordaland", label: "Hordaland — Solberg (1983)", isMurder: true, clue: ["hånd", "hånden", "venstre", "høyre"] },
-                        { id: "hedmark",  label: "Hedmark — Antonsen (1985)",  isMurder: true },
-                        { id: "ostfold",  label: "Østfold — Stensrud (1979)",  isMurder: false },
-                        { id: "rogaland", label: "Rogaland — Lie (1984)",      isMurder: false }
+                        { id: "akershus", label: "Akershus — Mikkelsen (1981)", isMurder: true,
+                          clue: ["blod", "hender", "hendene", "fingre", "fingrene", "ingen andre steder", "ikke på hendene", "bare på kniven"],
+                          hint: "Kniven hadde blodspor. Se nøye på obduksjonsrapporten — hvor ellers burde det ha vært blod?" },
+                        { id: "hordaland", label: "Hordaland — Solberg (1983)", isMurder: true,
+                          clue: ["hånd", "hånden", "venstre", "høyre"],
+                          hint: "Solberg er høyrehendt. Se på hvilket håndledd som er kuttet." },
+                        { id: "hedmark",  label: "Hedmark — Antonsen (1985)",  isMurder: true,
+                          clue: ["ligatur", "merke", "merker", "to merker", "to ligatursmerker", "dobbelt"],
+                          hint: "Les obduksjonsrapporten nøye. Hvor mange spor etterlater vanlig henging på halsen?" },
+                        { id: "ostfold",  label: "Østfold — Stensrud (1979)",  isMurder: false,
+                          hint: "Her ville jeg brukt tiden min på en av de andre sakene." },
+                        { id: "rogaland", label: "Rogaland — Lie (1984)",      isMurder: false,
+                          hint: "Her ville jeg brukt tiden min på en av de andre sakene." }
                     ],
-                    answer: ["Mikkelsen, Solberg og Antonsen"],
-                    hint: "To av saksmappene inneholder forensiske funn som gjør selvmord fysisk umulig. Den tredje har et annet uvanlig funn."
+                    answer: ["Mikkelsen, Solberg og Antonsen"]
                 },
                 {
                     question: "Finn lappen som er gjemt i cellen. Hva er den fullstendige setningen på den?",
                     answer: ["Dette er for datteren min",
                              "dette er til datteren min",
+                             "dette er til dattera mi",
                              "det er for datteren min",
                              "dette er for dattera mi",
                              "dette er for dattera min",
@@ -401,8 +420,8 @@ const CONFIG = {
                 {
                     question: "Hvem drepte Terje Bakken?",
                     answer: ["Knut Arnesen", "Arnesen", "Knut",
-                             "lege Arnesen", "lege Knut Arnesen",
-                             "dr Arnesen", "dr. Arnesen", "doktor Arnesen"],
+                             "legen", "lege Arnesen", "lege Knut Arnesen",
+                             "dr Arnesen", "dr. Arnesen", "Dr. Knut Arnesen", "doktor Arnesen"],
                     hint: "Hvem er Linns far? Hvem hadde tilgang, motiv og var på stedet?",
                     followUp: {
                         question: "Hva var motivet?",
@@ -1022,6 +1041,25 @@ function renderSerialMurderUI(task) {
         inputs[c.id] = inp;
         inputWrap.appendChild(inp);
 
+        if (c.hint) {
+            const caseHintBtn = document.createElement('button');
+            caseHintBtn.className = 'hm-btn hm-btn-hint';
+            caseHintBtn.textContent = T('showHint');
+            caseHintBtn.style.cssText = 'margin-top:8px; font-size:0.85rem; width:100%;';
+            const caseHintBox = document.createElement('div');
+            caseHintBox.style.display = 'none';
+            caseHintBtn.addEventListener('click', () => {
+                state.hintsUsed++;
+                state.taskStats[state.currentTask].hints = (state.taskStats[state.currentTask].hints || 0) + 1;
+                SessionStore.save();
+                caseHintBox.innerHTML = `<div class="hm-hint-box"><div class="hm-hint-warning">${T('hintLabel')}</div><div class="hm-hint-text">${escapeHtml(c.hint)}</div></div>`;
+                caseHintBox.style.display = 'block';
+                caseHintBtn.style.display = 'none';
+            });
+            inputWrap.appendChild(caseHintBtn);
+            inputWrap.appendChild(caseHintBox);
+        }
+
         btn.addEventListener('click', () => {
             selected[c.id] = !selected[c.id];
             btn.classList.toggle('hm-serial-btn-active', !!selected[c.id]);
@@ -1034,19 +1072,10 @@ function renderSerialMurderUI(task) {
         container.appendChild(wrap);
     });
 
-    // Hint area — overwrite what showTask set up
+    // Hint area — kun gi-opp-knapp for serial-murder (hint er per sak)
     const hintArea = document.getElementById("task-hint-area");
-    hintArea.innerHTML = `<button class="hm-btn hm-btn-hint" id="btn-show-hint">${T('showHint')}</button><br><button class="hm-btn hm-btn-giveup" id="btn-giveup" style="display:none;">${T('giveUpBtn')}</button>`;
-    document.getElementById("btn-show-hint").addEventListener("click", () => {
-        if (!state.hintShownForTask) {
-            state.hintsUsed++; state.hintShownForTask = true;
-            state.taskStats[state.currentTask].hints = 1; SessionStore.save();
-        }
-        hintArea.innerHTML = `
-            <div class="hm-hint-box"><div class="hm-hint-warning">${T('hintLabel')}</div><div class="hm-hint-text">${escapeHtml(task.hint)}</div></div>
-            <button class="hm-btn hm-btn-giveup" id="btn-giveup">${T('giveUpBtn')}</button>`;
-        document.getElementById("btn-giveup").addEventListener("click", () => giveUp(task));
-    });
+    hintArea.innerHTML = `<button class="hm-btn hm-btn-giveup" id="btn-giveup">${T('giveUpBtn')}</button>`;
+    document.getElementById("btn-giveup").addEventListener("click", () => giveUp(task));
 
     // Submit button
     const submitBtn = document.createElement('button');
