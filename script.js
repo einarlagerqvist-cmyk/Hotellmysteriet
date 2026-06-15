@@ -380,7 +380,7 @@ const CONFIG = {
                     cases: [
                         { id: "akershus", label: "Akershus — Mikkelsen (1981)", isMurder: true, clue: ["blod", "hender", "hendene"] },
                         { id: "hordaland", label: "Hordaland — Solberg (1983)", isMurder: true, clue: ["hånd", "hånden", "venstre", "høyre"] },
-                        { id: "hedmark",  label: "Hedmark — Antonsen (1985)",  isMurder: true },
+                        { id: "hedmark",  label: "Hedmark — Antonsen (1985)",  isMurder: true, clue: ["ligatur", "to merker", "horisontalt", "to ligatursmerker"] },
                         { id: "ostfold",  label: "Østfold — Stensrud (1979)",  isMurder: false },
                         { id: "rogaland", label: "Rogaland — Lie (1984)",      isMurder: false }
                     ],
