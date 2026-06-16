@@ -423,7 +423,7 @@ const CONFIG = {
                     answer: ["Knut Arnesen", "Arnesen", "Knut",
                              "legen", "lege Arnesen", "lege Knut Arnesen",
                              "dr Arnesen", "dr. Arnesen", "Dr. Knut Arnesen", "doktor Arnesen"],
-                    hint: "Hvem er Linns far? Hvem hadde tilgang, motiv og var på stedet?",
+                    hint: "Avisartikkelen er datert 14. april 1981. Faren var nøyaktig 51 år gammel den dagen. Sjekk fødselsdatoene til de mistenkte — matematikken eliminerer alle unntatt én.",
                     followUp: {
                         question: "Hva var motivet?",
                         answer: ["Linn", "datteren", "hevn", "Linn Arnesen", "dattera",
