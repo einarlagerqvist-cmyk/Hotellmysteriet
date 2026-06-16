@@ -321,7 +321,7 @@ const CONFIG = {
         {
             id: "are",
             name: "Mysteriet på Fengselshotellet",
-            intro: "Natt til 15. november 1986 ble Terje Bakken funnet død i cellen sin på Are fengsel. Politiet konkluderte raskt med selvmord.\n\nMen ikke alle er overbeviste.\n\nDere har fått tilgang til politiets avhørsdokumenter. Les nøye. Noen lyver.",
+            intro: "Natt til 15. november 1986 ble Terje Bakken funnet død i cellen sin på Arendal fengsel. Politiet konkluderte raskt med selvmord.\n\nMen ikke alle er overbeviste.\n\nDere har fått tilgang til politiets avhørsdokumenter. Les nøye. Noen lyver.",
             tasks: [
                 {
                     question: "Det er noen i avhørene som ikke forteller sannheten. Hvem lyver?",
