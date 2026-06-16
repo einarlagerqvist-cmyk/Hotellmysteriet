@@ -321,10 +321,10 @@ const CONFIG = {
         {
             id: "are",
             name: "Mysteriet på Fengselshotellet",
-            intro: "Natt til 15. november 1986 ble Terje Bakken funnet død i cellen sin på Arendal fengsel. Politiet konkluderte raskt med selvmord.\n\nMen ikke alle er overbeviste.\n\nDere har fått tilgang til politiets avhørsdokumenter. Les nøye. Noen lyver.",
+            intro: "Natt til 15. november 1986 ble Terje Bakken funnet hengende i cellen sin på Arendal fengsel.\n\nPolitiet konkluderte raskt med selvmord. Saken ble lukket.\n\nMen ikke alle er overbeviste.\n\nDere er innleid for å finne sannheten. Rommet og alle dokumentene er til deres disposisjon.\n\nKlokken tikker.",
             tasks: [
                 {
-                    question: "Det er noen i avhørene som ikke forteller sannheten. Hvem lyver?",
+                    question: "Åpne konvolutt 1.\n\nLes gjennom alle seks avhørene. En eller to av vitnene lyver om hvor de var fredag kveld.\n\nHvem lyver?",
                     audio: { src: "audio/are/arnesen-telefon-v4.mp3", label: "Spill av lydopptaket", divider: "Lydopptak — Knut Arnesen" },
                     answer: ["Nygård", "Sissel Nygård", "SisselNygård", "Sissel",
                              "Moen", "Harald Moen", "HaraldMoen", "Harald",
@@ -388,7 +388,7 @@ const CONFIG = {
                 },
                 {
                     type: "serial-murder",
-                    question: "Nå som dere vet at Bakken ble drept, har vi grunn til å tro at gjerningsmannen har slått til før.\n\nLes gjennom alle fem saksmappene. Tre er faktisk drap — ikke selvmord. Velg de saksmappene som er drap, og beskriv kort hva som avslørte det.",
+                    question: "Åpne konvolutt 2.\n\nDette er ikke første gang.\n\nI arkivene ligger det fem saker fra norske fengsler — alle lukket som selvmord. Men mønsteret peker mot noe langt mørkere: tre av dødsfallene er trolig drap, begått av samme hånd.\n\nGå gjennom saksmappene. Finn de tre drapene, og beskriv hva som avslørte hvert av dem.",
                     cases: [
                         { id: "akershus", label: "Akershus — Mikkelsen (1981)", isMurder: true,
                           clue: ["blod", "hender", "hendene", "fingre", "fingrene", "ingen andre steder", "ikke på hendene", "bare på kniven"],
@@ -407,7 +407,7 @@ const CONFIG = {
                     answer: ["Mikkelsen, Solberg og Antonsen"]
                 },
                 {
-                    question: "Finn lappen som er gjemt i cellen. Hva er den fullstendige setningen på den?",
+                    question: "Vitnet i nabocellen hørte en setning gjennom veggen den natten. Lavt, nesten hvisket. Han skrev den ned og gjemte lappen.\n\nLappen er fortsatt her et sted.\n\nFinn den. Hva er den fullstendige setningen?",
                     answer: ["Dette er for datteren min",
                              "dette er til datteren min",
                              "dette er til dattera mi",
@@ -419,7 +419,7 @@ const CONFIG = {
                     hint: "Se deg godt rundt i cellen."
                 },
                 {
-                    question: "Hvem drepte Terje Bakken?",
+                    question: "Åpne konvolutt 3.\n\nDere vet nå at Bakken ble drept. Dere vet at det har skjedd før — fire ganger. Og dere har hørt stemmen til mannen som var sist i B-blokken den natten.\n\nHvem drepte Terje Bakken?",
                     answer: ["Knut Arnesen", "Arnesen", "Knut",
                              "legen", "lege Arnesen", "lege Knut Arnesen",
                              "dr Arnesen", "dr. Arnesen", "Dr. Knut Arnesen", "doktor Arnesen"],
