@@ -324,7 +324,7 @@ const CONFIG = {
             intro: "Natt til 15. november 1986 ble Terje Bakken funnet hengende i cellen sin på Arendal fengsel.\n\nPolitiet konkluderte raskt med selvmord. Saken ble lukket.\n\nMen ikke alle er overbeviste.\n\nDere er innleid for å finne sannheten. Rommet og alle dokumentene er til deres disposisjon.\n\nKlokken tikker.",
             tasks: [
                 {
-                    question: "Åpne konvolutt 1.\n\nLes gjennom alle seks avhørene. En eller to av vitnene lyver om hvor de var fredag kveld.\n\nHvem lyver?",
+                    question: "Åpne konvolutt 1.\n\nLes gjennom alle dokumentene. Det er noen som lyver i avhøret sitt, hvem?",
                     audio: { src: "audio/are/arnesen-telefon-v4.mp3", label: "Spill av lydopptaket", divider: "Lydopptak — Knut Arnesen" },
                     answer: ["Nygård", "Sissel Nygård", "SisselNygård", "Sissel",
                              "Moen", "Harald Moen", "HaraldMoen", "Harald",
@@ -369,7 +369,7 @@ const CONFIG = {
                              "aldri", "absolutt ikke", "overhodet ikke"],
                     hint: "Se på inventarlisten i åstedsrapporten og tenk på festepunktets høyde.",
                     followUp: {
-                        question: "Hva i cellen avslørte at det ikke kunne være selvmord?",
+                        question: "Hva avslørte at det ikke kunne være selvmord?",
                         answer: ["stol", "krakk", "stige",
                                  "ingen stol", "ingenstol", "mangler stol", "manglerstol",
                                  "ingen krakk", "ingenkrakk", "ikke stol", "ikkestol",
@@ -388,7 +388,7 @@ const CONFIG = {
                 },
                 {
                     type: "serial-murder",
-                    question: "Åpne konvolutt 2.\n\nDette er ikke første gang.\n\nI arkivene ligger det fem saker fra norske fengsler — alle lukket som selvmord. Men mønsteret peker mot noe langt mørkere: tre av dødsfallene er trolig drap, begått av samme hånd.\n\nGå gjennom saksmappene. Finn de tre drapene, og beskriv hva som avslørte hvert av dem.",
+                    question: "Åpne konvolutt 2.\n\nDette er ikke første gang.\n\nI arkivene ligger det fem saker fra norske fengsler, alle lukket som selvmord. Men mønsteret peker mot noe langt mørkere: noen av dødsfallene er trolig drap, begått av samme hånd.\n\nGå gjennom saksmappene. Finn drapene, og beskriv hva som avslørte hvert av dem.",
                     cases: [
                         { id: "akershus", label: "Akershus — Mikkelsen (1981)", isMurder: true,
                           clue: ["blod", "hender", "hendene", "fingre", "fingrene", "ingen andre steder", "ikke på hendene", "bare på kniven"],
@@ -419,7 +419,7 @@ const CONFIG = {
                     hint: "Se deg godt rundt i cellen."
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nDere vet nå at Bakken ble drept. Dere vet at det har skjedd før — fire ganger. Og dere har hørt stemmen til mannen som var sist i B-blokken den natten.\n\nHvem drepte Terje Bakken?",
+                    question: "Åpne konvolutt 3.\n\nDere vet nå at Bakken ble drept. Dere vet at det har skjedd før, fire ganger. Og dere har hørt stemmen til mannen som var sist i B-blokken den natten.\n\nHvem drepte Terje Bakken?",
                     answer: ["Knut Arnesen", "Arnesen", "Knut",
                              "legen", "lege Arnesen", "lege Knut Arnesen",
                              "dr Arnesen", "dr. Arnesen", "Dr. Knut Arnesen", "doktor Arnesen"],
