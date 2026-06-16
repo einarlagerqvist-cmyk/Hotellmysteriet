@@ -325,7 +325,7 @@ const CONFIG = {
             tasks: [
                 {
                     question: "Åpne konvolutt 1.\n\nLes gjennom alle dokumentene. Det er noen som lyver i avhøret sitt, hvem?",
-                    audio: { src: "audio/are/arnesen-telefon-v4.mp3", label: "Spill av lydopptaket", divider: "Lydopptak — Knut Arnesen" },
+                    audio: { src: "audio/are/arnesen-telefon-v5.mp3", label: "Spill av lydopptaket", divider: "Lydopptak — Knut Arnesen" },
                     answer: ["Nygård", "Sissel Nygård", "SisselNygård", "Sissel",
                              "Moen", "Harald Moen", "HaraldMoen", "Harald",
                              "begge", "begge to", "begge lyver",
@@ -440,7 +440,7 @@ const CONFIG = {
                     }
                 }
             ],
-            finalMessage: "Dere har løst det.\n\nTerje Bakken ble drept av lege Knut Arnesen. Arnesen hadde reist fra fengsel til fengsel i årevis — og tatt loven i egne hender. Motivet var hevn for datteren Linn, misbrukt av Bakken og andre innsatte da hun var tenåring. Anmeldelsen ble henlagt. Linn tok livet sitt 12. april 1981.\n\nArnesen sørget for at de aldri kom ut. Tre mord. Tre fengsler. Ett navn.\n\nSakene ble aldri løst av politiet. Men dere så det ingen andre orket å se."
+            finalMessage: "Dere har løst det.\n\nTerje Bakken ble drept av lege Knut Arnesen. Arnesen hadde reist fra fengsel til fengsel i årevis og tatt loven i egne hender. Motivet var hevn for datteren Linn, som fikk livet sitt ødelagt av overgripere som Bakken.\n\nArnesen sørget for at de aldri kom ut. Tre mord. Tre fengsler. Ett navn.\n\nSakene ble aldri løst av politiet. Men dere så det ingen andre klarte å se."
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
@@ -1020,7 +1020,25 @@ function renderSerialMurderUI(task) {
     container.id = 'serial-murder-container';
     container.style.cssText = 'width:100%; margin: 0 0 16px 0;';
 
-    const selected = {}, inputs = {};
+    const caseState = {};
+    task.cases.forEach(c => { caseState[c.id] = 'pending'; });
+
+    const proceedBtn = document.createElement('button');
+    proceedBtn.className = 'hm-btn hm-btn-primary';
+    proceedBtn.textContent = 'Gå videre';
+    proceedBtn.style.cssText = 'margin-top:16px; width:100%; display:none;';
+    proceedBtn.addEventListener('click', () => {
+        document.getElementById("task-error").textContent = '';
+        state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
+        const isLast = state.currentTask === state.mystery.tasks.length - 1;
+        if (isLast) { finishGame(); } else { showSuccess(); }
+    });
+
+    function checkAllDone() {
+        const allMurdersDone = task.cases.filter(c => c.isMurder)
+            .every(c => caseState[c.id] === 'correct' || caseState[c.id] === 'gaveUp');
+        proceedBtn.style.display = allMurdersDone ? 'block' : 'none';
+    }
 
     task.cases.forEach(c => {
         const wrap = document.createElement('div');
@@ -1039,93 +1057,126 @@ function renderSerialMurderUI(task) {
         inp.style.cssText = 'text-transform:none; letter-spacing:0; font-size:0.9rem;';
         inp.placeholder = 'Hva avslørte at dette var mord?';
         inp.autocomplete = 'off';
-        inputs[c.id] = inp;
-        inputWrap.appendChild(inp);
+
+        const caseErrorEl = document.createElement('div');
+        caseErrorEl.style.cssText = 'color:#c0392b; font-size:0.85rem; margin-top:6px; min-height:18px;';
+
+        const feedbackBox = document.createElement('div');
+        feedbackBox.style.display = 'none';
+
+        let hintShown = false;
+        const caseHintBtn = document.createElement('button');
+        caseHintBtn.className = 'hm-btn hm-btn-hint';
+        caseHintBtn.textContent = T('showHint');
+        caseHintBtn.style.cssText = 'margin-top:8px; font-size:0.85rem; width:100%;';
+        const caseHintBox = document.createElement('div');
+        caseHintBox.style.display = 'none';
 
         if (c.hint) {
-            const caseHintBtn = document.createElement('button');
-            caseHintBtn.className = 'hm-btn hm-btn-hint';
-            caseHintBtn.textContent = T('showHint');
-            caseHintBtn.style.cssText = 'margin-top:8px; font-size:0.85rem; width:100%;';
-            const caseHintBox = document.createElement('div');
-            caseHintBox.style.display = 'none';
             caseHintBtn.addEventListener('click', () => {
-                state.hintsUsed++;
-                state.taskStats[state.currentTask].hints = (state.taskStats[state.currentTask].hints || 0) + 1;
-                SessionStore.save();
+                if (!hintShown) {
+                    state.hintsUsed++;
+                    state.taskStats[state.currentTask].hints = (state.taskStats[state.currentTask].hints || 0) + 1;
+                    SessionStore.save();
+                    hintShown = true;
+                }
                 caseHintBox.innerHTML = `<div class="hm-hint-box"><div class="hm-hint-warning">${T('hintLabel')}</div><div class="hm-hint-text">${escapeHtml(c.hint)}</div></div>`;
                 caseHintBox.style.display = 'block';
                 caseHintBtn.style.display = 'none';
             });
-            inputWrap.appendChild(caseHintBtn);
-            inputWrap.appendChild(caseHintBox);
         }
 
-        btn.addEventListener('click', () => {
-            selected[c.id] = !selected[c.id];
-            btn.classList.toggle('hm-serial-btn-active', !!selected[c.id]);
-            btn.classList.remove('hm-serial-btn-correct', 'hm-serial-btn-wrong', 'hm-serial-btn-missed');
-            inputWrap.style.display = selected[c.id] ? 'block' : 'none';
-            if (selected[c.id]) inp.focus();
+        const caseGiveUpBtn = document.createElement('button');
+        caseGiveUpBtn.className = 'hm-btn hm-btn-giveup';
+        caseGiveUpBtn.textContent = T('giveUpBtn');
+        caseGiveUpBtn.style.cssText = 'margin-top:8px; font-size:0.85rem; width:100%;';
+
+        const submitCaseBtn = document.createElement('button');
+        submitCaseBtn.className = 'hm-btn hm-btn-primary';
+        submitCaseBtn.textContent = 'Sjekk';
+        submitCaseBtn.style.cssText = 'margin-top:8px; font-size:0.9rem; width:100%;';
+
+        function lockCase() {
+            inp.disabled = true;
+            submitCaseBtn.style.display = 'none';
+            caseHintBtn.style.display = 'none';
+            caseGiveUpBtn.style.display = 'none';
+            caseErrorEl.textContent = '';
+        }
+
+        caseGiveUpBtn.addEventListener('click', () => {
+            if (!confirm(T('giveUpConfirm'))) return;
+            state.gaveUpCount++;
+            state.taskStats[state.currentTask].gaveUp = (state.taskStats[state.currentTask].gaveUp || 0) + 1;
+            SessionStore.save();
+            caseState[c.id] = 'gaveUp';
+            btn.classList.remove('hm-serial-btn-active');
+            btn.classList.add('hm-serial-btn-missed');
+            lockCase();
+            if (c.hint) {
+                caseHintBox.innerHTML = `<div class="hm-hint-box"><div class="hm-hint-warning">${T('hintLabel')}</div><div class="hm-hint-text">${escapeHtml(c.hint)}</div></div>`;
+                caseHintBox.style.display = 'block';
+            }
+            checkAllDone();
         });
 
-        wrap.appendChild(btn); wrap.appendChild(inputWrap);
+        submitCaseBtn.addEventListener('click', () => {
+            const val = inp.value.trim();
+
+            if (!c.isMurder) {
+                btn.classList.remove('hm-serial-btn-active');
+                btn.classList.add('hm-serial-btn-wrong');
+                lockCase();
+                feedbackBox.innerHTML = `<div class="hm-hint-box"><div class="hm-hint-warning">Ikke drap</div><div class="hm-hint-text">Dette var faktisk et selvmord.</div></div>`;
+                feedbackBox.style.display = 'block';
+                caseState[c.id] = 'notMurder';
+                checkAllDone();
+                return;
+            }
+
+            if (!val) { caseErrorEl.textContent = 'Skriv hva som avslørte drapet.'; return; }
+
+            if (c.clue && !c.clue.some(kw => val.toLowerCase().includes(kw.toLowerCase()))) {
+                inp.classList.remove('wrong'); void inp.offsetWidth; inp.classList.add('wrong');
+                caseErrorEl.textContent = 'Ikke helt riktig — les saksmappen nøyere.';
+                setTimeout(() => inp.classList.remove('wrong'), 600);
+                return;
+            }
+
+            caseState[c.id] = 'correct';
+            btn.classList.remove('hm-serial-btn-active');
+            btn.classList.add('hm-serial-btn-correct');
+            inp.classList.add('correct');
+            lockCase();
+            checkAllDone();
+        });
+
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') submitCaseBtn.click(); });
+
+        btn.addEventListener('click', () => {
+            if (caseState[c.id] !== 'pending') return;
+            const isOpen = inputWrap.style.display !== 'none';
+            inputWrap.style.display = isOpen ? 'none' : 'block';
+            btn.classList.toggle('hm-serial-btn-active', !isOpen);
+            if (!isOpen) inp.focus();
+        });
+
+        inputWrap.appendChild(inp);
+        inputWrap.appendChild(caseErrorEl);
+        if (c.hint) { inputWrap.appendChild(caseHintBtn); inputWrap.appendChild(caseHintBox); }
+        inputWrap.appendChild(caseGiveUpBtn);
+        inputWrap.appendChild(submitCaseBtn);
+        inputWrap.appendChild(feedbackBox);
+
+        wrap.appendChild(btn);
+        wrap.appendChild(inputWrap);
         container.appendChild(wrap);
     });
 
-    // Hint area — kun gi-opp-knapp for serial-murder (hint er per sak)
+    container.appendChild(proceedBtn);
+
     const hintArea = document.getElementById("task-hint-area");
-    hintArea.innerHTML = `<button class="hm-btn hm-btn-giveup" id="btn-giveup">${T('giveUpBtn')}</button>`;
-    document.getElementById("btn-giveup").addEventListener("click", () => giveUp(task));
-
-    // Submit button
-    const submitBtn = document.createElement('button');
-    submitBtn.className = 'hm-btn hm-btn-primary';
-    submitBtn.textContent = 'Bekreft';
-    submitBtn.style.cssText = 'margin-top:16px; width:100%;';
-
-    const errorEl = document.getElementById("task-error");
-
-    submitBtn.addEventListener('click', () => {
-        const murderIds = task.cases.filter(c => c.isMurder).map(c => c.id);
-        const selectedIds = Object.keys(selected).filter(id => selected[id]);
-        const wronglySelected = selectedIds.filter(id => !murderIds.includes(id));
-        const missedMurders = murderIds.filter(id => !selectedIds.includes(id));
-        const emptyInputs = selectedIds.filter(id => !inputs[id].value.trim());
-
-        // Visual feedback per button
-        task.cases.forEach(c => {
-            const btn = container.querySelector(`[data-id="${c.id}"]`);
-            btn.classList.remove('hm-serial-btn-correct', 'hm-serial-btn-wrong', 'hm-serial-btn-missed');
-            if (selected[c.id]) {
-                btn.classList.add(c.isMurder ? 'hm-serial-btn-correct' : 'hm-serial-btn-wrong');
-            } else if (c.isMurder) {
-                btn.classList.add('hm-serial-btn-missed');
-            }
-        });
-
-        if (wronglySelected.length > 0) {
-            errorEl.textContent = 'Du har valgt én eller flere saker som faktisk var selvmord.'; return;
-        }
-        if (emptyInputs.length > 0) {
-            errorEl.textContent = 'Forklar hva som avslørte drapet for hver valgt sak.'; return;
-        }
-        if (missedMurders.length > 0) {
-            errorEl.textContent = `${missedMurders.length} drap gjenstår — les saksmappene på nytt.`; return;
-        }
-        const wrongClue = task.cases.find(c => c.isMurder && c.clue && selected[c.id] &&
-            !c.clue.some(kw => inputs[c.id].value.toLowerCase().includes(kw.toLowerCase())));
-        if (wrongClue) {
-            errorEl.textContent = 'Forklaringen stemmer ikke for én eller flere saker — les nøyere.'; return;
-        }
-
-        errorEl.textContent = '';
-        state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
-        const isLast = state.currentTask === state.mystery.tasks.length - 1;
-        if (isLast) { finishGame(); } else { showSuccess(); }
-    });
-
-    container.appendChild(submitBtn);
+    hintArea.innerHTML = '';
     hintArea.parentNode.insertBefore(container, hintArea);
 }
 
