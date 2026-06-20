@@ -321,7 +321,7 @@ const CONFIG = {
         {
             id: "are",
             name: "Mysteriet på Fengselshotellet",
-            intro: "Natt til 15. november 1986 ble Terje Bakken funnet hengende i cellen sin på Arendal fengsel.\n\nPolitiet konkluderte raskt med selvmord. Saken ble lukket.\n\nMen ikke alle er overbeviste.\n\nDere er innleid for å finne sannheten. Rommet og alle dokumentene er til deres disposisjon.\n\nKlokken tikker.",
+            intro: "Natt til 15. november 1986 ble Terje Bakken funnet hengende i cellen sin på Arendal fengsel.\n\nPolitiet konkluderte raskt med selvmord. Saken ble lukket.\n\nMen ikke alle er overbeviste.\n\nDere er innleid for å finne sannheten. Rommet og alle dokumentene er til deres disposisjon.\n\nKlokken tikker.\n\nDere trenger ikke skrive fullstendige setninger — stikkord er nok.",
             tasks: [
                 {
                     question: "Åpne konvolutt 1.\n\nLes gjennom alle dokumentene. Det er noen som lyver i avhøret sitt, hvem?",
@@ -380,6 +380,16 @@ const CONFIG = {
                                  "ingen ting å stå på", "ingenting å stå med", "ingenting å stå opp på",
                                  "for høyt", "forhøyt", "høyden", "for høy",
                                  "for lav", "for kort", "for lavt",
+                                 "han var for lav", "bakken var for lav", "Bakken var for lav",
+                                 "han var for kort", "bakken var for kort", "Bakken var for kort",
+                                 "han var for liten", "bakken var for liten", "Bakken var for liten",
+                                 "var for lav", "er for lav", "han er for lav",
+                                 "var for kort", "er for kort", "han er for kort",
+                                 "lav", "liten", "kort",
+                                 "ikke høy nok", "ikke lang nok", "ikke høy nokk",
+                                 "for lav til å nå opp", "for kort til å nå opp",
+                                 "for lav til å nå dit", "for kort til å nå dit",
+                                 "for lav for å nå opp", "Bakken for lav",
                                  "nådde ikke opp", "nåddeikkeop", "nådde ikke",
                                  "rekker ikke opp", "rekker ikke",
                                  "272", "283", "festepunktet", "festepunktet for høyt"],
@@ -419,7 +429,7 @@ const CONFIG = {
                     hint: "Se deg godt rundt i cellen."
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nDere vet nå at Bakken ble drept. Dere vet at det har skjedd før, fire ganger. Og dere har hørt stemmen til mannen som var sist i B-blokken den natten.\n\nHvem drepte Terje Bakken?",
+                    question: "Åpne konvolutt 3.\n\nDere vet nå at Bakken ble drept. Dere vet at det har skjedd før, fire ganger.\n\nGå gjennom dokumentene i konvolutten.\n\nHvem drepte Terje Bakken?",
                     answer: ["Knut Arnesen", "Arnesen", "Knut",
                              "legen", "lege Arnesen", "lege Knut Arnesen",
                              "dr Arnesen", "dr. Arnesen", "Dr. Knut Arnesen", "doktor Arnesen"],
