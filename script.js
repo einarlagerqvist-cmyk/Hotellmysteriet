@@ -393,6 +393,12 @@ const CONFIG = {
                                  "nådde ikke opp", "nåddeikkeop", "nådde ikke",
                                  "rekker ikke opp", "rekker ikke",
                                  "272", "283", "festepunktet", "festepunktet for høyt"],
+                        answerContains: ["forlav", "forlavt", "forkort", "forliten",
+                                 "høynok", "hoynok", "nåddeikke", "naddeikke",
+                                 "rakkikke", "rekkerikke", "ikkenå", "ikkena", "ikkeopp",
+                                 "ingenstol", "ingenkrakk", "ingenstige", "manglerstol",
+                                 "ingentingåstå", "intetåstå", "ikkenoeåstå", "ingentingå",
+                                 "forhøyt", "forhøy", "festepunkt", "283", "272"],
                         hint: "Festepunktet er 283 cm over gulvet. Hva ville Bakken trenge for å nå dit opp?"
                     }
                 },
@@ -988,7 +994,11 @@ function checkAnswer() {
     const activeAnswers = (state.followUpMode && task.followUp)
         ? (Array.isArray(task.followUp.answer) ? task.followUp.answer : [task.followUp.answer])
         : (Array.isArray(task.answer) ? task.answer : [task.answer]);
-    if (activeAnswers.some(a => answer === normalizeAnswer(a))) {
+    const activeContains = (state.followUpMode && task.followUp) ? task.followUp.answerContains : task.answerContains;
+    const isMatch = activeAnswers.some(a => answer === normalizeAnswer(a))
+        || (answer.length > 0 && Array.isArray(activeContains)
+            && activeContains.some(kw => { const k = normalizeAnswer(kw); return k.length > 0 && answer.includes(k); }));
+    if (isMatch) {
         input.classList.add("correct"); document.getElementById("task-error").textContent = "";
         if (!state.followUpMode && task.followUp) {
             enterFollowUpMode(task);
