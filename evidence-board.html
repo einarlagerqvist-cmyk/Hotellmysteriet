@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Hotellmysteriet — Bevistavlen</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600;700&display=swap">
+<style>
+:root{
+  --cork:#d8c5a1; --frame:#8f7142; --frame-hi:#c2a473;
+  --archive:#211913; --archive-2:#2c2118;
+  --paper:#f4ecd8; --paper-edge:#e7dcc0; --manila:#d8bd7e; --legal:#f3ead0; --polaroid:#fbfaf4;
+  --ink:#211a12; --ink-soft:#4f4334; --ink-faint:#7a6c56;
+  --pen:#16315c; --string:#b3261e; --string-dark:#7d160f; --stamp:#9d2a20; --cleared:#2f6b34;
+  --pin-red:#c92b22; --pin-amber:#d99a1c;
+  --ease:cubic-bezier(.2,.8,.2,1); --ease-out:cubic-bezier(.16,1,.3,1);
+  --z-decor:0; --z-strings:1; --z-cards:2; --z-active:3; --z-hud:50; --z-overlay:100;
+  --card-w:min(82vw,340px);
+}
+*,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+html,body{ height:100%; }
+body{ font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:var(--archive); -webkit-font-smoothing:antialiased; overflow:hidden; overscroll-behavior:none; }
+button{ font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+.app{ position:fixed; inset:0; }
+.screen{ position:absolute; inset:0; opacity:0; visibility:hidden; transition:opacity .45s var(--ease); }
+.screen.is-active{ opacity:1; visibility:visible; }
+
+/* ===================== ARCHIVE — clean & editorial (borrows the original's calm) ===================== */
+.archive{ position:absolute; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  background-color:#f0e6d2; color:#1a0f06;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23p)' opacity='0.14'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at top, rgba(107,76,46,.14) 0%, transparent 65%),
+    radial-gradient(ellipse at bottom, rgba(122,28,28,.06) 0%, transparent 55%);
+  background-repeat:repeat,no-repeat,no-repeat; background-size:200px 200px,100% 100%,100% 100%; }
+.archive__inner{ max-width:680px; margin:0 auto; padding:clamp(54px,12vh,108px) 24px 90px; }
+.masthead{ text-align:center; margin-bottom:clamp(38px,8vh,66px); }
+.masthead__title{ font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(1.55rem,5.5vw,2.6rem); letter-spacing:.1em; text-transform:uppercase; color:#6b4c2e; }
+.masthead__sub{ font-family:'Special Elite',monospace; font-size:.7rem; letter-spacing:.42em; text-transform:uppercase; color:rgba(26,15,6,.5); margin-top:14px; }
+.masthead__rule{ width:58px; height:1px; background:#6b4c2e; opacity:.4; margin:24px auto 0; }
+.cases{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:14px; }
+.case{ position:relative; text-align:left; cursor:pointer; border-radius:12px; padding:22px 22px 20px; background:rgba(255,255,255,.4); color:#1a0f06; border:1px solid rgba(107,76,46,.16); box-shadow:0 1px 10px rgba(107,76,46,.05); transition:transform .22s var(--ease-out), box-shadow .22s var(--ease-out), border-color .22s; -webkit-tap-highlight-color:transparent; font-family:inherit; }
+.case:hover,.case:focus-visible{ transform:translateY(-3px); border-color:rgba(107,76,46,.4); box-shadow:0 12px 26px rgba(107,76,46,.12); outline:none; }
+.case__no{ font-family:'Special Elite',monospace; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(26,15,6,.4); }
+.case__name{ font-family:'Playfair Display',serif; font-weight:600; font-size:1.34rem; line-height:1.16; margin:9px 0 14px; color:#2a1c0c; }
+.case__meta{ display:flex; align-items:center; gap:9px; font-size:.76rem; color:rgba(26,15,6,.55); }
+.case__meta b{ color:#6b4c2e; font-weight:600; }
+.case__meta .dot{ width:3px; height:3px; border-radius:50%; background:rgba(107,76,46,.4); }
+.case--soon{ opacity:.5; cursor:default; }
+.case--soon:hover{ transform:none; box-shadow:0 1px 10px rgba(107,76,46,.05); border-color:rgba(107,76,46,.16); }
+.case__flag{ position:absolute; top:16px; right:16px; font-family:'Special Elite',monospace; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(26,15,6,.4); border:1px solid rgba(107,76,46,.25); padding:3px 9px; border-radius:20px; }
+
+/* ===================== BOARD — corkboard + transform camera ===================== */
+.board{ position:absolute; inset:0; background-color:var(--cork); }
+.board__frame{ position:absolute; inset:0; overflow:hidden;
+  background-color:var(--cork);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='ck'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.36 0 0 0 0 0.26 0 0 0 0 0.14 0.16 0 0 0 -0.015'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23ck)' opacity='0.5'/%3E%3C/svg%3E"),
+    radial-gradient(150% 100% at 50% -12%, rgba(255,250,236,.34), transparent 62%),
+    radial-gradient(120% 120% at 50% 122%, rgba(120,90,55,.1), transparent 55%);
+  background-repeat:repeat,no-repeat,no-repeat; background-size:200px 200px,100% 100%,100% 100%; }
+
+.hud{ position:absolute; top:0; left:0; right:0; z-index:var(--z-hud); display:flex; align-items:center; gap:12px; padding:14px clamp(14px,4vw,26px); background:linear-gradient(180deg,rgba(245,237,218,.6),transparent); pointer-events:none; }
+.hud>*{ pointer-events:auto; }
+.hud__back{ display:inline-flex; align-items:center; gap:7px; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:#4a3118; background:rgba(250,245,234,.82); padding:9px 14px; border-radius:6px; border:1px solid rgba(107,76,46,.28); }
+.hud__back:hover{ background:rgba(250,245,234,.96); }
+.hud__title{ flex:1; min-width:0; text-align:center; }
+.hud__name{ font-family:'Playfair Display',serif; font-weight:700; font-size:1.18rem; letter-spacing:.02em; color:#3a2a14; line-height:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hud__progress{ font-size:.62rem; letter-spacing:.26em; text-transform:uppercase; color:rgba(74,49,24,.6); margin-top:3px; }
+.hud__timer{ font-family:'Playfair Display',serif; font-weight:600; font-size:1.05rem; letter-spacing:.06em; color:#4a3118; background:rgba(250,245,234,.82); padding:9px 12px; border-radius:6px; border:1px solid rgba(107,76,46,.28); min-width:92px; text-align:center; }
+.hud--dim{ opacity:.25; transition:opacity .5s var(--ease); }   /* fades while the camera flies */
+
+.viewport{ position:absolute; inset:0; z-index:2; overflow:hidden; touch-action:none; cursor:default; }
+.world{ position:relative; transform-origin:0 0; will-change:transform; backface-visibility:hidden; }
+
+.strings{ position:absolute; top:0; left:0; z-index:var(--z-strings); pointer-events:none; overflow:visible; }
+.strings path{ fill:none; stroke:var(--string); stroke-width:4.4; stroke-linecap:round; filter:drop-shadow(0 1.5px 1.5px rgba(0,0,0,.42)); }
+.strings path.is-future{ stroke:var(--string); opacity:.6; stroke-width:3.2; filter:none; }
+.strings path.draw{ stroke-dasharray:var(--len); stroke-dashoffset:var(--len); animation:stringDraw .9s var(--ease-out) forwards; }
+@keyframes stringDraw{ to{ stroke-dashoffset:0; } }
+
+/* ===================== EVIDENCE CARDS ===================== */
+.evid{ position:absolute; z-index:var(--z-cards); width:var(--card-w); transform:rotate(var(--rot,0deg)); transition:opacity .5s var(--ease), filter .5s var(--ease); }
+.evid__pin{ position:absolute; top:-28px; left:50%; z-index:5; width:36px; height:45px; transform:translateX(-50%); filter:drop-shadow(0 4px 4px rgba(60,40,20,.32)); }
+.pin{ width:22px; height:28px; position:absolute; transform:translateX(-50%);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 50'%3E%3Cdefs%3E%3CradialGradient id='g' cx='37%25' cy='29%25' r='72%25'%3E%3Cstop offset='0%25' stop-color='%23ff9686'/%3E%3Cstop offset='42%25' stop-color='%23ed3a29'/%3E%3Cstop offset='100%25' stop-color='%23a5150b'/%3E%3C/radialGradient%3E%3ClinearGradient id='m' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23d6d6d6'/%3E%3Cstop offset='45%25' stop-color='%238f8f8f'/%3E%3Cstop offset='100%25' stop-color='%23636363'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cellipse cx='20' cy='47' rx='8.5' ry='2.3' fill='%23000' opacity='0.2'/%3E%3Cpath d='M18.6 23 L20 45 L21.4 23 Z' fill='url(%23m)'/%3E%3Cellipse cx='20' cy='23.5' rx='8.4' ry='4' fill='%23a5150b'/%3E%3Ccircle cx='20' cy='15' r='12.4' fill='url(%23g)'/%3E%3Cellipse cx='14.8' cy='9.5' rx='3.7' ry='2.7' fill='%23fff' opacity='0.55'/%3E%3C/svg%3E") center/contain no-repeat; }
+.evid__pin .pin{ display:block; position:static; transform:none; width:100%; height:100%; }
+.evid__body{ position:relative; }
+.paper{ padding:26px 22px 24px; color:var(--ink); box-shadow:0 12px 24px rgba(74,49,24,.2),0 3px 7px rgba(74,49,24,.14); }
+.evid__label{ font-size:.6rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px; }
+.evid__q{ font-size:.96rem; line-height:1.62; white-space:pre-wrap; color:var(--ink); }
+.evid__photo{ height:120px; margin:-6px -4px 14px; border-radius:1px; background:linear-gradient(135deg,rgba(0,0,0,.18),transparent 60%), repeating-linear-gradient(48deg,rgba(0,0,0,.05) 0 6px,transparent 6px 12px), linear-gradient(160deg,#9a8f7d,#6c6253); display:flex; align-items:flex-end; padding:8px 10px; font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.78); box-shadow:inset 0 0 30px rgba(0,0,0,.35); }
+.evid--photo .paper{ background:linear-gradient(180deg,var(--polaroid),#efece0); padding:14px 14px 0; border-radius:2px; }
+.evid--photo .evid__caption{ font-family:'Caveat',cursive; font-weight:600; font-size:1.32rem; color:#34557a; text-align:center; padding:12px 6px 18px; line-height:1.05; }
+.evid--photo .evid__pad{ padding:0 8px 16px; }
+.evid--note .paper{ background:linear-gradient(180deg,rgba(0,0,0,.04),transparent 5%), repeating-linear-gradient(180deg,transparent 0 27px,rgba(40,80,140,.28) 27px 28px), linear-gradient(180deg,var(--legal),#ece08f); background-size:100% 100%,100% 28px,100% 100%; padding:34px 20px 30px 40px; box-shadow:none; filter:drop-shadow(0 11px 18px rgba(74,49,24,.22));
+  clip-path:polygon(0% 7px,8% 1px,16% 8px,25% 2px,33% 9px,42% 3px,50% 8px,58% 2px,66% 9px,75% 3px,83% 8px,92% 2px,100% 7px,100% calc(100% - 6px),92% calc(100% - 1px),83% calc(100% - 8px),75% calc(100% - 2px),66% calc(100% - 9px),58% calc(100% - 3px),50% calc(100% - 8px),42% calc(100% - 2px),33% calc(100% - 9px),25% calc(100% - 3px),16% calc(100% - 8px),8% calc(100% - 1px),0% calc(100% - 6px)); }
+.evid--note .paper::before{ content:""; position:absolute; top:0; bottom:0; left:26px; width:1.5px; background:rgba(170,40,40,.45); }
+.evid--doc .paper{ background:linear-gradient(180deg,var(--paper),var(--paper-edge)); border-radius:1px; }
+.evid--doc .dochead{ display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:2px solid var(--ink); padding-bottom:8px; margin-bottom:14px; }
+.evid--doc .dochead b{ font-family:'Playfair Display',serif; font-weight:700; letter-spacing:.18em; font-size:.84rem; }
+.evid--doc .dochead span{ font-size:.58rem; letter-spacing:.1em; color:var(--ink-faint); }
+
+.evid.is-locked{ opacity:.74; filter:grayscale(.5) brightness(.97); }
+.evid.is-locked .evid__body{ pointer-events:none; }
+.evid.is-locked .sealed{ display:flex; } .evid.is-locked .reveal{ display:none; }
+.sealed{ display:none; flex-direction:column; align-items:center; justify-content:center; gap:14px; min-height:200px; padding:30px 22px; background:repeating-linear-gradient(45deg,rgba(80,60,30,.06) 0 10px,transparent 10px 20px), linear-gradient(160deg,#cdbb94,#b6a378); border:1px dashed rgba(60,42,18,.5); }
+.sealed__bag{ font-size:1.9rem; opacity:.7; }
+.sealed__stamp{ font-family:'Playfair Display',serif; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--stamp); border:3px solid var(--stamp); padding:7px 14px; border-radius:4px; transform:rotate(-6deg); opacity:.82; font-size:.82rem; }
+.sealed__no{ font-size:.62rem; letter-spacing:.2em; color:var(--ink-soft); text-transform:uppercase; }
+
+.evid.is-active{ z-index:var(--z-active); }
+.evid.is-active::before{ content:""; position:absolute; inset:-14px; z-index:-1; border-radius:12px; pointer-events:none; background:radial-gradient(closest-side,rgba(214,154,28,.5),rgba(214,154,28,.12) 58%,transparent 78%); animation:cardGlow 2.6s ease-in-out infinite; }
+@keyframes cardGlow{ 0%,100%{ opacity:.4; transform:scale(.95); } 50%{ opacity:.92; transform:scale(1.04); } }
+.evid.is-active .reveal{ display:block; } .evid.is-active .sealed{ display:none; }
+.evid__tab{ position:absolute; top:-12px; right:14px; z-index:6; font-family:'Playfair Display',serif; font-weight:600; font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:#3a2a0c; background:linear-gradient(180deg,#e7b53c,#d29a1c); padding:4px 9px; border-radius:2px; box-shadow:0 3px 6px rgba(0,0,0,.35); transform:rotate(3deg); display:none; }
+.evid.is-active .evid__tab{ display:inline-block; }
+
+.evid.is-solved .answer-area{ display:none; } .evid.is-solved .reveal{ display:block; } .evid.is-solved .sealed{ display:none; }
+.evid.is-solved::after{ content:attr(data-stamp); position:absolute; top:38%; left:50%; transform:translate(-50%,-50%) rotate(-13deg); font-family:'Playfair Display',serif; font-weight:700; font-size:1.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--cleared); border:4px solid var(--cleared); padding:6px 16px; border-radius:6px; opacity:.78; box-shadow:0 0 0 2px rgba(47,107,52,.18); pointer-events:none; z-index:7; white-space:nowrap; }
+.evid.is-solved.gaveup::after{ color:var(--stamp); border-color:var(--stamp); }
+.solved-answer{ display:none; margin-top:14px; padding-top:12px; border-top:1px dashed rgba(60,42,18,.4); }
+.evid.is-solved .solved-answer{ display:block; }
+.solved-answer .lbl{ font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-faint); }
+.solved-answer .val{ font-family:'Caveat',cursive; font-weight:700; font-size:1.7rem; color:var(--string); line-height:1; margin-top:2px; }
+
+.answer-area{ margin-top:18px; }
+.answer-row{ display:flex; gap:8px; }
+.answer-input{ flex:1; min-width:0; padding:12px 14px; font-family:'Special Elite',monospace; font-size:1rem; text-align:center; text-transform:uppercase; letter-spacing:.12em; color:var(--ink); background:rgba(255,255,255,.6); border:1px solid rgba(60,42,18,.45); border-radius:3px; outline:none; }
+.answer-input:focus{ border-color:var(--ink); box-shadow:0 0 0 2px rgba(33,26,18,.18); }
+.answer-input.wrong{ border-color:var(--stamp); animation:shake .4s ease; }
+.answer-input.right{ border-color:var(--cleared); }
+.answer-submit{ flex:0 0 auto; padding:12px 18px; background:var(--ink); color:var(--paper); border-radius:3px; font-size:.82rem; letter-spacing:.12em; text-transform:uppercase; transition:background .2s; }
+.answer-submit:hover{ background:#3a2c1a; }
+.err{ min-height:18px; margin-top:7px; font-size:.74rem; color:var(--stamp); text-align:center; }
+.toolrow{ display:flex; gap:8px; margin-top:12px; justify-content:center; flex-wrap:wrap; }
+.tool{ font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; padding:11px 16px; border-radius:3px; border:1px dashed rgba(60,42,18,.4); color:var(--ink-soft); background:transparent; }
+.tool:hover{ border-color:var(--ink); color:var(--ink); }
+.tool--giveup{ border-color:rgba(157,42,32,.4); color:var(--stamp); }
+.tool--giveup:hover{ border-color:var(--stamp); }
+.hint{ margin-top:12px; padding:12px 14px; background:rgba(157,42,32,.09); border:1px solid rgba(157,42,32,.32); border-radius:3px; font-family:'Inter',sans-serif; font-weight:400; font-size:.9rem; line-height:1.5; color:#7a2018; }
+.hint b{ display:block; font-family:'Playfair Display',serif; font-weight:600; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--stamp); margin-bottom:4px; }
+.evid--brief .evid__q{ font-size:.92rem; }
+.brief-start{ margin-top:16px; width:100%; padding:13px; background:var(--ink); color:var(--paper); border-radius:3px; font-size:.84rem; letter-spacing:.14em; text-transform:uppercase; }
+.brief-start:hover{ background:#3a2c1a; }
+
+/* ===================== DECOR — varied pinned elements ===================== */
+.decor{ position:absolute; z-index:var(--z-decor); pointer-events:none; transform:rotate(var(--r,0deg)); filter:saturate(.72) brightness(1); opacity:.8; }
+.decor .pin{ top:-16px; left:50%; width:24px; height:30px; filter:drop-shadow(0 3px 3px rgba(60,40,20,.3)); }
+.decor--photo .decor__img{ width:118px; height:92px; background:linear-gradient(160deg,#9a8f7d,#6c6253); border:8px solid #f7f3e8; border-bottom-width:22px; box-shadow:0 9px 16px rgba(0,0,0,.35); }
+.decor--map{ width:152px; height:110px; background:linear-gradient(180deg,#e9dcbd,#dcc99b); border:1px solid rgba(0,0,0,.1); box-shadow:0 9px 16px rgba(0,0,0,.3); padding:9px; }
+.decor--map .decor__lines{ width:100%; height:100%; background-image:repeating-linear-gradient(38deg,rgba(120,80,40,.28) 0 1px,transparent 1px 15px), repeating-linear-gradient(-52deg,rgba(120,80,40,.22) 0 1px,transparent 1px 22px); }
+.decor__tag{ position:absolute; bottom:7px; right:9px; font-size:.5rem; letter-spacing:.2em; text-transform:uppercase; color:#7a6444; }
+.decor--news{ width:120px; height:142px; background:#efe7d2; box-shadow:0 9px 16px rgba(0,0,0,.3); padding:11px; }
+.decor--news .decor__col{ width:100%; height:100%; background-image:repeating-linear-gradient(180deg,rgba(40,30,20,.4) 0 2px,transparent 2px 7px); }
+.decor--print{ width:94px; height:118px; background:#f4ecd8; box-shadow:0 9px 16px rgba(0,0,0,.3); display:flex; align-items:center; justify-content:center; }
+.decor--print .decor__fp{ width:50px; height:66px; border-radius:50%/45%; background:repeating-radial-gradient(ellipse at 50% 50%,transparent 0 2px,rgba(30,20,12,.5) 2px 3px,transparent 3px 5px); }
+.decor--poster{ width:108px; height:146px; background:linear-gradient(180deg,#efe4c6,#e2d2a6); box-shadow:0 9px 16px rgba(0,0,0,.3); padding:9px; text-align:center; }
+.decor--poster .decor__face{ width:100%; height:62px; background:linear-gradient(160deg,#8a7f6d,#5f5648); margin-bottom:8px; }
+.decor--poster .decor__bars{ height:40px; background-image:repeating-linear-gradient(180deg,rgba(40,30,20,.4) 0 2px,transparent 2px 8px); margin-bottom:6px; }
+.decor--poster .decor__word{ font-family:'Playfair Display',serif; font-weight:700; font-size:.56rem; letter-spacing:.18em; color:#5b3b1e; }
+.decor--sticky{ width:108px; min-height:102px; padding:14px 12px; display:flex; align-items:center; text-align:center; font-family:'Caveat',cursive; font-weight:700; font-size:1.18rem; line-height:1.05; color:#3a2f12; box-shadow:0 8px 14px rgba(0,0,0,.26); opacity:.94; }
+.decor--sticky.s-y{ background:#ecdd92; } .decor--sticky.s-p{ background:#e7bcc1; } .decor--sticky.s-b{ background:#bfd2e6; } .decor--sticky.s-g{ background:#cfe0b9; }
+.decor--sticky .tape{ position:absolute; top:-7px; left:50%; transform:translateX(-50%) rotate(-3deg); width:46px; height:16px; background:rgba(245,240,220,.55); box-shadow:0 1px 2px rgba(0,0,0,.18); }
+.decor--question{ background:#f4ecd5; padding:9px 16px; box-shadow:0 8px 14px rgba(0,0,0,.26); }
+.decor--question .q__word{ font-family:'Caveat',cursive; font-weight:700; font-size:1.55rem; line-height:1; color:#3a2f1a; }
+.decor--question .q__word span{ color:#b3261e; }
+.decor--suspect{ width:104px; background:linear-gradient(180deg,#f2ead4,#e5d9b8); padding:9px 9px 7px; box-shadow:0 9px 16px rgba(0,0,0,.3); text-align:center; }
+.decor--suspect .sus__face{ width:100%; height:84px; display:block; }
+.decor--suspect .sus__label{ font-family:'Special Elite',monospace; font-size:.54rem; letter-spacing:.1em; text-transform:uppercase; color:#6a5a3c; margin-top:3px; border-top:1px solid rgba(60,42,18,.25); padding-top:4px; }
+
+/* ===================== HINT / NAV / WIN ===================== */
+.nav-pulse{ position:absolute; bottom:22px; left:50%; transform:translateX(-50%); z-index:var(--z-hud); font-size:.64rem; letter-spacing:.2em; text-transform:uppercase; color:#fff3df; background:rgba(30,18,6,.6); padding:8px 16px; border-radius:20px; border:1px solid rgba(255,236,196,.3); display:none; align-items:center; gap:8px; transition:opacity .4s var(--ease); }
+.overlay{ position:absolute; inset:0; z-index:var(--z-overlay); display:none; align-items:center; justify-content:center; padding:22px; background:radial-gradient(120% 120% at 50% 0%,rgba(20,12,4,.55),rgba(10,6,2,.86)); }
+.overlay.is-open{ display:flex; animation:fade .5s var(--ease); }
+.verdict{ position:relative; max-width:440px; width:100%; max-height:88vh; overflow-y:auto; background:linear-gradient(180deg,var(--paper),var(--paper-edge)); color:var(--ink); padding:34px 26px 28px; border-radius:2px; box-shadow:0 30px 70px rgba(0,0,0,.6); transform:rotate(-.6deg); animation:slam .55s var(--ease-out); }
+.verdict .pin{ position:absolute; top:-15px; left:50%; }
+.verdict__stamp{ position:absolute; top:14px; right:14px; font-family:'Playfair Display',serif; font-weight:700; font-size:1.05rem; letter-spacing:.16em; color:var(--stamp); border:4px double var(--stamp); padding:8px 14px; border-radius:6px; transform:rotate(9deg); opacity:.82; }
+.verdict__kicker{ font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--ink-faint); }
+.verdict__title{ font-family:'Playfair Display',serif; font-weight:700; font-size:2.1rem; line-height:1.05; margin:6px 0 16px; color:#2a2114; }
+.verdict__body{ font-size:.92rem; line-height:1.65; white-space:pre-wrap; }
+.verdict__time{ margin:18px 0; text-align:center; }
+.verdict__time .t{ font-family:'Playfair Display',serif; font-weight:700; font-size:2.6rem; color:var(--ink); letter-spacing:.04em; }
+.verdict__time .l{ font-size:.6rem; letter-spacing:.26em; text-transform:uppercase; color:var(--ink-faint); }
+.verdict__back{ width:100%; padding:13px; margin-top:8px; background:var(--ink); color:var(--paper); border-radius:3px; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; }
+.result-hero{ text-align:center; margin:12px 0 16px; }
+.result-hero__time{ font-family:'Playfair Display',serif; font-weight:700; font-size:2.8rem; color:var(--ink); letter-spacing:.04em; line-height:1; }
+.result-hero__rank{ display:inline-block; margin-top:10px; font-family:'Special Elite',monospace; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:#7a2018; background:rgba(157,42,32,.1); border:1px solid rgba(157,42,32,.32); padding:6px 14px; border-radius:20px; }
+.tidstavle{ margin:4px 0 18px; }
+.tidstavle__h{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; border-bottom:2px solid rgba(60,40,18,.25); padding-bottom:6px; margin-bottom:6px; }
+.tidstavle__title{ font-family:'Playfair Display',serif; font-weight:700; font-size:1.4rem; color:#2a2114; line-height:1; }
+.tidstavle__sub{ font-size:.56rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); text-align:right; }
+.tid-list{ display:flex; flex-direction:column; }
+.tid-row{ display:grid; grid-template-columns:26px 1fr auto; align-items:center; gap:10px; padding:8px 8px; border-bottom:1px dashed rgba(60,40,18,.18); font-size:.9rem; }
+.tid-row:last-child{ border-bottom:none; }
+.tid-rank{ font-family:'Playfair Display',serif; font-weight:700; text-align:center; color:#9a8a6c; }
+.tid-row.r1 .tid-rank{ color:#c79a2e; } .tid-row.r2 .tid-rank{ color:#9a9a96; } .tid-row.r3 .tid-rank{ color:#b06b32; }
+.tid-team{ color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tid-time{ font-family:'Playfair Display',serif; font-weight:600; color:var(--ink-soft); }
+.tid-row.you{ background:rgba(214,154,28,.18); border:1px solid rgba(157,42,32,.4); border-radius:6px; }
+.tid-row.you .tid-team{ font-weight:700; }
+.tid-row.you .tid-time{ color:var(--string); }
+.tid-you-tag{ font-family:'Caveat',cursive; font-weight:700; color:var(--string); font-size:1.05rem; }
+.tid-gap{ text-align:center; color:var(--ink-faint); padding:3px; letter-spacing:.35em; }
+.solution{ margin-top:6px; }
+.solution__h{ font-family:'Playfair Display',serif; font-weight:700; font-size:.64rem; letter-spacing:.18em; text-transform:uppercase; color:#5a3c18; margin-bottom:6px; }
+@keyframes shake{ 0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-7px); } 75%{ transform:translateX(7px); } }
+@keyframes fade{ from{ opacity:0; } to{ opacity:1; } }
+@keyframes slam{ from{ opacity:0; transform:rotate(-.6deg) scale(.9) translateY(14px); } to{ opacity:1; transform:rotate(-.6deg) scale(1) translateY(0); } }
+/* ===================== DASHBOARD — investigation HQ ===================== */
+.dash{ position:absolute; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch; background-color:#27332c;
+  background-image:
+    radial-gradient(130% 70% at 50% -6%, rgba(255,236,190,.10), transparent 55%),
+    linear-gradient(180deg,#2c3a31,#212c26 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0 0 0 -0.4'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23f)'/%3E%3C/svg%3E");
+  background-size:auto,auto,150px 150px; }
+.dash__inner{ max-width:1060px; margin:0 auto; padding:clamp(20px,4vw,40px) clamp(16px,4vw,32px) 70px; }
+.dash__head{ display:flex; align-items:center; gap:16px; margin-bottom:26px; flex-wrap:wrap; }
+.dash__back{ position:static; }
+.dash__titlewrap{ flex:1; min-width:160px; }
+.dash__kicker{ font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:#cdb98c; }
+.dash__title{ font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(1.8rem,5vw,2.7rem); color:#f4ecd9; line-height:1; margin-top:6px; }
+.dash__date{ font-family:'Special Elite',monospace; font-size:.68rem; color:#e6dabf; border:1px solid rgba(232,220,192,.32); padding:7px 13px; transform:rotate(-1.4deg); background:rgba(0,0,0,.22); white-space:nowrap; }
+
+.kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+@media(max-width:640px){ .kpis{ grid-template-columns:repeat(2,1fr); } }
+.kpi{ position:relative; background:linear-gradient(180deg,var(--paper),var(--paper-edge)); border-radius:4px; padding:20px 16px 16px; box-shadow:0 12px 24px rgba(0,0,0,.34); transform:rotate(var(--r,0deg)); }
+.kpi .pin{ top:-15px; left:24px; }
+.kpi__v{ font-family:'Playfair Display',serif; font-weight:700; font-size:2.1rem; color:#2e1f0c; line-height:1; }
+.kpi__v .star{ color:#d99a1c; font-size:1.5rem; }
+.kpi__l{ font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); margin-top:9px; }
+.kpi__n{ font-size:.58rem; color:#8a7a5c; margin-top:3px; }
+
+.dash__cols{ display:grid; grid-template-columns:1.15fr .85fr; gap:18px; }
+@media(max-width:820px){ .dash__cols{ grid-template-columns:1fr; } }
+.dash__col{ display:flex; flex-direction:column; gap:18px; }
+.panel{ background:linear-gradient(180deg,#fbf6e9,#f1e7cf); border-radius:7px; padding:18px 18px 20px; box-shadow:0 14px 28px rgba(0,0,0,.32); }
+.panel__h{ font-family:'Playfair Display',serif; font-weight:700; font-size:.74rem; letter-spacing:.16em; text-transform:uppercase; color:#5a3c18; border-bottom:2px solid rgba(60,40,18,.22); padding-bottom:8px; margin-bottom:14px; }
+
+.bars{ display:flex; flex-direction:column; gap:11px; }
+.bar{ display:grid; grid-template-columns:84px 1fr 30px; align-items:center; gap:10px; font-size:.72rem; }
+.bar__name{ color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bar__track{ height:15px; background:rgba(60,40,18,.1); border-radius:2px; overflow:hidden; }
+.bar__fill{ height:100%; width:0; border-radius:2px; background:linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,0) 55%), var(--c,#b3261e); box-shadow:inset 0 -2px 3px rgba(0,0,0,.18); transition:width .9s var(--ease-out); }
+.bar__n{ font-family:'Playfair Display',serif; font-weight:600; text-align:right; color:#2e1f0c; }
+
+.ctable{ display:flex; flex-direction:column; }
+.crow{ display:grid; grid-template-columns:1fr auto; gap:5px 12px; padding:11px 0; border-bottom:1px dashed rgba(60,40,18,.2); }
+.crow:last-child{ border-bottom:none; }
+.crow__name{ font-weight:600; color:#2e1f0c; font-size:.82rem; }
+.crow__rating{ color:#d99a1c; font-size:.74rem; white-space:nowrap; }
+.crow__rating span{ color:#b8a98c; }
+.crow__meta{ grid-column:1/-1; display:flex; gap:14px; flex-wrap:wrap; font-size:.65rem; color:var(--ink-faint); }
+.crow__meta b{ color:var(--ink-soft); font-weight:600; }
+
+.leaders{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+.leaders li{ display:flex; align-items:center; gap:12px; padding:9px 11px; background:rgba(255,255,255,.42); border-radius:4px; }
+.lead__rank{ font-family:'Playfair Display',serif; font-weight:700; width:24px; text-align:center; color:#9a8a6c; font-size:1.05rem; }
+.lead__rank.gold{ color:#c79a2e; } .lead__rank.silver{ color:#9a9a96; } .lead__rank.bronze{ color:#b06b32; }
+.lead__info{ flex:1; min-width:0; }
+.lead__team{ font-weight:600; font-size:.8rem; color:#2e1f0c; }
+.lead__myst{ font-size:.62rem; color:var(--ink-faint); }
+.lead__time{ font-family:'Playfair Display',serif; font-weight:600; color:#b3261e; }
+
+.feedback{ display:flex; flex-wrap:wrap; gap:12px; }
+.note{ width:calc(50% - 6px); min-height:104px; padding:13px 13px 15px; box-shadow:0 9px 16px rgba(0,0,0,.24); transform:rotate(var(--r,0deg)); display:flex; flex-direction:column; }
+@media(max-width:480px){ .note{ width:100%; } }
+.note.y{ background:#f3df6b; } .note.p{ background:#f2a8b2; } .note.b{ background:#a9c9ee; } .note.g{ background:#c1e0a2; }
+.note__stars{ color:#9d2a20; font-size:.78rem; letter-spacing:2px; }
+.note__stars span{ color:rgba(60,42,18,.3); }
+.note__text{ font-family:'Caveat',cursive; font-weight:600; font-size:1.16rem; line-height:1.12; color:#33290f; margin:5px 0 8px; flex:1; }
+.note__team{ font-family:'Special Elite',monospace; font-size:.54rem; letter-spacing:.1em; text-transform:uppercase; color:#5a4a2c; }
+
+.dash-link{ display:block; width:max-content; margin:40px auto 0; font-family:'Special Elite',monospace; font-size:.66rem; letter-spacing:.22em; text-transform:uppercase; color:#6b4c2e; background:transparent; border:1px solid rgba(107,76,46,.3); padding:12px 24px; border-radius:8px; transition:.2s; }
+.dash-link:hover{ background:rgba(107,76,46,.08); border-color:#6b4c2e; color:#4a3118; }
+
+@media (prefers-reduced-motion:reduce){ *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.12s !important; } .strings path.draw{ stroke-dashoffset:0; } .bar__fill{ transition:none; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <section id="screen-menu" class="screen is-active">
+    <div class="archive"><div class="archive__inner">
+      <header class="masthead">
+        <h1 class="masthead__title">Hotellmysteriet</h1>
+        <div class="masthead__sub">Uoppklarte saker</div>
+        <div class="masthead__rule"></div>
+      </header>
+      <div id="cases" class="cases"></div>
+      <button class="dash-link" id="btn-open-dash">◷ Åpne etterforskningssentralen ▸</button>
+    </div></div>
+  </section>
+
+  <section id="screen-board" class="screen">
+    <div class="board"><div class="board__frame">
+      <div class="hud" id="hud">
+        <button class="hud__back" id="btn-back">◂ Arkiv</button>
+        <div class="hud__title"><div class="hud__name" id="board-name"></div><div class="hud__progress" id="board-progress"></div></div>
+        <div class="hud__timer" id="board-timer">00:00</div>
+      </div>
+      <div class="viewport" id="viewport"><div class="world" id="world"><svg class="strings" id="strings" aria-hidden="true"></svg></div></div>
+    </div></div>
+
+    <div class="overlay" id="overlay"><div class="verdict">
+      <span class="pin" style="--pin-c:var(--pin-red)"></span>
+      <span class="verdict__stamp">Oppklart</span>
+      <div class="verdict__kicker">Sakens konklusjon</div>
+      <h2 class="verdict__title">Saken er løst</h2>
+      <div class="result-hero"><div class="result-hero__time" id="final-time">00:00</div><div class="result-hero__rank" id="final-rank"></div></div>
+      <div class="tidstavle">
+        <div class="tidstavle__h"><span class="tidstavle__title">Tidstavlen</span><span class="tidstavle__sub" id="tid-sub"></span></div>
+        <div id="tid-list" class="tid-list"></div>
+      </div>
+      <div class="solution"><div class="solution__h">Løsningen</div><p class="verdict__body" id="final-message"></p></div>
+      <button class="verdict__back" id="btn-win-back">Tilbake til arkivet</button>
+    </div></div>
+  </section>
+
+  <section id="screen-dashboard" class="screen">
+    <div class="dash"><div class="dash__inner">
+      <header class="dash__head">
+        <button class="hud__back dash__back" id="btn-dash-back">◂ Arkiv</button>
+        <div class="dash__titlewrap"><div class="dash__kicker">Politiets etterforskningssentral</div><h1 class="dash__title">Saksoversikt</h1></div>
+        <div class="dash__date" id="dash-date"></div>
+      </header>
+      <div id="dash-kpis" class="kpis"></div>
+      <div class="dash__cols">
+        <div class="dash__col">
+          <section class="panel"><h2 class="panel__h">Spill per sak</h2><div id="dash-bars" class="bars"></div></section>
+          <section class="panel"><h2 class="panel__h">Saksstatistikk</h2><div id="dash-cases" class="ctable"></div></section>
+        </div>
+        <div class="dash__col">
+          <section class="panel"><h2 class="panel__h">Hurtigste lag</h2><ol id="dash-leaders" class="leaders"></ol></section>
+          <section class="panel"><h2 class="panel__h">Vitneutsagn</h2><div id="dash-feedback" class="feedback"></div></section>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================================
+   DATA
+   ========================================================================= */
+const MYSTERIES = [
+  {
+    id:"hafslund", name:"Mysteriet på Hafslund Hovedgård", accent:"#9d2a20", count:3, langs:"NO / EN", venue:"Hovedgård",
+    brief:"Velkommen, etterforsker. Bla gjennom konvoluttene dere har fått utdelt — avhør, brev og dokumenter. Løs ett bevis av gangen. Hint koster 5 minutter i strafftid. Lykke til.",
+    tasks:[
+      { question:"For å komme videre i mysteriet må dere finne ut hvem som løy i avhøret sitt.\n\nHva er navnet på løgneren?", answer:["Butleren","butler","Line","line hansen","linehansen"], hint:"Det er noen som lyver om tidslinjen sin.", caption:"Avhør #1" },
+      { question:"For å komme videre i mysteriet må dere finne ut hvem den hemmelige gjesten er.\n\nHva er navnet på den hemmelige gjesten?", answer:["jacobjuel","jacob","jacob Juel"], hint:"Sjekk Norske Intelligenz-Sedler mot gjesteboken. Let etter et anagram.", caption:"Gjesteboken" },
+      { question:"Hvem drepte Herman Wedel Jarlsberg?", answer:["marcus","marcusrosenkrantz","rosenkrantz"], hint:"Se nærmere på signaturen på vinbestillingen og trusselbrevet.", caption:"Signaturen" }
+    ],
+    finalMessage:"Gratulerer!\n\nDere har sett gjennom løgnene og funnet sannheten som har vært skjult i skyggene på Hafslund.\n\nDet var Marcus Gjøe Rosenkrantz som drepte Herman Wedel Jarlsberg. Drivkraften var ren grådighet. Marcus var ute etter den enorme arven til Maren. Han tilsatte giften i hennes glass, men i forvirringen da gjestene byttet plasser, havnet Herman ved feil glass.",
+    board:[
+      {team:"De Skarpe",t:1371},{team:"Kveldsravnene",t:1622},{team:"Spor & Sånn",t:1840},{team:"Lupe & Co",t:2015},{team:"Nattevaktene",t:2230},{team:"Bordet 7",t:2480},{team:"Grønn Gruppe",t:2702},{team:"Vinklubben",t:2955},{team:"De Forvirrede",t:3210}
+    ]
+  },
+  {
+    id:"ramme", name:"Mysteriet på Ramme", accent:"#3a6ea5", count:9, langs:"NO / EN", venue:"Fjordhotell",
+    brief:"Sett dere godt inn i saken. Les gjennom alle sidene dere har fått: avhørene, brevene og dokumentene.\n\nEn høstnatt i 1893 ble kunstmesenen Fridtjof Lowthau funnet slått i hjel i hotellets kunstgalleri. Samtidig forsvant et verdifullt maleri. Saken ble aldri løst — før nå.",
+    tasks:[
+      { question:"Åpne konvolutt 1. For å løse en hundre år gammel floke begynner vi der kunnskapen oppbevares.\n\nInne på biblioteket skjuler det seg en firesifret kode. Fire bøker forteller om en mørk periode i Norges historie. Tallene på bokryggene gir koden.", answer:["4567"], hint:"Se etter bøker som handler om krigen i Norge.", caption:"Biblioteket" },
+      { question:"Adgangskortet leder dit mordet skjedde — kunstgalleriet. Et maleri har sett alt:\n\n«Vi bærer verken våpen eller skyld, men vi satt med fasiten fra første stund.» Hva heter maleriet?", answer:["øyevitne","øyevitner","øyevidne","øyevidner"], hint:"Hva kaller man de som ser en kriminell handling, men ikke deltar?", caption:"Galleriet" },
+      { question:"Maleriets historie skjuler koden til neste sted. Skriv inn den firesifrede koden.", answer:["1895"], hint:"Undersøk informasjonen om maleriet. Årstallet er koden.", caption:"Kode" },
+      { question:"Åpne konvolutt 2. Finn ut hvor tyven gjemte maleriet. Navnet på gjemmestedet gir neste oppgave.", answer:["wells fargo","wellsfargo","overland express","wellsfargooverlandexpress"], hint:"Finn vognen som fraktet brev.", caption:"Gjemmestedet" },
+      { question:"Dere vet hvor maleriet ble gjemt. Men hvem er tyven?", answer:["Odine Krong","Odine","krong","odinekrong"], hint:"Sammenlign brevet med dokumentene. Se etter likheter i skrivestil.", caption:"Tyven" },
+      { question:"Åpne konvolutt 3. Odine hevder hun flyktet opp Kongetrappen. Tell alle øynene du kan få øyekontakt med på vei opp. Antallet er koden.", answer:["10","0010","ti"], hint:"Tell bare øyne som ser direkte mot trappen.", caption:"Kongetrappen" },
+      { question:"Åpne konvolutt 4 i tårnet. Skissen er laget av en kunstner med et navn som minner om en stor norsk maler. Hva heter maleriet skissen til slutt ble til?", answer:["melankoli"], hint:"Hvem malte om sjalusi og fortvilelse?", caption:"Skissen" },
+      { question:"Neste steg er risset inn på Brenneriets fasade. Finn den skjulte firesifrede koden.", answer:["2020"], hint:"Koden er skjult som romertall.", caption:"Brenneriet" },
+      { question:"Hvem drepte Fridtjof Lowthau?\n\nNår dere har løst mysteriet, ring i bjellen.", answer:["christopher krong","christopher","krong","christopherkrong"], hint:"Studer bildene fra arkivet. Stemmer noe ikke med avhørene?", caption:"Morderen" }
+    ],
+    finalMessage:"Strålende arbeid, etterforskere! I over hundre år lå saken som en isende gåte over Ramme.\n\nDet var to uavhengige ugjerninger utført av et ektepar uvitende om hverandre. Brevet felte Odine. Samtidig begikk ektemannen Christopher det brutale drapet — vinkelen på slaget avslørte hans sanne hendthet. Fridtjof Lowthau kan endelig hvile i fred.",
+    board:[
+      {team:"Detektivklubben",t:1878},{team:"Spanerne",t:2143},{team:"Fjordfølget",t:2456},{team:"De Skarpe",t:2702},{team:"Lupe & Co",t:2990},{team:"Nattevaktene",t:3284},{team:"Bordet 12",t:3576},{team:"Kunstnerne",t:3902},{team:"Vinklubben",t:4233},{team:"De Tålmodige",t:4560}
+    ]
+  },
+  { id:"dalen", name:"Mysteriet på Dalen Hotel", accent:"#5a7d4f", count:6, langs:"NO / EN", venue:"Eventyrhotell", comingSoon:true },
+  { id:"fossheim", name:"Mysteriet Fossheim Hotell", accent:"#8a6d3b", count:4, langs:"NO", venue:"Fjellhotell", comingSoon:true },
+  { id:"hurdalsjoen", name:"Mysteriet på Hurdalsjøen", accent:"#4f6d7a", count:4, langs:"NO / EN", venue:"Spahotell", comingSoon:true },
+];
+const CARD_STYLES = ["doc","note","photo"];
+const DECOR_TYPES = ["sticky","question","suspect","photo","sticky","map","question","news","suspect","poster","sticky","print"];
+const STICKIES = ["Sjekk kjelleren","Hvem lyver?","Følg pengene","Dørvakten så noe","Klokken stemmer ikke","Spør kokken","Mangler alibi"];
+const QWORDS = ["Motiv?","Alibi?","Vitne?","Hvem?","Hvorfor?","Når?","Våpen?"];
+const SUSNAMES = ["Mistenkt?","Vitne","Gjest nr. 4","Ukjent","Personalet"];
+const FACE_SVG = `<svg class="sus__face" viewBox="0 0 80 92" aria-hidden="true"><g fill="none" stroke="#3a2f22" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="40" cy="44" rx="21" ry="26"/><path d="M19 34 Q40 12 61 34"/><path d="M23 40 q5 -4 10 0"/><path d="M47 40 q5 -4 10 0"/><circle cx="32" cy="43" r="1.7" fill="#3a2f22"/><circle cx="52" cy="43" r="1.7" fill="#3a2f22"/><path d="M41 46 l-3 8 4 1"/><path d="M33 64 q7 5 16 0"/></g></svg>`;
+const SOLVED_STAMP = "Løst";
+
+/* state + utils */
+const state = { mystery:null, index:0, solved:0, startTime:0, timer:null, elapsed:0, flying:false };
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const norm = s => s.trim().toUpperCase().replace(/\s+/g,"");
+const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const finePointer = matchMedia("(pointer: fine)").matches;
+const easeIO = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+function fmt(ms){ const t=Math.floor(ms/1000); return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"); }
+function jrot(i){ return ((i*73)%9)-4; }
+function escapeHtml(str){ const d=document.createElement("div"); d.textContent=str; return d.innerHTML; }
+function showScreen(id){ $$(".screen").forEach(s=>s.classList.toggle("is-active", s.id==="screen-"+id)); }
+
+/* =========================================================================
+   MENU
+   ========================================================================= */
+function renderMenu(){
+  const wrap = $("#cases"); wrap.innerHTML="";
+  MYSTERIES.forEach((m,i)=>{
+    const el = document.createElement(m.comingSoon ? "div" : "button");
+    el.className = "case" + (m.comingSoon ? " case--soon" : "");
+    el.style.setProperty("--accent", m.accent);
+    if(!m.comingSoon){ el.type="button"; el.addEventListener("click", ()=>openMystery(m.id)); }
+    el.innerHTML = `
+      <div class="case__no">Sak nr. ${String(i+1).padStart(3,"0")}</div>
+      <div class="case__name">${m.name}</div>
+      <div class="case__meta"><b>${m.count} bevis</b><span class="dot"></span>${m.langs}<span class="dot"></span>${m.venue}</div>
+      ${m.comingSoon ? '<span class="case__flag">Kommer</span>' : ''}`;
+    wrap.appendChild(el);
+  });
+}
+
+/* =========================================================================
+   BOARD
+   ========================================================================= */
+function openMystery(id){
+  state.mystery = MYSTERIES.find(m=>m.id===id);
+  state.index = 0; state.solved = 0;
+  $("#board-name").textContent = state.mystery.name;
+  buildBoard();
+  showScreen("board");
+  state.startTime = Date.now();
+  clearInterval(state.timer);
+  state.timer = setInterval(()=>{ state.elapsed = Date.now()-state.startTime; $("#board-timer").textContent = fmt(state.elapsed); }, 500);
+  updateProgress();
+  const intro = ()=>{
+    layoutBoard();
+    // establishing shot: start on the whole board, then zoom into the brief
+    setCam(camForOverview()); applyCam();
+    setTimeout(()=> cameraTo(camForCard($('.evid--brief')), 950), 360);
+  };
+  requestAnimationFrame(intro);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ if(state.index===0){ layoutBoard(); cameraTo(camForCard($('.evid--brief')),0); }});
+}
+
+function buildBoard(){
+  const world = $("#world");
+  $$(".evid,.decor", world).forEach(n=>n.remove());
+  const tasks = state.mystery.tasks;
+  world.appendChild(makeBriefCard());
+  tasks.forEach((t,i)=> world.appendChild(makeTaskCard(t,i)));
+  const D = clamp(Math.round(tasks.length*1.1), 6, 12);
+  for(let i=0;i<D;i++){
+    const type = DECOR_TYPES[i % DECOR_TYPES.length];
+    const d = document.createElement("div");
+    d.className = "decor decor--"+type + (type==="sticky" ? " "+["s-y","s-p","s-b","s-g"][i%4] : "");
+    d.style.setProperty("--r", (((i*97)%17)-8)+"deg");
+    const tack = (type==="sticky")
+      ? `<span class="tape"></span>`
+      : `<span class="pin" style="--pin-c:${i%2?'var(--pin-amber)':'var(--pin-red)'}"></span>`;
+    let body;
+    switch(type){
+      case "sticky":   body = `<div class="sticky__txt">${STICKIES[i%STICKIES.length]}</div>`; break;
+      case "question": body = `<div class="q__word">${QWORDS[i%QWORDS.length].slice(0,-1)}<span>?</span></div>`; break;
+      case "suspect":  body = `${FACE_SVG}<div class="sus__label">${SUSNAMES[i%SUSNAMES.length]}</div>`; break;
+      case "map":      body = `<div class="decor__lines"></div><span class="decor__tag">Kart</span>`; break;
+      case "photo":    body = `<div class="decor__img"></div>`; break;
+      case "news":     body = `<div class="decor__col"></div>`; break;
+      case "poster":   body = `<div class="decor__face"></div><div class="decor__bars"></div><div class="decor__word">Etterlyst</div>`; break;
+      default:         body = `<div class="decor__fp"></div>`;
+    }
+    d.innerHTML = tack + body;
+    world.appendChild(d);
+  }
+  applyStates();
+}
+
+function pinHTML(i){ return `<div class="evid__pin"><span class="pin" style="--pin-c:${i%2?'var(--pin-amber)':'var(--pin-red)'}"></span></div>`; }
+
+function makeBriefCard(){
+  const el = document.createElement("article");
+  el.className="evid evid--brief evid--doc"; el.dataset.idx="brief"; el.style.setProperty("--rot", jrot(0)+"deg");
+  el.innerHTML = `${pinHTML(0)}<span class="evid__tab">Saksoversikt</span>
+    <div class="evid__body paper">
+      <div class="dochead"><b>POLITIET</b><span>SAKSMAPPE</span></div>
+      <div class="evid__label">Brifing</div>
+      <div class="evid__q">${escapeHtml(state.mystery.brief)}</div>
+      <button class="brief-start" id="btn-brief-start">Start etterforskningen ▸</button>
+    </div>`;
+  el.querySelector("#btn-brief-start").addEventListener("click", ()=>{
+    if(state.index===0){ state.index=1; applyStates(); updateProgress(); layoutBoard(); advanceCamera(1); }
+  });
+  return el;
+}
+
+function makeTaskCard(task, i){
+  const cardNo = i+1, idx = i+1, style = CARD_STYLES[i % CARD_STYLES.length];
+  const el = document.createElement("article");
+  el.className=`evid evid--${style}`; el.dataset.idx=idx; el.dataset.stamp=SOLVED_STAMP; el.style.setProperty("--rot", jrot(idx)+"deg");
+  const label = `Bevis #${cardNo}`, caption = task.caption || label;
+  let inner;
+  if(style==="photo"){
+    inner = `<div class="evid__pad"><div class="evid__photo">Bevisfoto · ${cardNo}</div><div class="evid__label">${label}</div><div class="evid__q">${escapeHtml(task.question)}</div>${answerHTML()}${solvedAnswerHTML()}</div><div class="evid__caption">${escapeHtml(caption)}</div>`;
+  } else if(style==="note"){
+    inner = `<div class="evid__label">${label}</div><div class="evid__q">${escapeHtml(task.question)}</div>${answerHTML()}${solvedAnswerHTML()}`;
+  } else {
+    inner = `<div class="dochead"><b>BEVIS ${String(cardNo).padStart(2,"0")}</b><span>${escapeHtml(caption).toUpperCase()}</span></div><div class="evid__q">${escapeHtml(task.question)}</div>${answerHTML()}${solvedAnswerHTML()}`;
+  }
+  el.innerHTML = `${pinHTML(idx)}<span class="evid__tab">Åpen sak</span>
+    <div class="evid__body paper">
+      <div class="sealed"><div class="sealed__bag">🗋</div><div class="sealed__stamp">Forseglet</div><div class="sealed__no">Bevis #${cardNo} · ikke åpnet</div></div>
+      <div class="reveal">${inner}</div>
+    </div>`;
+  wireCard(el, task, i);
+  return el;
+}
+
+function answerHTML(){ return `<div class="answer-area"><div class="answer-row"><input class="answer-input" type="text" inputmode="text" autocomplete="off" placeholder="Svaret…" aria-label="Svar"><button class="answer-submit">Svar</button></div><div class="err"></div><div class="toolrow"><button class="tool tool--hint">Vis hint (−5 min)</button><button class="tool tool--giveup" style="display:none;">Gi opp</button></div></div>`; }
+function solvedAnswerHTML(){ return `<div class="solved-answer"><div class="lbl">Deres svar</div><div class="val"></div></div>`; }
+
+function wireCard(el, task, i){
+  const idx = i+1;
+  const input = $(".answer-input", el), submit = $(".answer-submit", el), err = $(".err", el);
+  const hintBtn = $(".tool--hint", el), giveup = $(".tool--giveup", el);
+  function attempt(){
+    if(state.index!==idx) return;
+    const v = norm(input.value); if(!v) return;
+    if(task.answer.some(a=>norm(a)===v)){ solveCard(el, task, input.value, false); }
+    else{ input.classList.remove("right"); input.classList.add("wrong"); err.textContent="Feil svar. Prøv igjen."; giveup.style.display=""; setTimeout(()=>input.classList.remove("wrong"),450); }
+  }
+  submit.addEventListener("click", attempt);
+  input.addEventListener("keydown", e=>{ if(e.key==="Enter") attempt(); });
+  hintBtn.addEventListener("click", ()=>{
+    if($(".hint", el)) return;
+    const h = document.createElement("div"); h.className="hint"; h.innerHTML = `<b>Hint · 5 min strafftid</b>${escapeHtml(task.hint)}`;
+    $(".answer-area", el).insertBefore(h, $(".toolrow", el)); giveup.style.display="";
+    layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:420);
+  });
+  giveup.addEventListener("click", ()=>{ const ans = task.answer.find(a=>!/^\d+$/.test(a)) || task.answer[0]; solveCard(el, task, ans, true); });
+}
+
+function solveCard(el, task, shownAnswer, gaveUp){
+  el.querySelector(".solved-answer .val").textContent = shownAnswer;
+  el.classList.toggle("gaveup", gaveUp);
+  el.dataset.stamp = gaveUp ? "Avslørt" : SOLVED_STAMP;
+  el.classList.remove("is-active"); el.classList.add("is-solved");
+  state.solved++;
+  const isLast = state.index === state.mystery.tasks.length;
+  if(isLast){ updateProgress(); layoutBoard(); cameraTo(camForOverview(), 900, ()=> setTimeout(winGame, 500)); return; }
+  state.index++;
+  applyStates();
+  layoutBoard();
+  updateProgress();
+  setTimeout(()=> advanceCamera(state.index), 360); // let the "Løst" stamp land, then fly
+}
+
+/* ---- camera choreography: zoom out → whole board → zoom in on next ---- */
+function advanceCamera(idx){
+  const card = $(`.evid[data-idx="${idx===0?'brief':idx}"]`); if(!card) return;
+  if(reduceMotion){ cameraTo(camForCard(card),0); focusActive(); return; }
+  state.flying = true; $("#hud").classList.add("hud--dim");
+  cameraTo(camForOverview(), 720, ()=>{
+    animateStringTo(idx);                                  // taut thread snaps in while the whole board is in view
+    setTimeout(()=> cameraTo(camForCard(card), 840, ()=>{
+      state.flying = false; $("#hud").classList.remove("hud--dim");
+      focusActive();
+    }), 340);
+  });
+}
+function focusActive(){ if(!finePointer) return; const inp = $(`.evid[data-idx="${state.index}"] .answer-input`); if(inp) inp.focus({preventScroll:true}); }
+
+function applyStates(){
+  $$(".evid", $("#world")).forEach(card=>{
+    const idx = card.dataset.idx==="brief" ? 0 : +card.dataset.idx;
+    if(card.classList.contains("is-solved")) return;
+    card.classList.toggle("is-active", idx===state.index);
+    card.classList.toggle("is-locked", idx>state.index);
+  });
+}
+function updateProgress(){
+  const total = state.mystery.tasks.length;
+  $("#board-progress").textContent = state.index===0 ? `Saksoversikt · ${total} bevis` : `Bevis ${Math.min(state.index,total)} / ${total}`;
+}
+
+/* ---- 2D serpentine layout: a full board, decor interleaved among evidence ---- */
+function placeDecor(d, x, y, cellW, cellH, seed){
+  const jx=((seed*53)%48)-24, jy=((seed*29)%40)-20;
+  d.style.left = Math.round(x + (cellW-d.offsetWidth)/2 + jx)+"px";
+  d.style.top  = Math.round(y + (cellH-d.offsetHeight)/2 + jy)+"px";
+}
+function layoutBoard(){
+  const vp=$("#viewport"), world=$("#world");
+  const cards=$$(".evid", world), decor=$$(".decor", world);
+  if(!cards.length) return;
+  const vw=vp.clientWidth, vh=vp.clientHeight, cardW=cards[0].offsetWidth;
+  const N=cards.length, D=decor.length, m=N+D;
+  let cols = clamp(Math.round(Math.sqrt(m*(vw/vh))), 2, 5); cols=Math.min(cols,m);
+  const rows = Math.ceil(m/cols);
+  // which serpentine cells host decor (spread evenly between the evidence)
+  const isDecor = new Array(m).fill(false);
+  for(let j=0;j<D;j++){ let p=clamp(Math.round((j+0.6)*m/D), 0, m-1); while(isDecor[p]) p=(p+1)%m; isDecor[p]=true; }
+  let maxH=260; cards.forEach(c=>maxH=Math.max(maxH,c.offsetHeight));
+  const gapX=clamp(cardW*0.46,90,180), gapY=clamp(maxH*0.16,72,150);
+  const cellW=cardW+gapX, cellH=maxH+gapY, pad=Math.round(cardW*0.5);
+  const cell = k => { const r=Math.floor(k/cols), pos=k%cols, c=(r%2===0)?pos:(cols-1-pos); return {x:pad+c*cellW, y:pad+r*cellH}; };
+  let ci=0, di=0;
+  for(let k=0;k<m;k++){
+    const {x,y}=cell(k);
+    if(isDecor[k] && di<D){ placeDecor(decor[di++], x, y, cellW, cellH, k); }
+    else if(ci<N){ const c=cards[ci++]; const jx=((ci*53)%26)-13, jy=((ci*37)%18)-9; c.style.left=Math.round(x+jx)+"px"; c.style.top=Math.round(y+(cellH-c.offsetHeight)/2+jy)+"px"; }
+    else if(di<D){ placeDecor(decor[di++], x, y, cellW, cellH, k); }
+  }
+  const worldW = pad*2 + (cols-1)*cellW + cardW;
+  const worldH = pad*2 + (rows-1)*cellH + maxH;
+  world.style.width=worldW+"px"; world.style.height=worldH+"px";
+  drawStrings();
+}
+
+/* ---- camera (transform: translate + scale) ---- */
+const cam = { x:0, y:0, s:1 };
+let camRAF=null;
+function applyCam(){ $("#world").style.transform = `translate3d(${cam.x.toFixed(2)}px, ${cam.y.toFixed(2)}px, 0) scale(${cam.s.toFixed(4)})`; }
+function setCam(t){ cam.x=t.x; cam.y=t.y; cam.s=t.s; }
+function vpSize(){ const vp=$("#viewport"); return {vw:vp.clientWidth, vh:vp.clientHeight}; }
+function worldSize(){ const w=$("#world"); return {ww:parseFloat(w.style.width)||w.offsetWidth, wh:parseFloat(w.style.height)||w.offsetHeight}; }
+function camForPoint(wx,wy,s){ const {vw,vh}=vpSize(); return {x:vw/2-wx*s, y:vh/2-wy*s, s}; }
+const HUD_RESERVE = 84;   // leave room at top for the HUD bar + the pushpin head
+function scaleForCard(card){ const {vw,vh}=vpSize(); return clamp(Math.min(vw*0.92/card.offsetWidth, (vh-HUD_RESERVE-44)/card.offsetHeight), 0.5, 1.7); }
+function camForCard(card){
+  const {vw,vh}=vpSize(); const s=scaleForCard(card);
+  const cx=card.offsetLeft+card.offsetWidth/2, cy=card.offsetTop+card.offsetHeight/2;
+  return { x:vw/2-cx*s, y:(HUD_RESERVE + (vh-HUD_RESERVE)/2) - cy*s, s };   // centre the card in the area *below* the HUD
+}
+function camForOverview(){ const {vw,vh}=vpSize(); const {ww,wh}=worldSize(); const s=Math.min(vw/ww, vh/wh)*0.86; return camForPoint(ww/2, wh/2, s); }
+function stopCam(){ if(camRAF){ cancelAnimationFrame(camRAF); camRAF=null; } }
+function cameraTo(t, dur, cb){
+  stopCam();
+  if(reduceMotion || dur<=0){ setCam(t); applyCam(); cb&&cb(); return; }
+  const s0={...cam}, t0=performance.now();
+  function frame(now){ const k=Math.min(1,(now-t0)/dur), e=easeIO(k);
+    cam.x=s0.x+(t.x-s0.x)*e; cam.y=s0.y+(t.y-s0.y)*e; cam.s=s0.s+(t.s-s0.s)*e; applyCam();
+    if(k<1) camRAF=requestAnimationFrame(frame); else { camRAF=null; cb&&cb(); } }
+  camRAF=requestAnimationFrame(frame);
+}
+
+/* =========================================================================
+   RED STRING — unscaled world coords (pin anchor from layout, not rects)
+   ========================================================================= */
+function pinAnchor(card){ return { x: card.offsetLeft + card.offsetWidth/2, y: card.offsetTop - 2 }; }
+function drawStrings(){
+  const world=$("#world"), svg=$("#strings"); if(!world||!svg||!state.mystery) return;
+  const cards=$$(".evid", world); if(cards.length<2) return;
+  const w=parseFloat(world.style.width)||world.clientWidth, h=parseFloat(world.style.height)||world.clientHeight;
+  svg.setAttribute("width", w); svg.setAttribute("height", h); svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  svg.innerHTML="";
+  for(let i=0;i<cards.length-1;i++){
+    const a=pinAnchor(cards[i]), b=pinAnchor(cards[i+1]);
+    const midX=(a.x+b.x)/2, midY=(a.y+b.y)/2, dist=Math.hypot(b.x-a.x,b.y-a.y);
+    const sag=Math.min(54, dist*0.12);
+    const path=document.createElementNS("http://www.w3.org/2000/svg","path");
+    path.setAttribute("d", `M ${a.x} ${a.y} Q ${midX} ${midY+sag} ${b.x} ${b.y}`);
+    if(cards[i+1].classList.contains("is-locked")) path.classList.add("is-future");
+    svg.appendChild(path);
+  }
+}
+function animateStringTo(idx){
+  drawStrings();
+  const seg = $("#strings").querySelectorAll("path")[idx-1];
+  if(seg && !reduceMotion){ const len=seg.getTotalLength(); seg.style.setProperty("--len", len); seg.classList.remove("is-future"); seg.classList.add("draw"); }
+}
+
+/* =========================================================================
+   WIN + manual camera (drag-pan + wheel-zoom) + boot
+   ========================================================================= */
+function winGame(){
+  clearInterval(state.timer);
+  $("#final-time").textContent = fmt(state.elapsed);
+  $("#final-message").textContent = state.mystery.finalMessage;
+  renderTidstavle(Math.floor(state.elapsed/1000));
+  $("#overlay").classList.add("is-open");
+}
+/* The time board every team sees afterwards: their run slotted into the rankings */
+function renderTidstavle(playerSec){
+  const list = (state.mystery.board||[]).map(e=>({team:e.team, t:e.t}));
+  list.push({team:"Deres lag", t:playerSec, you:true});
+  list.sort((a,b)=>a.t-b.t);
+  const youIdx = list.findIndex(e=>e.you), total = list.length;
+  $("#final-rank").textContent = `${youIdx+1}. plass av ${total} lag`;
+  $("#tid-sub").textContent = state.mystery.name;
+  const rows = (youIdx<8)
+    ? list.slice(0,8).map((e,i)=>({e,i}))
+    : list.slice(0,7).map((e,i)=>({e,i})).concat([{gap:true},{e:list[youIdx],i:youIdx}]);
+  $("#tid-list").innerHTML = rows.map(row=>{
+    if(row.gap) return `<div class="tid-gap">· · ·</div>`;
+    const rk = row.i+1, rcls = rk<=3 ? ` r${rk}` : "";
+    return `<div class="tid-row${row.e.you?' you':''}${rcls}"><span class="tid-rank">${rk}</span><span class="tid-team">${row.e.team}${row.e.you?'<span class="tid-you-tag"> ← dere!</span>':''}</span><span class="tid-time">${fmt(row.e.t*1000)}</span></div>`;
+  }).join("");
+}
+$("#btn-back").addEventListener("click", backToMenu);
+$("#btn-win-back").addEventListener("click", backToMenu);
+function backToMenu(){ clearInterval(state.timer); stopCam(); state.flying=false; $("#hud").classList.remove("hud--dim"); $("#overlay").classList.remove("is-open"); showScreen("menu"); }
+
+/* Manual look-around removed by design — the camera is fully automatic. */
+
+let resizeRAF;
+addEventListener("resize", ()=>{ cancelAnimationFrame(resizeRAF); resizeRAF=requestAnimationFrame(()=>{
+  if(state.mystery && $("#screen-board").classList.contains("is-active")){ layoutBoard(); const c=$(`.evid[data-idx="${state.index===0?'brief':state.index}"]`); if(c) cameraTo(camForCard(c),0); }
+}); });
+
+/* ===================== DASHBOARD (mock data — wires to Firebase later) ===================== */
+const DASH = {
+  date:"23. juni 2026",
+  kpis:[
+    {label:"Spill totalt", value:"248", note:"siste 90 dager"},
+    {label:"Aktive saker", value:"6", note:"hoteller"},
+    {label:"Snittid", value:"47:12", note:"per mysterium"},
+    {label:"Snittscore", value:"4.6", note:"av 5", star:true},
+  ],
+  plays:[
+    {name:"Ramme", n:78, accent:"#3a6ea5"},
+    {name:"Hafslund", n:54, accent:"#9d2a20"},
+    {name:"Dalen", n:41, accent:"#5a7d4f"},
+    {name:"Hurdalsjøen", n:33, accent:"#4f6d7a"},
+    {name:"Fossheim", n:26, accent:"#8a6d3b"},
+    {name:"Oslo", n:16, accent:"#6a4a8a"},
+  ],
+  cases:[
+    {name:"Mysteriet på Ramme", plays:78, avg:"52:40", fast:"Detektivklubben", fastTime:"31:18", rating:4.7},
+    {name:"Hafslund Hovedgård", plays:54, avg:"38:05", fast:"De Skarpe", fastTime:"22:51", rating:4.5},
+    {name:"Dalen Hotel", plays:41, avg:"44:12", fast:"Spanerne", fastTime:"29:03", rating:4.8},
+    {name:"Hurdalsjøen", plays:33, avg:"40:55", fast:"Lupe & Co", fastTime:"27:40", rating:4.4},
+    {name:"Fossheim Hotell", plays:26, avg:"35:22", fast:"Nattevaktene", fastTime:"24:10", rating:4.3},
+  ],
+  leaders:[
+    {team:"De Skarpe", mystery:"Hafslund Hovedgård", time:"22:51"},
+    {team:"Nattevaktene", mystery:"Fossheim Hotell", time:"24:10"},
+    {team:"Lupe & Co", mystery:"Hurdalsjøen", time:"27:40"},
+    {team:"Spanerne", mystery:"Dalen Hotel", time:"29:03"},
+    {team:"Detektivklubben", mystery:"Ramme", time:"31:18"},
+  ],
+  feedback:[
+    {stars:5, text:"Utrolig gøy! Beste teambuilding vi har hatt.", team:"De Skarpe", c:"y"},
+    {stars:5, text:"Vanskelig, men rettferdig. Vi kranglet helt til slutten!", team:"Spanerne", c:"p"},
+    {stars:4, text:"Litt vrient med koden i biblioteket, ellers topp.", team:"Lupe & Co", c:"b"},
+    {stars:5, text:"Stemningen ble helt magisk på gamle Ramme.", team:"Detektivklubben", c:"g"},
+  ],
+};
+const fullEmpty = n => `${"★".repeat(n)}<span>${"★".repeat(5-n)}</span>`;
+function renderDashboard(){
+  $("#dash-date").textContent = DASH.date;
+  $("#dash-kpis").innerHTML = DASH.kpis.map((k,i)=>`
+    <div class="kpi" style="--r:${(i%2?1:-1)*1.1}deg"><span class="pin" style="--pin-c:${i%2?'var(--pin-amber)':'var(--pin-red)'}"></span>
+      <div class="kpi__v">${k.value}${k.star?' <span class="star">★</span>':''}</div>
+      <div class="kpi__l">${k.label}</div><div class="kpi__n">${k.note}</div></div>`).join("");
+  const maxN = Math.max(...DASH.plays.map(p=>p.n));
+  $("#dash-bars").innerHTML = DASH.plays.map(p=>`
+    <div class="bar"><div class="bar__name">${p.name}</div>
+      <div class="bar__track"><div class="bar__fill" data-w="${Math.round(p.n/maxN*100)}" style="--c:${p.accent}"></div></div>
+      <div class="bar__n">${p.n}</div></div>`).join("");
+  $("#dash-cases").innerHTML = DASH.cases.map(c=>`
+    <div class="crow"><div class="crow__name">${c.name}</div>
+      <div class="crow__rating">${fullEmpty(Math.round(c.rating))} ${c.rating.toFixed(1)}</div>
+      <div class="crow__meta"><span><b>${c.plays}</b> spill</span><span>Snitt <b>${c.avg}</b></span><span>Raskest <b>${c.fast}</b> · ${c.fastTime}</span></div></div>`).join("");
+  $("#dash-leaders").innerHTML = DASH.leaders.map((l,i)=>{
+    const cls=["gold","silver","bronze"][i]||"";
+    return `<li><span class="lead__rank ${cls}">${i+1}</span><div class="lead__info"><div class="lead__team">${l.team}</div><div class="lead__myst">${l.mystery}</div></div><span class="lead__time">${l.time}</span></li>`;
+  }).join("");
+  $("#dash-feedback").innerHTML = DASH.feedback.map((f,i)=>`
+    <div class="note ${f.c}" style="--r:${i%2?1.6:-1.8}deg"><div class="note__stars">${fullEmpty(f.stars)}</div>
+      <div class="note__text">${f.text}</div><div class="note__team">— ${f.team}</div></div>`).join("");
+  requestAnimationFrame(()=> $$("#dash-bars .bar__fill").forEach(f=> f.style.width=f.dataset.w+"%"));
+}
+$("#btn-open-dash").addEventListener("click", ()=>{ renderDashboard(); showScreen("dashboard"); });
+$("#btn-dash-back").addEventListener("click", ()=> showScreen("menu"));
+
+/* keep the focused answer field above the on-screen keyboard (mobile-only play) */
+let kbInput=null;
+function liftForKeyboard(){
+  if(!kbInput || !window.visualViewport) return;
+  const vv=window.visualViewport;
+  if(vv.height >= window.innerHeight - 120) return;      // keyboard not open → leave framing alone
+  const r=kbInput.getBoundingClientRect();
+  const target=vv.offsetTop + vv.height*0.42;            // park the input in the upper half of the visible area
+  const delta=(r.top + r.height/2) - target;
+  if(delta>12) cameraTo({x:cam.x, y:cam.y-delta, s:cam.s}, 240);
+}
+document.addEventListener("focusin", e=>{ if(e.target.classList && e.target.classList.contains("answer-input")){ kbInput=e.target; setTimeout(liftForKeyboard,350); } });
+document.addEventListener("focusout", e=>{ if(e.target===kbInput){ kbInput=null;
+  if(state.mystery && $("#screen-board").classList.contains("is-active") && state.index>0){ const c=$(`.evid[data-idx="${state.index}"]`); if(c) cameraTo(camForCard(c),300); } } });
+if(window.visualViewport) window.visualViewport.addEventListener("resize", ()=>{ if(kbInput) liftForKeyboard(); });
+
+renderMenu();
+</script>
+</body>
+</html>
