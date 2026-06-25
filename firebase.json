@@ -9,6 +9,7 @@
       ".git/**",
       ".firebase/**",
       "CLAUDE.md",
+      "*.backup",
       "Mysterier",
       "Mysterier/**"
     ]
