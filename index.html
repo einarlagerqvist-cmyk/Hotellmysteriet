@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20260625d">
+<link rel="stylesheet" href="style.css?v=20260625e">
 </head>
 <body>
 <div class="app">
@@ -132,7 +132,7 @@
 </div>
 
 <!-- Real data + logic (CONFIG, UI_TEXT, Storage, scoring) — verbatim copy of script.js, init() neutralised -->
-<script src="script.js?v=20260625d"></script>
+<script src="script.js?v=20260625e"></script>
 
 <!-- Evidence Board view layer (reuses the globals above; declares nothing that collides) -->
 <script>
@@ -282,6 +282,7 @@ function makeBriefCard(){
   el.className="evid evid--brief evid--doc"; el.dataset.idx="brief"; el.style.setProperty("--rot", jrot(0)+"deg");
   el.innerHTML = `${pinHTML()}<span class="evid__tab">${L("Saksoversikt","Case file")}</span>
     <div class="evid__body paper">
+      <div class="case-stamp">${L("Fortrolig","Classified","Fortruleg")}</div>
       <div class="dochead"><b>${L("POLITIET","POLICE")}</b><span>${L("SAKSMAPPE","CASE FILE")}</span></div>
       <div class="evid__label">${L("Brifing","Briefing")}</div>
       <div class="evid__q">${esc(briefText)}</div>

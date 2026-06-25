@@ -106,7 +106,7 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .paper{ padding:26px 22px 24px; color:var(--ink); }
 .evid__label{ font-size:.6rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px; }
 .evid__q{ font-size:.96rem; line-height:1.62; white-space:pre-wrap; color:var(--ink); }
-.evid__photo{ position:relative; height:132px; margin:0 0 12px; border-radius:1px; overflow:hidden;
+.evid__photo{ position:relative; height:168px; margin:0 0 12px; border-radius:1px; overflow:hidden;
   background:
     radial-gradient(125% 120% at 50% 34%, transparent 36%, rgba(0,0,0,.72) 100%),
     repeating-linear-gradient(92deg, rgba(255,255,255,.04) 0 1px, transparent 1px 4px),
@@ -115,25 +115,33 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
   background-size:100% 100%,100% 100%,90px 90px,100% 100%;
   display:flex; align-items:flex-end; padding:8px 10px; font-family:'Special Elite',monospace; font-size:.52rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(222,212,192,.5); box-shadow:inset 0 0 32px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.05); }
 .evid__photo::after{ content:"1254 6007"; position:absolute; bottom:7px; right:9px; font-family:'Special Elite',monospace; font-size:.5rem; letter-spacing:.1em; color:rgba(222,212,192,.4); }
-.evid--photo .paper{ position:relative; padding:14px 13px 0; border-radius:2px;
-  background-image:linear-gradient(176deg, rgba(248,244,233,.64), rgba(237,230,214,.68)), url("tex/paper-aged.jpg");
+.evid--photo .paper{ position:relative; padding:15px 15px 0; border-radius:2px;
+  background-image:linear-gradient(176deg, rgba(248,244,233,.52), rgba(237,230,214,.58)), url("tex/paper-aged.jpg");
   background-size:cover,cover; background-position:center;
-  box-shadow:inset 0 0 22px rgba(120,90,45,.16); }
+  box-shadow:3px 4px 0 0 #e7dcc1, 6px 9px 0 0 #ded2b3, inset 0 0 22px rgba(120,90,45,.16); }
 .evid--photo .evid__caption{ font-family:'Caveat',cursive; font-weight:600; font-size:1.32rem; color:#34557a; text-align:center; padding:12px 6px 18px; line-height:1.05; }
 .evid--photo .evid__pad{ padding:0 8px 16px; }
-.evid--note .paper{ background-image:url("tex/paper-stain.svg"), linear-gradient(180deg,rgba(0,0,0,.04),transparent 5%), repeating-linear-gradient(180deg,transparent 0 27px,rgba(40,80,140,.26) 27px 28px), linear-gradient(180deg,#efe4bf,#e2d488); background-size:260px 260px,100% 100%,100% 28px,100% 100%; background-blend-mode:multiply,normal,normal,normal; padding:34px 20px 30px 40px; box-shadow:none;
+.evid--note .paper{ background-image:url("tex/paper-stain.svg"), linear-gradient(180deg,rgba(0,0,0,.04),transparent 5%), repeating-linear-gradient(180deg,transparent 0 27px,rgba(40,80,140,.24) 27px 28px), linear-gradient(180deg,#e6dab2,#d4c47c); background-size:260px 260px,100% 100%,100% 28px,100% 100%; background-blend-mode:multiply,normal,normal,normal; padding:34px 20px 30px 40px; box-shadow:none;
   clip-path:polygon(0% 7px,8% 1px,16% 8px,25% 2px,33% 9px,42% 3px,50% 8px,58% 2px,66% 9px,75% 3px,83% 8px,92% 2px,100% 7px,100% calc(100% - 6px),92% calc(100% - 1px),83% calc(100% - 8px),75% calc(100% - 2px),66% calc(100% - 9px),58% calc(100% - 3px),50% calc(100% - 8px),42% calc(100% - 2px),33% calc(100% - 9px),25% calc(100% - 3px),16% calc(100% - 8px),8% calc(100% - 1px),0% calc(100% - 6px)); }
 .evid--note .paper::before{ content:""; position:absolute; top:0; bottom:0; left:26px; width:1.5px; background:rgba(170,40,40,.45); }
 .evid--doc .paper{ position:relative; border-radius:1px;
-  background-image:linear-gradient(168deg, rgba(247,239,219,.52), rgba(236,225,197,.60)), url("tex/paper-aged.jpg");
+  background-image:linear-gradient(168deg, rgba(244,235,214,.28), rgba(232,219,189,.40)), url("tex/paper-aged.jpg");
   background-size:cover,cover; background-position:center;
-  box-shadow:inset 0 0 30px rgba(110,76,32,.26), inset 0 0 92px rgba(150,110,55,.08); }
+  box-shadow:
+    3px 4px 0 0 #e7dbbd, 6px 9px 0 0 #ded0ad, 9px 14px 0 0 #d2c19a,
+    inset 0 0 36px rgba(92,60,22,.32), inset 0 0 110px rgba(150,110,55,.07); }
 .evid--doc .dochead{ display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:2px solid var(--ink); padding-bottom:8px; margin-bottom:14px; }
 .evid--doc .dochead b{ font-family:'Playfair Display',serif; font-weight:700; letter-spacing:.18em; font-size:.84rem; }
 .evid--doc .dochead span{ font-size:.58rem; letter-spacing:.1em; color:var(--ink-faint); }
 .evid--doc .evid__body::before{ content:""; position:absolute; z-index:8; top:-16px; left:21px; width:24px; height:58px; transform:rotate(-9deg);
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 72'%3E%3Cpath d='M15 9 C8 9 7 13 7 19 L7 53 C7 62 23 62 23 52 L23 17 C23 11 13 11 13 16 L13 49' fill='none' stroke='%23c4c7cd' stroke-width='3.4' stroke-linecap='round'/%3E%3Cpath d='M15 9 C8 9 7 13 7 19 L7 53 C7 62 23 62 23 52 L23 17 C23 11 13 11 13 16 L13 49' fill='none' stroke='%23808390' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
   filter:drop-shadow(0 2px 2px rgba(0,0,0,.32)); }
+.case-stamp{ position:absolute; z-index:6; bottom:66px; right:14px; pointer-events:none;
+  font-family:'Special Elite',monospace; font-weight:700; font-size:1.2rem; letter-spacing:.18em; text-transform:uppercase;
+  color:#a82a1f; border:3.5px double #a82a1f; padding:6px 13px; border-radius:3px; transform:rotate(-8deg); opacity:.6;
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='st'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.09' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -0.18'/%3E%3C/filter%3E%3Crect width='120' height='60' filter='url(%23st)'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='st'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.09' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -0.18'/%3E%3C/filter%3E%3Crect width='120' height='60' filter='url(%23st)'/%3E%3C/svg%3E");
+  -webkit-mask-size:cover; mask-size:cover; }
 
 .evid.is-locked{ opacity:.74; filter:grayscale(.5) brightness(.97); }
 .evid.is-locked .evid__body{ pointer-events:none; }
