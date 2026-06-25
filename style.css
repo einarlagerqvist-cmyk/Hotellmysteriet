@@ -116,18 +116,18 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
   display:flex; align-items:flex-end; padding:8px 10px; font-family:'Special Elite',monospace; font-size:.52rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(222,212,192,.5); box-shadow:inset 0 0 32px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.05); }
 .evid__photo::after{ content:"1254 6007"; position:absolute; bottom:7px; right:9px; font-family:'Special Elite',monospace; font-size:.5rem; letter-spacing:.1em; color:rgba(222,212,192,.4); }
 .evid--photo .paper{ position:relative; padding:14px 13px 0; border-radius:2px;
-  background-image:url("tex/paper-stain.svg"), linear-gradient(176deg,#f5f1e6,#e7e1d0);
-  background-size:280px 280px,100% 100%; background-blend-mode:multiply,normal;
-  box-shadow:inset 0 0 20px rgba(120,90,45,.14); }
+  background-image:linear-gradient(176deg, rgba(248,244,233,.64), rgba(237,230,214,.68)), url("tex/paper-aged.jpg");
+  background-size:cover,cover; background-position:center;
+  box-shadow:inset 0 0 22px rgba(120,90,45,.16); }
 .evid--photo .evid__caption{ font-family:'Caveat',cursive; font-weight:600; font-size:1.32rem; color:#34557a; text-align:center; padding:12px 6px 18px; line-height:1.05; }
 .evid--photo .evid__pad{ padding:0 8px 16px; }
 .evid--note .paper{ background-image:url("tex/paper-stain.svg"), linear-gradient(180deg,rgba(0,0,0,.04),transparent 5%), repeating-linear-gradient(180deg,transparent 0 27px,rgba(40,80,140,.26) 27px 28px), linear-gradient(180deg,#efe4bf,#e2d488); background-size:260px 260px,100% 100%,100% 28px,100% 100%; background-blend-mode:multiply,normal,normal,normal; padding:34px 20px 30px 40px; box-shadow:none;
   clip-path:polygon(0% 7px,8% 1px,16% 8px,25% 2px,33% 9px,42% 3px,50% 8px,58% 2px,66% 9px,75% 3px,83% 8px,92% 2px,100% 7px,100% calc(100% - 6px),92% calc(100% - 1px),83% calc(100% - 8px),75% calc(100% - 2px),66% calc(100% - 9px),58% calc(100% - 3px),50% calc(100% - 8px),42% calc(100% - 2px),33% calc(100% - 9px),25% calc(100% - 3px),16% calc(100% - 8px),8% calc(100% - 1px),0% calc(100% - 6px)); }
 .evid--note .paper::before{ content:""; position:absolute; top:0; bottom:0; left:26px; width:1.5px; background:rgba(170,40,40,.45); }
 .evid--doc .paper{ position:relative; border-radius:1px;
-  background-image:url("tex/paper-stain.svg"), radial-gradient(115% 80% at 28% 10%, #f8f0db, transparent 58%), linear-gradient(168deg,#f0e6cb,#e4d6b3);
-  background-size:300px 300px,100% 100%,100% 100%; background-blend-mode:multiply,normal,normal;
-  box-shadow:inset 0 0 26px rgba(120,82,36,.20), inset 0 0 78px rgba(150,110,55,.07); }
+  background-image:linear-gradient(168deg, rgba(247,239,219,.52), rgba(236,225,197,.60)), url("tex/paper-aged.jpg");
+  background-size:cover,cover; background-position:center;
+  box-shadow:inset 0 0 30px rgba(110,76,32,.26), inset 0 0 92px rgba(150,110,55,.08); }
 .evid--doc .dochead{ display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:2px solid var(--ink); padding-bottom:8px; margin-bottom:14px; }
 .evid--doc .dochead b{ font-family:'Playfair Display',serif; font-weight:700; letter-spacing:.18em; font-size:.84rem; }
 .evid--doc .dochead span{ font-size:.58rem; letter-spacing:.1em; color:var(--ink-faint); }
@@ -280,14 +280,15 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .decor--map .decor__lines{ width:100%; height:100%; background-image:repeating-linear-gradient(38deg,rgba(120,80,40,.28) 0 1px,transparent 1px 15px), repeating-linear-gradient(-52deg,rgba(120,80,40,.22) 0 1px,transparent 1px 22px); }
 .decor__tag{ position:absolute; bottom:7px; right:9px; font-size:.5rem; letter-spacing:.2em; text-transform:uppercase; color:#7a6444; }
 .decor--news{ width:120px; height:142px; box-shadow:0 9px 16px rgba(0,0,0,.3); padding:11px;
-  background-image:url("tex/paper-stain.svg"), linear-gradient(180deg,#ece2c8,#ddd0ad); background-size:160px 160px,100% 100%; background-blend-mode:multiply,normal; }
+  background-image:linear-gradient(180deg, rgba(240,232,206,.40), rgba(222,210,177,.46)), url("tex/paper-aged.jpg"); background-size:cover,cover; background-position:center; }
 .decor--news .decor__col{ width:100%; height:100%; background-image:repeating-linear-gradient(180deg,rgba(40,30,20,.4) 0 2px,transparent 2px 7px); }
 .decor--print{ width:94px; height:118px; box-shadow:0 9px 16px rgba(0,0,0,.3); display:flex; align-items:center; justify-content:center;
   background-image:url("tex/paper-stain.svg"), linear-gradient(170deg,#f4ecd6,#e7dcbf); background-size:160px 160px,100% 100%; background-blend-mode:multiply,normal; }
-.decor--print .decor__fp{ width:58px; height:76px;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 78'%3E%3Cg fill='none' stroke='%23241a12' stroke-width='1.05' opacity='0.82'%3E%3Cpath d='M30 30 q5 1 6 8 q-1 7 -6 8 q-6 -1 -6.5 -8 q.5 -7 6.5 -8'/%3E%3Cellipse cx='30' cy='39' rx='9' ry='12'/%3E%3Cellipse cx='30' cy='39' rx='13' ry='17.5'/%3E%3Cellipse cx='30' cy='39' rx='17' ry='23'/%3E%3Cellipse cx='30' cy='39' rx='21' ry='28.5'/%3E%3Cpath d='M8 31 q22 -28 44 0'/%3E%3Cpath d='M9 50 q21 26 42 0'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat; }
+.decor--print .decor__fp{ width:60px; height:78px;
+  background:url("tex/fingerprint.jpg") center/contain no-repeat;
+  filter:invert(1) grayscale(1) contrast(1.35) brightness(1.08); mix-blend-mode:multiply; }
 .decor--poster{ width:108px; height:146px; box-shadow:0 9px 16px rgba(0,0,0,.3); padding:9px; text-align:center;
-  background-image:url("tex/paper-stain.svg"), linear-gradient(180deg,#ede1bf,#dccb9f); background-size:170px 170px,100% 100%; background-blend-mode:multiply,normal; }
+  background-image:linear-gradient(180deg, rgba(241,233,208,.38), rgba(223,211,178,.46)), url("tex/paper-aged.jpg"); background-size:cover,cover; background-position:center; }
 .decor--poster .decor__face{ width:100%; height:62px; margin-bottom:8px;
   background:radial-gradient(120% 120% at 50% 36%, transparent 44%, rgba(0,0,0,.42) 100%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='70'%3E%3Cfilter id='pf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='70' height='70' filter='url(%23pf)' opacity='0.45'/%3E%3C/svg%3E"),
@@ -302,7 +303,7 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .decor--question .q__word{ font-family:'Caveat',cursive; font-weight:700; font-size:1.55rem; line-height:1; color:#3a2f1a; }
 .decor--question .q__word span{ color:#b3261e; }
 .decor--suspect{ width:104px; padding:9px 9px 7px; box-shadow:0 9px 16px rgba(0,0,0,.3); text-align:center;
-  background-image:url("tex/paper-stain.svg"), linear-gradient(180deg,#f0e7cf,#e2d4ad); background-size:150px 150px,100% 100%; background-blend-mode:multiply,normal; }
+  background-image:linear-gradient(180deg, rgba(244,236,214,.40), rgba(228,217,187,.48)), url("tex/paper-aged.jpg"); background-size:cover,cover; background-position:center; }
 .decor--suspect .sus__face{ width:100%; height:84px; display:block; }
 .decor--suspect .sus__label{ font-family:'Special Elite',monospace; font-size:.54rem; letter-spacing:.1em; text-transform:uppercase; color:#6a5a3c; margin-top:3px; border-top:1px solid rgba(60,42,18,.25); padding-top:4px; }
 
