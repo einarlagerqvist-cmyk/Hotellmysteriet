@@ -408,13 +408,13 @@ const CONFIG = {
                     cases: [
                         { id: "akershus", label: "Akershus: Mikkelsen (1981)", isMurder: true,
                           clue: ["blod", "hender", "hendene", "fingre", "fingrene", "ingen andre steder", "ikke på hendene", "bare på kniven"],
-                          hint: "Kniven hadde blodspor. Se nøye på obduksjonsrapporten. Hvor ellers burde det ha vært blod?" },
+                          hint: "Se nøye på hvor blodet satt. Er det et sted det burde vært, men ikke er?" },
                         { id: "hordaland", label: "Hordaland: Solberg (1983)", isMurder: true,
                           clue: ["hånd", "hånden", "venstre", "høyre"],
-                          hint: "Solberg er høyrehendt. Se på hvilket håndledd som er kuttet." },
+                          hint: "Sammenlign hvilken hånd han brukte til daglig med håndleddet som ble kuttet." },
                         { id: "hedmark",  label: "Hedmark: Antonsen (1985)",  isMurder: true,
                           clue: ["ligatur", "merke", "merker", "to merker", "to ligatursmerker", "dobbelt"],
-                          hint: "Les obduksjonsrapporten nøye. Hvor mange spor etterlater vanlig henging på halsen?" },
+                          hint: "Tell merkene på halsen. Hvor mange ville én henging etterlatt?" },
                         { id: "ostfold",  label: "Østfold: Stensrud (1979)",  isMurder: false,
                           hint: "Her ville jeg brukt tiden min på en av de andre sakene." },
                         { id: "rogaland", label: "Rogaland: Lie (1984)",      isMurder: false,
@@ -522,7 +522,7 @@ const CONFIG = {
                              "Gustav Tangen kjøkkensjefen", "kokken", "kokken Tangen", "Gustav Tangen kokken",
                              "det var Gustav Tangen", "det var Tangen"],
                     answerContains: ["tangen", "gustav", "kjøkkensjef", "kokken"],
-                    hint: "Les Dahls notater og bestillingsseddelen.",
+                    hint: "Sammenlign håndskriften på bestillingsseddelen med selvmordsbrevet.",
                     followUp: {
                         question: "Morderen var uforsiktig med én ting. Hva binder ham til det forfalskede selvmordsbrevet?",
                         answer: ["håndskriften", "handskriften", "håndskrift", "handskrift", "håndskriften hans",
@@ -1479,5 +1479,7 @@ function renderLeaderboardList(listId, entries, highlightTeam, highlightTotalTim
         list.appendChild(li);
     });
 }
-// GO!
-init();
+// GO!  — original init() is driven by the Evidence Board view layer (bevistavlen.html) instead.
+// Expose the original entry point in case it is ever needed, but do not auto-run it
+// (the new DOM has different element ids; bevistavlen-view's ebInit() boots the app).
+window.__legacyInit = init;
