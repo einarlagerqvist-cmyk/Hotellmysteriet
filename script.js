@@ -50,6 +50,7 @@ const UI_TEXT = {
         noEntries: 'Ingen tider registrert ennå',
         reloadResume: (team, name, n, total, min) => `Siden ble lastet på nytt.\n\nVil dere fortsette der dere slapp?\n\nLag: ${team}\nMysterium: ${name}\nOppgave: ${n} av ${total}\nTid brukt: ca. ${min} min`,
         giveUpConfirm: 'Er dere sikre? Dere får +10 minutter strafftid.',
+        giveUpNarrative: 'Sporet ble for kaldt.',
         giveUpLabel: 'Svaret var',
         giveUpPenalty: '+10 minutter strafftid',
         seeResult: 'Se resultatet',
@@ -57,6 +58,21 @@ const UI_TEXT = {
         adminDesc: 'Her kan du slette enkeltlag fra valgt mysterium, eller åpne dashbordet for å se statistikk.',
         clearAllConfirm: 'Sikker? Dette sletter både tider og tilbakemeldinger.',
         feedbackRatingAlert: 'Vennligst velg antall stjerner før du sender inn.',
+        modalGiveUpHeader: 'GI OPP',
+        modalGiveUpConfirm: 'Gi opp',
+        modalGiveUpCancel: 'Prøv videre',
+        modalQuitHeader: 'AVSLUTT',
+        modalQuitMsg: 'Dere kan fortsette etterforskningen senere.',
+        modalQuitConfirm: 'Avslutt',
+        modalQuitCancel: 'Bli værende',
+        modalClearHeader: 'SLETT ALT',
+        modalClearConfirm: 'Slett',
+        modalResumeHeader: 'FORTSETT?',
+        modalResumeConfirm: 'Fortsett',
+        modalResumeCancel: 'Start på nytt',
+        modalFeedbackHeader: 'MANGLER STJERNER',
+        modalOk: 'OK',
+        modalCancel: 'Avbryt',
         penaltyHint: (n) => `${n} hint`,
         penaltyGaveUp: (n) => `${n} oppgave${n > 1 ? 'r' : ''} gitt opp`,
         actualTime: (actual, penalty) => `Faktisk tid: ${actual} + ${penalty} strafftid`,
@@ -118,6 +134,7 @@ const UI_TEXT = {
         noEntries: 'No times recorded yet',
         reloadResume: (team, name, n, total, min) => `The page was reloaded.\n\nDo you want to continue where you left off?\n\nTeam: ${team}\nMystery: ${name}\nTask: ${n} of ${total}\nTime spent: approx. ${min} min`,
         giveUpConfirm: 'Are you sure? You will receive +10 minutes penalty.',
+        giveUpNarrative: 'The trail went cold.',
         giveUpLabel: 'The answer was',
         giveUpPenalty: '+10 minutes penalty',
         seeResult: 'See the result',
@@ -125,6 +142,21 @@ const UI_TEXT = {
         adminDesc: 'Here you can delete individual teams from the selected mystery, or open the dashboard to view statistics.',
         clearAllConfirm: 'Are you sure? This will delete all times and feedback.',
         feedbackRatingAlert: 'Please select a star rating before submitting.',
+        modalGiveUpHeader: 'GIVE UP',
+        modalGiveUpConfirm: 'Give up',
+        modalGiveUpCancel: 'Keep trying',
+        modalQuitHeader: 'QUIT',
+        modalQuitMsg: 'You can continue the investigation later.',
+        modalQuitConfirm: 'Quit',
+        modalQuitCancel: 'Keep going',
+        modalClearHeader: 'DELETE ALL',
+        modalClearConfirm: 'Delete',
+        modalResumeHeader: 'CONTINUE?',
+        modalResumeConfirm: 'Continue',
+        modalResumeCancel: 'Start over',
+        modalFeedbackHeader: 'MISSING STARS',
+        modalOk: 'OK',
+        modalCancel: 'Cancel',
         penaltyHint: (n) => `${n} hint${n > 1 ? 's' : ''}`,
         penaltyGaveUp: (n) => `${n} task${n > 1 ? 's' : ''} given up`,
         actualTime: (actual, penalty) => `Actual time: ${actual} + ${penalty} penalty`,
@@ -146,6 +178,44 @@ function T(key, ...args) {
     const dict = UI_TEXT[LANG] || UI_TEXT.no;
     const val = dict[key] !== undefined ? dict[key] : (UI_TEXT.no[key] || key);
     return typeof val === 'function' ? val(...args) : val;
+}
+
+// ============================================================
+//  THEMED MODAL HELPERS  (replaces native confirm / alert)
+// ============================================================
+function showConfirm(msg, confirmLabel, cancelLabel, headerLabel, isDanger) {
+    return new Promise(resolve => {
+        const modal = document.getElementById('hm-modal');
+        if (!modal) { resolve(window.confirm(msg)); return; }
+        document.getElementById('hm-modal-msg').textContent = msg;
+        document.getElementById('hm-modal-label').textContent = headerLabel || 'Advarsel';
+        const confirmBtn = document.getElementById('hm-modal-confirm');
+        const cancelBtn  = document.getElementById('hm-modal-cancel');
+        confirmBtn.textContent = confirmLabel || T('modalOk');
+        confirmBtn.classList.toggle('danger', !!isDanger);
+        if (cancelLabel) {
+            cancelBtn.style.display = '';
+            cancelBtn.textContent = cancelLabel;
+        } else {
+            cancelBtn.style.display = 'none';
+        }
+        modal.classList.add('is-open');
+        const cleanup = ok => {
+            modal.classList.remove('is-open');
+            confirmBtn.onclick = null;
+            cancelBtn.onclick  = null;
+            document.removeEventListener('keydown', onKey);
+            resolve(ok);
+        };
+        confirmBtn.onclick = () => cleanup(true);
+        cancelBtn.onclick  = () => cleanup(false);
+        const onKey = e => { if (e.key === 'Escape' && cancelLabel) cleanup(false); };
+        document.addEventListener('keydown', onKey);
+        setTimeout(() => confirmBtn.focus(), 40);
+    });
+}
+function showAlert(msg, headerLabel) {
+    return showConfirm(msg, T('modalOk'), null, headerLabel);
 }
 
 function getMystery(m) {
@@ -219,8 +289,8 @@ const CONFIG = {
             id: "fossheim",
             name: "Mysteriet Fossheim Hotell",
             tasks: [
-                { question: "Det er nokon som lyg i avhøyret sitt, kven?", answer: ["kokken", "daniel", "daniel gall", "kokken lyver", "gall"], hint: "De må samanlikne avhøyra mot avisutklippa." },
-                { question: "Mordvåpenet vart aldri stadfesta. Legenda seier at mordvåpenet høyrde til doktorkontoret. Leit i fellesområda. Kva var mordvåpenet?", answer: ["reflekshammeren", "reflekshammaren", "reflekshammer", "hammaren", "hammer", "hammar", "reflekshammar"], hint: "De må finna medisinskapet og samanlikne det mot skildringa i obduksjonsrapporten." },
+                { question: "Opne konvolutt 1.\n\nDet er nokon som lyg i avhøyret sitt, kven?", answer: ["kokken", "daniel", "daniel gall", "kokken lyver", "gall"], hint: "De må samanlikne avhøyra mot avisutklippa." },
+                { question: "Opne konvolutt 2.\n\nMordvåpenet vart aldri stadfesta. Legenda seier at mordvåpenet høyrde til doktorkontoret. Leit i fellesområda. Kva var mordvåpenet?", answer: ["reflekshammeren", "reflekshammaren", "reflekshammer", "hammaren", "hammer", "hammar", "reflekshammar"], hint: "De må finna medisinskapet og samanlikne det mot skildringa i obduksjonsrapporten." },
                 { question: "No er me eitt steg nærmare mordaren. Åstadsundersøkinga har ein feil i seg. Kva objekt har politiet teke feil om i åstadsundersøkjinga?", answer: ["glasskåret", "glasskår", "vindauget", "vinduet", "vindu", "ruta", "glasruta", "glaset", "vindusruta"], hint: "De må sjå nøye på biletet for å finna feilen." },
                 { question: "Det er eit dokument som aldri vart funne i peisestova. Skapet attmed pianoet gøymer noko. Finn det og løys saka. Kven var mordaren?", answer: ["hans", "hans jansen", "herr muller", "hans muller", "jansen", "muller"], hint: "Det er ei skjult skyvedør på skapet." }
             ],
@@ -228,10 +298,10 @@ const CONFIG = {
             en: {
                 name: "The Fossheim Hotel Mystery",
                 tasks: [
-                    { question: "Someone is lying in their interrogation. Who?", answer: ["kokken", "daniel", "daniel gall", "gall", "the cook", "cook"], hint: "Compare the interrogations against the newspaper clippings." },
-                    { question: "The murder weapon was never confirmed. Legend says the murder weapon belonged to the doctor's office. Search the common areas. What was the murder weapon?", answer: ["reflekshammeren", "reflekshammaren", "reflekshammer", "hammer", "reflex hammer", "neurological hammer"], hint: "Find the medicine cabinet and compare it against the description in the autopsy report." },
-                    { question: "We are now one step closer to the murderer. The crime scene investigation contains an error. Which object has the police gotten wrong in the crime scene investigation?", answer: ["glasskåret", "glasskår", "vindauget", "vinduet", "ruta", "window", "the window", "glass", "window pane", "broken window"], hint: "Look carefully at the image to find the error." },
-                    { question: "There is a document that was never found in the parlour. The cabinet next to the piano is hiding something. Find it and solve the case. Who was the murderer?", answer: ["hans", "hans jansen", "herr muller", "hans muller", "jansen", "muller"], hint: "There is a hidden sliding door on the cabinet." }
+                    { question: "Open envelope 1.\n\nSomeone is lying in their interrogation. Who?", answer: ["kokken", "daniel", "daniel gall", "gall", "the cook", "cook"], hint: "Compare the interrogations against the newspaper clippings." },
+                    { question: "Open envelope 2.\n\nThe murder weapon was never confirmed. Legend says the murder weapon belonged to the doctor's office. Search the common areas. What was the murder weapon?", answer: ["reflekshammeren", "reflekshammaren", "reflekshammer", "hammer", "the hammer", "reflex hammer", "the reflex hammer", "neurological hammer", "the neurological hammer"], hint: "Find the medicine cabinet and compare it against the description in the autopsy report." },
+                    { question: "We are now one step closer to the murderer. The crime scene investigation contains an error. Which object has the police gotten wrong in the crime scene investigation?", answer: ["glasskåret", "glasskår", "vindauget", "vinduet", "ruta", "window", "the window", "glass", "the glass", "window pane", "broken window", "glass shards", "the glass shards", "glass shard", "shards", "the shards", "broken glass"], hint: "Look carefully at the image to find the error." },
+                    { question: "There is a document that was never found in the parlour. The cabinet next to the piano is hiding something. Find it and solve the case. Who was the murderer?", answer: ["hans", "hans jansen", "herr muller", "hans muller", "jansen", "muller", "müller", "hans müller", "herr müller", "hans jansen müller"], hint: "There is a hidden sliding door on the cabinet." }
                 ],
                 finalMessage: "You did what the sheriff of Lom was unable to do on that stormy evening in 1946: you have uncovered the truth!\n\nThe culprit is Hans Jansen. The document from the parlour revealed who he really was: no peaceful Swiss guest, but the German officer Hans Müller. He did not come to Lom to relocate, but was driven by pitch-black revenge.\n\nLieutenant Colonel Vangli used his notorious 'finger method' in 1940 to break German prisoners. Hans's damaged left finger was no skiing accident, but an everlasting reminder of Vangli's torture.\n\nWhen the doctor and the priest disappeared into the back room, Hans seized his chance and beat the man who had tormented him to death. To escape, he broke the window from the inside (the shards lay on the outside) to create the illusion of a break-in. He then sat calmly back in the armchair in the reception and read the newspaper.\n\nThe murderer escaped in 1946, but thanks to you, the truth will no longer lie buried. Congratulations on outstanding investigative work!"
             }
@@ -834,7 +904,7 @@ async function init() {
     });
 
     document.getElementById("btn-submit-feedback").addEventListener("click", async () => {
-        if (state.currentRating === 0) { alert(T('feedbackRatingAlert')); return; }
+        if (state.currentRating === 0) { await showAlert(T('feedbackRatingAlert'), T('modalFeedbackHeader')); return; }
         const feedbackText = document.getElementById("feedback-text").value;
         const feedbackData = { team: state.teamName, rating: state.currentRating, comment: feedbackText, date: new Date().toISOString() };
         await Storage.saveFeedback(state.mysteryId, feedbackData);
@@ -854,7 +924,7 @@ async function init() {
     document.getElementById("btn-open-dashboard").addEventListener("click", openAdminDashboard);
     document.getElementById("btn-close-dashboard").addEventListener("click", showLeaderboard);
     document.getElementById("btn-clear-all").addEventListener("click", async () => {
-        if (confirm(T('clearAllConfirm'))) { await Storage.clearAll(); showLeaderboard(); }
+        if (await showConfirm(T('clearAllConfirm'), T('modalClearConfirm'), T('modalCancel'), T('modalClearHeader'), true)) { await Storage.clearAll(); showLeaderboard(); }
     });
 
     await Storage.init();
@@ -866,7 +936,7 @@ async function init() {
             const mystery = getMystery(rawMystery);
             const elapsedMin = Math.round((Date.now() - savedSession.startTime) / 60000);
             const taskNum = savedSession.currentTask + 1;
-            const resume = confirm(T('reloadResume', savedSession.teamName, mystery.name, taskNum, mystery.tasks.length, elapsedMin));
+            const resume = await showConfirm(T('reloadResume', savedSession.teamName, mystery.name, taskNum, mystery.tasks.length, elapsedMin), T('modalResumeConfirm'), T('modalResumeCancel'), T('modalResumeHeader'));
             if (resume) {
                 if (!state.preselected) state.mysteryId = savedSession.mysteryId;
                 resumeGame(savedSession); return;
@@ -1036,8 +1106,8 @@ function rewardHtml(task) {
         </div>`;
 }
 
-function giveUp(task) {
-    if (!confirm(T('giveUpConfirm'))) return;
+async function giveUp(task) {
+    if (!await showConfirm(T('giveUpConfirm'), T('modalGiveUpConfirm'), T('modalGiveUpCancel'), T('modalGiveUpHeader'))) return;
     state.gaveUpCount++;
     state.taskStats[state.currentTask].gaveUp = true;
     state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
@@ -1053,7 +1123,7 @@ function giveUp(task) {
     const isLast = state.currentTask === state.mystery.tasks.length - 1;
     const hintArea = document.getElementById("task-hint-area");
     hintArea.innerHTML = `
-        <div class="hm-giveup-box"><div class="hm-giveup-label">${T('giveUpLabel')}</div><div class="hm-giveup-answer">${escapeHtml(correctAnswer)}</div><div class="hm-giveup-penalty">${T('giveUpPenalty')}</div></div>
+        <div class="hm-giveup-box"><div class="hm-giveup-narrative">${T('giveUpNarrative')}</div><div class="hm-giveup-label">${T('giveUpLabel')}</div><div class="hm-giveup-answer">${escapeHtml(correctAnswer)}</div><div class="hm-giveup-penalty">${T('giveUpPenalty')}</div></div>
         ${isLast ? "" : rewardHtml(task)}
     `;
     const continueBtn = document.createElement("button");
@@ -1205,8 +1275,8 @@ function renderSerialMurderUI(task) {
             caseErrorEl.textContent = '';
         }
 
-        caseGiveUpBtn.addEventListener('click', () => {
-            if (!confirm(T('giveUpConfirm'))) return;
+        caseGiveUpBtn.addEventListener('click', async () => {
+            if (!await showConfirm(T('giveUpConfirm'), T('modalGiveUpConfirm'), T('modalGiveUpCancel'), T('modalGiveUpHeader'))) return;
             state.gaveUpCount++;
             state.taskStats[state.currentTask].gaveUp = (state.taskStats[state.currentTask].gaveUp || 0) + 1;
             SessionStore.save();

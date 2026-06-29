@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20260625g">
+<link rel="stylesheet" href="style.css?v=20260626a">
 </head>
 <body>
 <div class="app">
@@ -46,7 +46,7 @@
   <section id="screen-board" class="screen">
     <div class="board"><div class="board__frame">
       <div class="hud" id="hud">
-        <button class="hud__back" id="btn-board-back">◂ Avslutt</button>
+        <button class="hud__back" id="btn-board-back">◂ Avbryt</button>
         <div class="hud__title"><div class="hud__name" id="board-name"></div><div class="hud__progress" id="board-progress"></div></div>
         <div class="hud__timer" id="board-timer" title="Skjul/vis tid">00:00:00</div>
       </div>
@@ -58,6 +58,7 @@
       <span class="verdict__stamp" id="verdict-stamp">Oppklart</span>
       <div class="verdict__kicker" id="verdict-kicker">Sakens konklusjon</div>
       <h2 class="verdict__title" id="verdict-title">Saken er løst</h2>
+      <div class="solution"><div class="solution__h" id="sol-h">Løsningen</div><p class="verdict__body" id="final-message"></p></div>
       <div class="result-hero">
         <div class="result-hero__time" id="final-time">00:00:00</div>
         <div class="result-hero__rank" id="final-rank"></div>
@@ -68,7 +69,6 @@
         <div class="tidstavle__h"><span class="tidstavle__title" id="tid-title">Tidstavlen</span><span class="tidstavle__sub" id="tid-sub"></span></div>
         <div id="tid-list" class="tid-list"></div>
       </div>
-      <div class="solution"><div class="solution__h" id="sol-h">Løsningen</div><p class="verdict__body" id="final-message"></p></div>
       <div class="fb" id="fb">
         <div class="fb__h" id="fb-h">Hva syntes dere om mysteriet?</div>
         <div class="fb__stars" id="fb-stars"><span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span></div>
@@ -129,6 +129,19 @@
     </div></div>
   </section>
 
+  <!-- Themed confirm/alert modal (replaces all native confirm()/alert()) -->
+  <div id="hm-modal" class="hm-modal" role="alertdialog" aria-modal="true" aria-labelledby="hm-modal-label" aria-describedby="hm-modal-msg">
+    <div class="hm-modal__card">
+      <span class="hm-modal__pin"></span>
+      <div class="hm-modal__label" id="hm-modal-label">Advarsel</div>
+      <p class="hm-modal__msg" id="hm-modal-msg"></p>
+      <div class="hm-modal__actions">
+        <button class="hm-modal__cancel" id="hm-modal-cancel">Avbryt</button>
+        <button class="hm-modal__confirm" id="hm-modal-confirm">Bekreft</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- Real data + logic (CONFIG, UI_TEXT, Storage, scoring) — verbatim copy of script.js, init() neutralised -->
@@ -149,7 +162,7 @@ const EN = (typeof LANG !== "undefined" && LANG === "en");
 const NN_MYS = new Set(["fossheim"]);                 // hotels that want Nynorsk chrome
 let cur = EN ? "en" : "no";                            // current chrome language: no | en | nn
 const L  = (no,en,nn)=> cur==="en" ? en : (cur==="nn" && nn!=null ? nn : no);
-function setLangFor(id){ cur = NN_MYS.has(id) ? "nn" : (EN ? "en" : "no"); }
+function setLangFor(id){ cur = EN ? "en" : (NN_MYS.has(id) ? "nn" : "no"); }
 const toArr = x => Array.isArray(x) ? x : (x==null ? [] : [x]);
 const esc = (typeof escapeHtml==="function") ? escapeHtml : (s=>{const d=document.createElement("div");d.textContent=s;return d.innerHTML;});
 const nrm = (typeof normalizeAnswer==="function") ? normalizeAnswer : (s=>s.trim().toUpperCase().replace(/\s+/g,""));
@@ -373,8 +386,8 @@ function wireCard(el, task, i){
     giveup.style.display="";
     layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:380);
   });
-  giveup.addEventListener("click", ()=>{
-    if(!confirm(L("Gi opp denne oppgaven? Det koster 10 minutter i strafftid.","Give up this clue? It costs 10 minutes of penalty time.","Gje opp denne oppgåva? Det kostar 10 minutt i strafftid."))) return;
+  giveup.addEventListener("click", async ()=>{
+    if(!await showConfirm(L("Er dere sikre? Dette koster +10 minutter strafftid.","Are you sure? This costs +10 minutes penalty."),L("Gi opp","Give up"),L("Prøv videre","Keep trying"),L("GI OPP","GIVE UP"))) return;
     state.gaveUpCount++; state.taskStats[i].gaveUp = true; SessionStore.save();
     const ansArr = toArr((followUp && task.followUp) ? task.followUp.answer : task.answer);
     const ans = ansArr.find(a=>!/^\d+$/.test(a)) || ansArr[0] || "";
@@ -440,8 +453,8 @@ function closeCase(){ $("#case-sheet").classList.remove("open"); curCase=null; }
     $("#cs-hint").innerHTML = `<div class="hint"><b>${L("Hint · 5 min strafftid","Hint · 5 min penalty","Hint · 5 min strafftid")}</b>${esc(curCase.c.hint)}</div>`;
     $("#cs-hintbtn").style.display="none";
   });
-  $("#cs-giveup").addEventListener("click", ()=>{
-    if(!curCase) return; if(!confirm(L("Gi opp denne saken? Det koster 10 minutter.","Give up this case? It costs 10 minutes.","Gje opp denne saka? Det kostar 10 minutt."))) return;
+  $("#cs-giveup").addEventListener("click", async ()=>{
+    if(!curCase) return; if(!await showConfirm(L("Er dere sikre? Dette koster +10 minutter strafftid.","Are you sure? This costs +10 minutes penalty."),L("Gi opp","Give up"),L("Prøv videre","Keep trying"),L("GI OPP","GIVE UP"))) return;
     const {c, folder, ctx}=curCase;
     state.gaveUpCount++; state.taskStats[ctx.taskIdx].gaveUp=true; SessionStore.save();
     ctx.caseState[c.id]="gaveUp"; folder.classList.remove("pending"); folder.classList.add("missed");
@@ -621,7 +634,7 @@ $$("#fb-stars span").forEach(star=>{
   star.addEventListener("click", function(){ state.currentRating = +this.dataset.v; $$("#fb-stars span").forEach(s=> s.classList.toggle("on", +s.dataset.v <= state.currentRating)); });
 });
 $("#fb-submit").addEventListener("click", async ()=>{
-  if(!state.currentRating){ alert(L("Velg en stjernerangering først.","Pick a star rating first.")); return; }
+  if(!state.currentRating){ await showAlert(L("Velg en stjernerangering først.","Pick a star rating first."),L("MANGLER STJERNER","MISSING STARS")); return; }
   const fb = { team:state.teamName, rating:state.currentRating, comment:$("#fb-text").value, date:new Date().toISOString() };
   try { await Storage.saveFeedback(state.mysteryId, fb); } catch(e){}
   $("#fb").style.display="none"; $("#fb-thanks").style.display="block";
@@ -630,7 +643,7 @@ $("#fb-submit").addEventListener("click", async ()=>{
 /* =========================================================================
    NAV
    ========================================================================= */
-$("#btn-board-back").addEventListener("click", ()=>{ if(confirm(L("Avslutte etterforskningen? Fremgangen lagres ikke.","Quit the investigation? Progress will not be saved."))) backToArchive(); });
+$("#btn-board-back").addEventListener("click", async ()=>{ if(await showConfirm(L("Dere kan fortsette etterforskningen senere.","You can continue the investigation later."),L("Avslutt","Quit"),L("Bli værende","Keep going"),L("AVSLUTT","QUIT"))) backToArchive(); });
 $("#btn-win-back").addEventListener("click", backToArchive);
 function backToArchive(){ clearInterval(state.timerInterval); stopCam(); if(state.stopAudio){state.stopAudio();state.stopAudio=null;} state.started=false; state.flying=false; $("#hud").classList.remove("hud--dim"); $("#overlay").classList.remove("is-open"); show(state.preselected ? "entry" : "menu"); }
 
@@ -708,7 +721,7 @@ $("#btn-admin").addEventListener("click", ()=>{
   const pw = prompt("Admin-passord:");
   if(pw === CONFIG.adminPassword){ state.isAdmin=true; openLeaderboard(); }
 });
-$("#btn-clear-all").addEventListener("click", async ()=>{ if(confirm(L("Slette ALLE tider og tilbakemeldinger for ALLE mysterier? Kan ikke angres.","Delete ALL times and feedback for ALL mysteries? Cannot be undone."))){ await Storage.clearAll(); loadLB(null, $(".fbtn")); } });
+$("#btn-clear-all").addEventListener("click", async ()=>{ if(await showConfirm(L("Slette ALLE tider og tilbakemeldinger for ALLE mysterier? Kan ikke angres.","Delete ALL times and feedback for ALL mysteries? Cannot be undone."),L("Slett","Delete"),L("Avbryt","Cancel"),L("SLETT ALT","DELETE ALL"),true)){ await Storage.clearAll(); loadLB(null, $(".fbtn")); } });
 $("#btn-open-dash").addEventListener("click", openDashboard);
 $("#btn-dash-back").addEventListener("click", ()=> openLeaderboard());
 
@@ -759,7 +772,7 @@ async function openDashboard(){
   const allNotes=[]; Object.values(stats).forEach(s=> s.notes.forEach(f=> allNotes.push(f)));
   const cols=["y","p","b","g"];
   $("#dash-feedback").innerHTML = allNotes.length ? allNotes.slice(0,6).map((f,i)=>`<div class="note ${cols[i%4]}" style="--r:${i%2?1.6:-1.8}deg"><div class="note__stars">${starRow(f.rating||0)}</div><div class="note__text">${esc(f.comment)}</div><div class="note__team">${esc(f.team||"?")}</div></div>`).join("") : `<div class="dash-empty">${L("Ingen tilbakemeldinger ennå.","No feedback yet.")}</div>`;
-  requestAnimationFrame(()=> $$("#dash-bars .bar__fill").forEach(f=> f.style.width=f.dataset.w+"%"));
+  requestAnimationFrame(()=> $$("#dash-bars .bar__fill").forEach(f=> f.style.transform=`scaleX(${f.dataset.w/100})`));
 }
 function shortName(name){ return name.replace(/^Mysteriet (på |Fossheim |)/,"").replace(/^The /,"").replace(/ Hotell?$/,"").trim() || name; }
 
@@ -772,7 +785,7 @@ function applyEnLabels(){
   set("#btn-lb","View leaderboard"); set("#btn-admin","admin");
   set("#entry-kicker","New investigation"); set("#entry-label","Team name");
   set("#btn-begin","Start the investigation"); ph("#team-input","Enter team name…"); set("#btn-entry-back","◂ Back to the archive");
-  set("#btn-board-back","◂ Quit");
+  set("#btn-board-back","◂ Pause");
   set("#verdict-stamp","Solved"); set("#verdict-kicker","Case conclusion"); set("#verdict-title","The case is solved");
   set("#tid-title","Time board"); set("#sol-h","The solution");
   set("#fb-h","What did you think of the mystery?"); ph("#fb-text","What could be better? (optional)"); set("#fb-submit","Send feedback"); set("#fb-thanks","Thanks for the feedback!");
@@ -794,7 +807,7 @@ function applyChrome(){
   set("#btn-begin", L("Start etterforskningen","Start the investigation","Start etterforskinga"));
   ph("#team-input", L("Skriv inn lagnavnet…","Enter team name…","Skriv inn lagnamnet…"));
   set("#btn-entry-back", L("◂ Tilbake til arkivet","◂ Back to the archive","◂ Tilbake til arkivet"));
-  set("#btn-board-back", L("◂ Avslutt","◂ Quit","◂ Avslutt"));
+  set("#btn-board-back", L("◂ Avbryt","◂ Pause","◂ Avbryt"));
   set("#verdict-stamp", L("Oppklart","Solved","Oppklart"));
   set("#verdict-kicker", L("Sakens konklusjon","Case conclusion","Saka si oppklaring"));
   set("#verdict-title", L("Saken er løst","The case is solved","Saka er løyst"));
@@ -827,7 +840,7 @@ async function ebInit(){
     if(m){
       const res = getMystery(m);
       const mins = Math.round((Date.now()-sess.startTime)/60000);
-      const ok = confirm(L(`Fortsette spillet for «${sess.teamName}» på ${res.name}? (oppgave ${sess.currentTask+1}/${res.tasks.length}, startet for ${mins} min siden)`, `Resume «${sess.teamName}» on ${res.name}? (clue ${sess.currentTask+1}/${res.tasks.length}, started ${mins} min ago)`));
+      const ok = await showConfirm(L(`Lag: ${sess.teamName}\nMysterium: ${res.name}\nOppgave ${sess.currentTask+1} av ${res.tasks.length}\nStartet for ${mins} min siden`,`Team: ${sess.teamName}\nMystery: ${res.name}\nClue ${sess.currentTask+1} of ${res.tasks.length}\nStarted ${mins} min ago`),L("Fortsett","Continue"),L("Start på nytt","Start over"),L("FORTSETT?","CONTINUE?"));
       if(ok) resumeBoard(sess); else SessionStore.clear();
     } else SessionStore.clear();
   }
