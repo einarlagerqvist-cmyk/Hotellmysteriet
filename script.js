@@ -505,7 +505,7 @@ const CONFIG = {
                     hint: "Se deg godt rundt i cellen."
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nDere vet nå at Bakken ble drept. Dere vet at det har skjedd før, fire ganger.\n\nGå gjennom dokumentene i konvolutten.\n\nHvem drepte Terje Bakken?",
+                    question: "Åpne konvolutt 3.\n\nDere vet nå at Bakken ble drept. Dere vet at det har skjedd før, tre ganger.\n\nGå gjennom dokumentene i konvolutten.\n\nHvem drepte Terje Bakken?",
                     answer: ["Knut Arnesen", "Arnesen", "Knut",
                              "legen", "lege Arnesen", "lege Knut Arnesen",
                              "dr Arnesen", "dr. Arnesen", "Dr. Knut Arnesen", "doktor Arnesen"],
@@ -526,7 +526,7 @@ const CONFIG = {
                     }
                 }
             ],
-            finalMessage: "Dere har løst det.\n\nTerje Bakken ble drept av lege Knut Arnesen. Arnesen hadde reist fra fengsel til fengsel i årevis og tatt loven i egne hender. Motivet var hevn for datteren Linn, som fikk livet sitt ødelagt av overgripere som Bakken.\n\nArnesen sørget for at de aldri kom ut. Tre mord. Tre fengsler. Ett navn.\n\nSakene ble aldri løst av politiet. Men dere så det ingen andre klarte å se."
+            finalMessage: "Dere har løst det.\n\nTerje Bakken ble drept av lege Knut Arnesen. Arnesen hadde reist fra fengsel til fengsel i årevis og tatt loven i egne hender. Motivet var hevn for datteren Linn, som fikk livet sitt ødelagt av overgripere som Bakken.\n\nArnesen sørget for at de aldri kom ut. Fire mord. Fire fengsler. Ett navn.\n\nSakene ble aldri løst av politiet. Men dere så det ingen andre klarte å se."
         },
         {
             id: "leangkollen",
