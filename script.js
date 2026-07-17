@@ -531,22 +531,24 @@ const CONFIG = {
         {
             id: "leangkollen",
             name: "Mysteriet på Leangkollen",
-            intro: "Natt til 14. november 1956 forvandles et rutinebesøk på Leangkollen til to dødsfall: den nye eieren ligger kvalt i spisesalen, revisoren hans knust på bakken under vinduet til rom 202. Politiet har allerede felt sin dom. Drap og selvmord, og saken lukkes før kvelden er omme.\n\nMen bak den låste døren og det håndskrevne avskjedsbrevet skjuler det seg detaljer som rett og slett ikke stemmer, og noen på hotellet har gått langt for å få sannheten til å forsvinne. Dere er hyret inn for å granske mappen én siste gang før den arkiveres for godt. Klokken tikker, og rettferdigheten hviler på dere.",
+            intro: "Natt til 14. november 1956 forvandles et rutinebesøk på Leangkollen til to dødsfall: den nye eieren ligger kvalt i spisesalen, revisoren hans ligger knust på bakken under vinduet til rom 202. Politiet har allerede felt sin dom. Drap og selvmord, og saken lukkes før kvelden er omme.\n\nMen bak den låste døren og det håndskrevne avskjedsbrevet skjuler det seg detaljer som rett og slett ikke stemmer, og noen på hotellet har gått langt for å få sannheten til å forsvinne. Dere er hyret inn for å granske mappen én siste gang før den arkiveres for godt. Klokken tikker, og rettferdigheten hviler på dere.",
             tasks: [
                 {
-                    question: "Åpne konvolutt 1.\n\nPolitiet har allerede skrevet konklusjonen: revisoren kvalte eieren, låste seg inne på rom 202 og kastet seg ut av vinduet. Saken arkiveres i kveld, med mindre dere finner noe de overså.\n\nVar dette egentlig et selvmord?",
+                    question: "Politiet har allerede skrevet konklusjonen: revisor Berge kvalte eieren, låste seg inne på rom 202 og kastet seg ut av vinduet. Saken arkiveres i kveld, med mindre dere finner noe de overså.\n\nÅSTEDSNOTAT: Vinduet i rom 202 ble funnet lukket og haspet fra innsiden da rommet ble åpnet klokken 06:15. Ingen nøkkel til rommet mangler, utenom universalnøkkelen i resepsjonen.\n\nOBDUKSJONSNOTAT: Skadene er forenlige med et fall fra tredje etasje, men venstre jakkeerme er revet løs ved skulderen, en skade legen bemerker at et fall alene vanskelig kan forklare.\n\nVar dette egentlig et selvmord?",
                     answer: ["nei", "no", "nope", "nei det var det ikke", "nei det var ikke selvmord",
                              "nei det var ikke et selvmord", "det var ikke selvmord", "ikke selvmord",
                              "absolutt ikke", "nei absolutt ikke", "neida", "nei da",
                              "det var drap", "det var et drap", "drap", "mord",
                              "han ble drept", "han ble myrdet", "nei det var drap", "nei det var mord"],
                     answerContains: ["nei", "ikke selvmord", "ikke et selvmord", "ble drept", "ble myrdet", "var drap"],
-                    hint: "Se nøye på fotografiet av rom 202 og den foreløpige obduksjonsrapporten.",
+                    hint: "Tenk på hva et lukket, haspet vindu betyr for noen som skal ha hoppet ut av det. Og hvorfor er ermet revet?",
+                    explanation: "Et selvmord krever at revisor Berge hoppet ut av vinduet og deretter haspet det igjen bak seg, noe som er fysisk umulig fra utsiden.",
                     followUp: {
                         question: "Hvordan kan det ikke ha vært et selvmord?",
-                        answer: ["vinduet var lukket", "vinduet var stengt", "vinduet var lukket og haspen var på",
+                        answer: ["vinduet", "vinduet var lukket", "vinduet var stengt", "vinduet var lukket og haspen var på",
                                  "haspen var på", "vindushaspen var på", "vindushaspen", "haspen", "vinduet var haspet",
                                  "vinduet var haspet igjen", "vinduet var lukket fra innsiden", "vinduet var låst",
+                                 "vinduene var lukket", "lukkede vinduer", "vinduene lukket", "et lukket vindu",
                                  "han kunne ikke ha hoppet", "han kunne ikke hoppe", "han kunne ikke hoppet ut",
                                  "man kan ikke haspe vinduet utenfra", "lukket vindu", "stengt vindu",
                                  "ermet var revet", "jakkeermet var revet opp", "ermet hans var revet opp",
@@ -554,14 +556,16 @@ const CONFIG = {
                                  "han ble grepet", "rommet ble låst utenfra", "døren ble låst utenfra", "låst utenfra",
                                  "universalnøkkelen forsvant", "nøkkelen forsvant", "nøkkelen var borte"],
                         answerContains: ["haspe", "vinduet var lukket", "vinduet lukket", "lukket vindu",
+                                         "lukkede vinduer", "vinduene var lukket", "vinduene lukket",
                                          "vinduet var stengt", "stengt vindu", "vinduet var låst", "ermet",
                                          "revet opp", "ble dyttet", "ble skjøvet", "ble grepet", "låst utenfra",
                                          "nøkkelen forsvant", "nøkkelen var borte"],
-                        hint: "Studer fotografiet av rom 202 enda en gang, og se på skadene beskrevet i obduksjonsrapporten."
+                        hint: "Se på åstedsnotatet og obduksjonsnotatet en gang til, og tenk på hva som ikke stemmer med et hopp ut av vinduet.",
+                        explanation: "Vinduet var lukket og haspet fra innsiden da rommet ble åpnet. Ingen kan haspe et vindu fra utsiden etter å ha hoppet ut, og det revne jakkeermet tyder på at Berge ble grepet og dyttet, ikke at han hoppet av seg selv."
                     }
                 },
                 {
-                    question: "Åpne konvolutt 2.\n\nFire ansatte, fire forklaringer.\n\nHvem løy i avhøret sitt?",
+                    question: "Fire ansatte ble avhørt samme natt.\n\nMARGIT HOLM (resepsjonist): «Jeg satt ved disken hele kvelden. Så ingenting uvanlig.»\n\nERLING NORD (hovmester): «Jeg ryddet i spisesalen til stengetid. Snakket ikke med noen.»\n\nGUSTAV TANGEN (kjøkkensjef): «Jeg låste kjøkkenet klokken elleve og gikk rett hjem.»\n\nAKSEL VIK (nattevakt): «Jeg så lys i kjøkkenvinduet like etter midnatt, men tenkte ikke noe over det.»\n\nBERGES NOTATER: Sentralbordet hadde en logg over interne samtaler. Loggen viser en samtale mellom resepsjonen og spisesalen klokken 23:47, som varte i fire minutter.\n\nHvem løy i avhøret sitt?",
                     answer: ["Margit Holm og Erling Nord", "Erling Nord og Margit Holm",
                              "Margit og Erling", "Erling og Margit", "Holm og Nord", "Nord og Holm",
                              "Margit Holm, Erling Nord", "Erling Nord, Margit Holm", "Margit, Erling", "Erling, Margit",
@@ -573,7 +577,8 @@ const CONFIG = {
                     answerContains: ["margit og erling", "erling og margit", "margit holm og erling", "erling nord og margit",
                                      "margit holm og erling nord", "erling nord og margit holm", "holm og nord", "nord og holm",
                                      "begge", "resepsjonisten og hovmester", "hovmester og resepsjonist"],
-                    hint: "Les Dahls notater og de fire avhørene på nytt.",
+                    hint: "Sammenlign klokkeslettet i samtaleloggen med det Margit og Erling selv forteller i avhørene sine.",
+                    explanation: "Samtaleloggen viser en fire minutter lang telefonsamtale mellom resepsjonen og spisesalen klokken 23:47, men verken Margit eller Erling nevner denne samtalen i avhørene sine.",
                     followUp: {
                         question: "De holdt seg til samme historie for å dekke over noe. Hva løy de om?",
                         answer: ["de hadde kontakt", "at de hadde kontakt", "kontakt", "de hadde kontakt med hverandre",
@@ -583,18 +588,24 @@ const CONFIG = {
                                  "de forlot posten sin", "at de forlot pulten"],
                         answerContains: ["kontakt", "ringte", "samtale", "telefon", "nøkkel", "snakket sammen",
                                          "snakket med hverandre", "forlot pulten", "forlot posten", "forlot kontoret"],
-                        hint: "Se på Dahls notater om spolebåndopptakeren, og les avhørene en gang til."
+                        hint: "Se på samtaleloggen igjen. Hva gjorde de egentlig i de fire minuttene telefonen var i bruk, siden ingen av dem nevner samtalen selv?",
+                        explanation: "De løy om at de hadde kontakt med hverandre. Erling forsøkte å få tak i universalnøkkelen fra Margit for å komme inn på Berges rom og hente kompromitterende papirer, men nøkkelen var borte fra sin faste plass."
                     }
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nTo drap. Én natt. Fire mistenkte som alle har noe å skjule.\n\nMen bare én bar på en hemmelighet verdt å drepe for. Finn motivet i papirene.\n\nHvem drepte både eieren og revisoren?",
+                    question: "To drap. Én natt. Fire mistenkte som alle har noe å skjule.\n\nNOTAT FUNNET I REVISORENS VESKE: «Kjøttleveransene fra kjøkkenet stemmer ikke med fakturaene. Differansen er betydelig. Må konfrontere kjøkkensjefen i morgen.»\n\nMen bare én av de fire bar på en hemmelighet verdt å drepe for.\n\nHvem drepte både eieren og revisoren?",
                     answer: ["Gustav Tangen", "Tangen", "Gustav", "kjøkkensjefen", "kjøkkensjef Tangen",
                              "Gustav Tangen kjøkkensjefen", "kokken", "kokken Tangen", "Gustav Tangen kokken",
                              "det var Gustav Tangen", "det var Tangen"],
                     answerContains: ["tangen", "gustav", "kjøkkensjef", "kokken"],
-                    hint: "Sammenlign håndskriften på bestillingsseddelen med selvmordsbrevet.",
+                    hint: "Se på håndskriften i bildene under, og tenk på hvem av de fire som kan ha skrevet begge.",
+                    explanation: "Håndskriften på bestillingsseddelen fra kjøkkenet er identisk med håndskriften i det forfalskede selvmordsbrevet. Revisor Berge var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne kjøkkensjef Tangen ikke leve med.",
+                    images: [
+                        { src: "img/leangkollen/bestillingsseddel.jpg", alt: "Bestillingsseddel fra kjøkkenet", caption: "Bestillingsseddel fra kjøkkenet" },
+                        { src: "img/leangkollen/selvmordsbrev.jpg", alt: "Det forfalskede selvmordsbrevet", caption: "Det forfalskede selvmordsbrevet" }
+                    ],
                     followUp: {
-                        question: "Morderen var uforsiktig med én ting. Hva binder ham til det forfalskede selvmordsbrevet?",
+                        question: "Hvordan skjønte dere at han var morderen?",
                         answer: ["håndskriften", "handskriften", "håndskrift", "handskrift", "håndskriften hans",
                                  "håndskriften på brevet", "håndskriften på selvmordsbrevet", "skriften", "skriften hans",
                                  "han skrev selvmordsbrevet", "han forfalsket brevet", "han skrev brevet",
@@ -603,11 +614,41 @@ const CONFIG = {
                         answerContains: ["håndskrift", "handskrift", "skriften", "samme skrift", "skrev brevet",
                                          "skrev selvmordsbrevet", "forfalsket brevet", "skrev avskjedsbrevet",
                                          "samme hånd", "hånden hans"],
-                        hint: "Sammenlign selvmordsbrevet nøye med de andre lappene i mappen."
+                        hint: "Sammenlign håndskriften på de to bildene nøye, bokstav for bokstav.",
+                        explanation: "Håndskriften på bestillingsseddelen fra kjøkkenet matcher håndskriften i det forfalskede selvmordsbrevet, bokstav for bokstav."
                     }
                 }
             ],
             finalMessage: "Dere klarte det dere ble hyret inn for.\n\nDet var aldri et selvmord. Vinduet i rom 202 var haspet igjen fra innsiden. Revisor Berge kunne umulig ha hoppet ut og låst vinduet etter seg. Han ble dyttet, og rommet ble låst utenfra med universalnøkkelen for å iscenesette et selvmord.\n\nMargit Holm og Erling Nord løy begge, men ikke fordi de drepte noen. De fryktet å bli mistenkt etter Erlings trusler mot eieren. Den virkelige morderen var kjøkkensjef Gustav Tangen. Revisoren var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne Tangen ikke leve med.\n\nDet som felte ham, var hans egen hånd: håndskriften i det forfalskede selvmordsbrevet var den samme som på bestillingsseddelen fra kjøkkenet. Politiet ville arkivert saken i kveld. Dere så det ingen andre så."
+        },
+        {
+            id: "glassburet",
+            name: "Mysteriet i Glassburet",
+            intro: "Administrerende direktør er funnet livløs i møterommet «Glassburet». Politiet konkluderte raskt med selvmord og lukket saken.\n\nMen familien tror ikke på det, og har hyret dere inn for å gå gjennom bevisene på nytt.\n\nKlokken tikker.",
+            tasks: [
+                {
+                    question: "Åpne konvolutt 1.\n\nPolitiet konkluderte med selvmord. Undersøk de rettsmedisinske funnene nøye. Var dette selvmord, eller ble direktøren myrdet?",
+                    answer: ["drap", "myrdet", "mord", "det var drap", "han ble myrdet", "ikke selvmord", "det var ikke selvmord"],
+                    answerContains: ["myrdet", "drap", "mord"],
+                    hint: "Sjekk hvilken hånd direktøren skrev med, og hvor kuttet faktisk satt. Se også på tidspunktet i den toksikologiske analysen."
+                },
+                {
+                    question: "Åpne konvolutt 2.\n\nEn av de ansatte har fortalt sin versjon av kvelden. Stemmer historien med det bygget selv kan fortelle oss? Hvem løy om alibiet sitt?",
+                    answer: ["Thomas Berge", "Thomas", "Berge"],
+                    hint: "Sammenlign klokkeslettet Thomas oppga for da han tok heisen, med vedlikeholdsloggen for Heis A."
+                },
+                {
+                    question: "Åpne konvolutt 3.\n\nRenholderen fant noe hun trodde var søppel. Se nærmere på det, kanskje ikke alt er som det ser ut ved første øyekast. Hvem kalte direktøren til et hemmelig møte i Glassburet klokken 23:05?",
+                    answer: ["Vibeke Holm", "Vibeke", "Holm"],
+                    hint: "Hold det svarte arket fra fellesprinteren opp mot en lyskilde."
+                },
+                {
+                    question: "Åpne konvolutt 4.\n\nHvem er morderen?",
+                    answer: ["Vibeke Holm", "Vibeke", "Holm"],
+                    hint: "Sammenlign håndskriften i avskjedsbrevet med de fire feriesøknadene. Se spesielt på bokstavene g og t."
+                }
+            ],
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er HR-direktør Vibeke Holm. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da direktøren oppdaget underslaget samme kveld og kalte henne til et møte i Glassburet klokken 23:05, konfronterte han henne, og hun drepte ham for å unngå avsløring.\n\nHun iscenesatte selvmord ved å kutte håndleddet hans og forfalsket et avskjedsbrev i hans navn. Men GHB-nivået i blodet viste at han var edru da han døde, og håndleddskuttet var biomekanisk umulig å påføre seg selv med hans hendthet.\n\nKjernebeviset var håndskriften: Da dere sammenlignet avskjedsbrevet med Vibekes egen håndskrift på en offisiell feriesøknad, matchet bokstavformene perfekt. Hun skrev brevet selv.\n\nThomas Berge var sint og full, men fanget av heisen og uskyldig i drapet. Fredrik Lie skjulte noe pinlig (sletting av nettleserhistorikk), men var heller ikke involvert.\n\nTakk for strålende etterforskningsarbeid!"
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
@@ -797,6 +838,8 @@ function getMysteryName(id) {
 }
 function escapeHtml(str) { const d = document.createElement("div"); d.textContent = str; return d.innerHTML; }
 function normalizeAnswer(str) { return str.trim().toUpperCase().replace(/\s+/g, ""); }
+function wordsOfAnswer(str) { return str.trim().toUpperCase().replace(/[.,!?;:"'«»]/g, "").split(/\s+/).filter(Boolean); }
+function sortedWordKey(str) { return wordsOfAnswer(str).slice().sort().join(" "); }
 
 function applyLanguage() {
     document.documentElement.lang = LANG;
@@ -1133,10 +1176,10 @@ async function giveUp(task) {
     state.taskStats[state.currentTask].gaveUp = true;
     state.taskStats[state.currentTask].timeSpent = Date.now() - state.taskStartTime;
     SessionStore.save();
-    const answers = (state.followUpMode && task.followUp)
-        ? (Array.isArray(task.followUp.answer) ? task.followUp.answer : [task.followUp.answer])
-        : (Array.isArray(task.answer) ? task.answer : [task.answer]);
+    const activeTask = (state.followUpMode && task.followUp) ? task.followUp : task;
+    const answers = Array.isArray(activeTask.answer) ? activeTask.answer : [activeTask.answer];
     const correctAnswer = answers[0];
+    const explanation = activeTask.explanation;
     const serialContainer = document.getElementById('serial-murder-container');
     if (serialContainer) serialContainer.style.display = 'none';
     document.querySelector(".hm-answer-row").style.display = "none";
@@ -1144,7 +1187,7 @@ async function giveUp(task) {
     const isLast = state.currentTask === state.mystery.tasks.length - 1;
     const hintArea = document.getElementById("task-hint-area");
     hintArea.innerHTML = `
-        <div class="hm-giveup-box"><div class="hm-giveup-narrative">${T('giveUpNarrative')}</div><div class="hm-giveup-label">${T('giveUpLabel')}</div><div class="hm-giveup-answer">${escapeHtml(correctAnswer)}</div><div class="hm-giveup-penalty">${T('giveUpPenalty')}</div></div>
+        <div class="hm-giveup-box"><div class="hm-giveup-narrative">${T('giveUpNarrative')}</div><div class="hm-giveup-label">${T('giveUpLabel')}</div><div class="hm-giveup-answer">${escapeHtml(correctAnswer)}</div>${explanation ? `<div class="hm-giveup-explanation">${escapeHtml(explanation)}</div>` : ''}<div class="hm-giveup-penalty">${T('giveUpPenalty')}</div></div>
         ${isLast ? "" : rewardHtml(task)}
     `;
     const continueBtn = document.createElement("button");
@@ -1163,13 +1206,20 @@ function checkAnswer() {
     const task = state.mystery.tasks[state.currentTask];
     if (task.type === 'serial-murder') return;
     const answer = normalizeAnswer(input.value);
+    const answerWords = wordsOfAnswer(input.value);
+    const answerKey = sortedWordKey(input.value);
     const activeAnswers = (state.followUpMode && task.followUp)
         ? (Array.isArray(task.followUp.answer) ? task.followUp.answer : [task.followUp.answer])
         : (Array.isArray(task.answer) ? task.answer : [task.answer]);
     const activeContains = (state.followUpMode && task.followUp) ? task.followUp.answerContains : task.answerContains;
-    const isMatch = activeAnswers.some(a => answer === normalizeAnswer(a))
+    const isMatch = activeAnswers.some(a => answer === normalizeAnswer(a) || (answerKey.length > 0 && answerKey === sortedWordKey(a)))
         || (answer.length > 0 && Array.isArray(activeContains)
-            && activeContains.some(kw => { const k = normalizeAnswer(kw); return k.length > 0 && answer.includes(k); }));
+            && activeContains.some(kw => {
+                const k = normalizeAnswer(kw);
+                if (k.length > 0 && answer.includes(k)) return true;
+                const kwWords = wordsOfAnswer(kw);
+                return kwWords.length > 0 && kwWords.every(w => answerWords.includes(w));
+            }));
     if (isMatch) {
         input.classList.add("correct"); document.getElementById("task-error").textContent = "";
         if (!state.followUpMode && task.followUp) {

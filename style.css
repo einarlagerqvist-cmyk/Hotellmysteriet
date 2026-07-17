@@ -182,7 +182,13 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .evid.is-solved .solved-answer{ display:block; }
 .solved-answer .lbl{ font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-faint); }
 .solved-answer .val{ font-family:'Caveat',cursive; font-weight:700; font-size:1.7rem; color:var(--string); line-height:1.05; margin-top:2px; }
+.solved-answer .explain{ display:none; font-family:'Inter',sans-serif; font-weight:400; font-size:.85rem; line-height:1.5; color:var(--ink-faint); margin-top:8px; }
 .solved-answer .reward-img{ display:block; width:100%; margin-top:12px; border-radius:6px; box-shadow:0 6px 18px rgba(60,40,20,.3); }
+
+.evid-images{ display:flex; flex-wrap:wrap; gap:14px; margin-top:16px; }
+.evid-image{ flex:1 1 180px; margin:0; }
+.evid-image img{ display:block; width:100%; border-radius:2px; box-shadow:0 4px 10px rgba(45,28,10,.3); }
+.evid-image figcaption{ margin-top:6px; font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); text-align:center; }
 
 .answer-area{ margin-top:18px; }
 .answer-row{ display:flex; gap:8px; }
@@ -208,6 +214,7 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .hm-giveup-narrative{ font-family:'Caveat',cursive; font-weight:600; font-size:1.14rem; color:var(--stamp); margin-bottom:10px; letter-spacing:.02em; }
 .hm-giveup-label{ font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:4px; }
 .hm-giveup-answer{ font-family:'Special Elite',monospace; font-size:1.08rem; color:var(--ink); margin-bottom:6px; }
+.hm-giveup-explanation{ font-family:'Inter',sans-serif; font-weight:400; font-size:.85rem; line-height:1.5; color:var(--ink-faint); margin:2px 0 10px; }
 .hm-giveup-penalty{ font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--stamp); opacity:.8; }
 .hint{ margin-top:12px; padding:12px 14px; background:rgba(157,42,32,.09); border:1px solid rgba(157,42,32,.32); border-radius:3px; font-family:'Inter',sans-serif; font-weight:400; font-size:.9rem; line-height:1.5; color:#7a2018; }
 .hint b{ display:block; font-family:'Playfair Display',serif; font-weight:600; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--stamp); margin-bottom:4px; }

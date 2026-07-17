@@ -178,6 +178,8 @@ function setLangFor(id){ cur = EN ? "en" : (NN_MYS.has(id) ? "nn" : "no"); }
 const toArr = x => Array.isArray(x) ? x : (x==null ? [] : [x]);
 const esc = (typeof escapeHtml==="function") ? escapeHtml : (s=>{const d=document.createElement("div");d.textContent=s;return d.innerHTML;});
 const nrm = (typeof normalizeAnswer==="function") ? normalizeAnswer : (s=>s.trim().toUpperCase().replace(/\s+/g,""));
+const wordsOf = (typeof wordsOfAnswer==="function") ? wordsOfAnswer : (s=>s.trim().toUpperCase().replace(/[.,!?;:"'«»]/g,"").split(/\s+/).filter(Boolean));
+const sortedKey = (typeof sortedWordKey==="function") ? sortedWordKey : (s=>wordsOf(s).slice().sort().join(" "));
 const fmtT = ms => formatTime(ms);                       // HH:MM:SS — keeps old times comparable
 
 const CARD_STYLES = ["doc","note","photo"];
@@ -336,16 +338,17 @@ function makeTaskCard(task, i){
   el.className=`evid evid--${style}`; el.dataset.idx=idx; el.dataset.stamp=L("Løst","Solved","Løyst"); el.style.setProperty("--rot", jrot(idx)+"deg");
   const label = `${L("Bevis","Clue")} #${cardNo}`, caption = task.caption || label;
   const q = `<div class="evid__q js-q">${esc(task.question)}</div>`;
+  const imgs = imagesHTML(task);
   const kw = !!(task.answerContains || task.followUp);
   const interactive = (task.type==="serial-murder") ? serialHTML() : (answerHTML(kw) + solvedAnswerHTML());
   const audio = task.audio ? audioHTML(task) : "";
   let inner;
   if(style==="photo"){
-    inner = `<div class="evid__pad"><div class="evid__photo">${L("Bevisfoto","Evidence photo")} · ${cardNo}</div><div class="evid__label">${label}</div>${q}${audio}${interactive}</div><div class="evid__caption">${esc(caption)}</div>`;
+    inner = `<div class="evid__pad"><div class="evid__photo">${L("Bevisfoto","Evidence photo")} · ${cardNo}</div><div class="evid__label">${label}</div>${q}${imgs}${audio}${interactive}</div><div class="evid__caption">${esc(caption)}</div>`;
   } else if(style==="note"){
-    inner = `<div class="evid__label">${label}</div>${q}${audio}${interactive}`;
+    inner = `<div class="evid__label">${label}</div>${q}${imgs}${audio}${interactive}`;
   } else {
-    inner = `<div class="dochead"><b>${L("BEVIS","CLUE")} ${String(cardNo).padStart(2,"0")}</b><span>${esc(caption).toUpperCase()}</span></div>${q}${audio}${interactive}`;
+    inner = `<div class="dochead"><b>${L("BEVIS","CLUE")} ${String(cardNo).padStart(2,"0")}</b><span>${esc(caption).toUpperCase()}</span></div>${q}${imgs}${audio}${interactive}`;
   }
   el.innerHTML = `${pinHTML()}<span class="evid__tab">${L("Åpen sak","Open case","Open sak")}</span>
     <div class="evid__body paper">
@@ -358,8 +361,14 @@ function makeTaskCard(task, i){
 }
 
 function answerHTML(kw){ return `<div class="answer-area"><div class="answer-row"><input class="answer-input" type="text" inputmode="text" autocomplete="off" placeholder="${L("Svaret…","The answer…","Svaret…")}" aria-label="${L("Svar","Answer","Svar")}"><button class="answer-submit">${L("Svar","Answer","Svar")}</button></div>${kw?`<div class="kw-note">${L("💡 Stikkord holder, du trenger ikke skrive hele setninger.","💡 Keywords are enough, no need for full sentences.","💡 Stikkord held, du treng ikkje skrive heile setningar.")}</div>`:""}<div class="err"></div><div class="toolrow"><button class="tool tool--hint">${L("Vis hint (−5 min)","Show hint (−5 min)","Vis hint (−5 min)")}</button><button class="tool tool--giveup" style="display:none;">${L("Gi opp","Give up","Gje opp")}</button></div></div>`; }
-function solvedAnswerHTML(){ return `<div class="solved-answer"><div class="lbl">${L("Deres svar","Your answer","Dykkar svar")}</div><div class="val"></div></div>`; }
+function solvedAnswerHTML(){ return `<div class="solved-answer"><div class="lbl">${L("Deres svar","Your answer","Dykkar svar")}</div><div class="val"></div><div class="explain"></div></div>`; }
 function audioHTML(task){ return `<div class="card-audio"><div class="card-audio__divider"><span>${esc(task.audio.divider||L("Bevis","Evidence"))}</span></div><button class="audio-btn"><span class="ico">✦</span><span class="lbl">${esc(task.audio.label||L("Hør brevet","Hear the letter"))}</span></button></div>`; }
+function imagesHTML(task){
+  if(!task.images || !task.images.length) return "";
+  return `<div class="evid-images">${task.images.map(im=>
+    `<figure class="evid-image"><img src="${im.src}" alt="${esc(im.alt||"")}" loading="lazy" onerror="this.closest('.evid-image').style.display='none'">${im.caption?`<figcaption>${esc(im.caption)}</figcaption>`:""}</figure>`
+  ).join("")}</div>`;
+}
 function serialHTML(){ return `<div class="serial"></div>`; }
 
 /* ---- one hint per card (matches the original penalty rule) ---- */
@@ -372,10 +381,15 @@ function wireCard(el, task, i){
   let followUp = false;
   function matches(rawVal){
     const v = nrm(rawVal); if(!v) return false;
+    const vWords = wordsOf(rawVal), vKey = sortedKey(rawVal);
     const fu = followUp && task.followUp;
     const answers = toArr(fu ? task.followUp.answer : task.answer);
     const contains = fu ? task.followUp.answerContains : task.answerContains;
-    return answers.some(a=> v===nrm(a)) || (Array.isArray(contains) && contains.some(kw=>{ const k=nrm(kw); return k.length>0 && v.includes(k); }));
+    return answers.some(a=> v===nrm(a) || (vKey.length>0 && vKey===sortedKey(a)))
+      || (Array.isArray(contains) && contains.some(kw=>{
+          const k=nrm(kw); if(k.length>0 && v.includes(k)) return true;
+          const kwWords = wordsOf(kw); return kwWords.length>0 && kwWords.every(w=>vWords.includes(w));
+        }));
   }
   function attempt(){
     if(activeIdx()!==idx) return;
@@ -391,7 +405,7 @@ function wireCard(el, task, i){
         input.value=""; input.classList.remove("wrong","right"); err.textContent="";
         layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:300); if(finePointer) input.focus({preventScroll:true});
       } else {
-        solveCard(el, task, i, input.value, false);
+        solveCard(el, task, i, input.value, false, (followUp && task.followUp) ? task.followUp.explanation : task.explanation);
       }
     } else {
       input.classList.remove("right"); input.classList.add("wrong");
@@ -414,17 +428,20 @@ function wireCard(el, task, i){
   giveup.addEventListener("click", async ()=>{
     if(!await showConfirm(L("Er dere sikre? Dette koster +10 minutter strafftid.","Are you sure? This costs +10 minutes penalty."),L("Gi opp","Give up"),L("Prøv videre","Keep trying"),L("GI OPP","GIVE UP"))) return;
     state.gaveUpCount++; state.taskStats[i].gaveUp = true; SessionStore.save();
-    const ansArr = toArr((followUp && task.followUp) ? task.followUp.answer : task.answer);
+    const activeTask = (followUp && task.followUp) ? task.followUp : task;
+    const ansArr = toArr(activeTask.answer);
     const ans = ansArr.find(a=>!/^\d+$/.test(a)) || ansArr[0] || "";
-    solveCard(el, task, i, ans, true);
+    solveCard(el, task, i, ans, true, activeTask.explanation);
   });
 }
 
-function solveCard(el, task, i, shownAnswer, gaveUp){
+function solveCard(el, task, i, shownAnswer, gaveUp, explanation){
   if(state.stopAudio){ state.stopAudio(); state.stopAudio=null; }
   kbInput=null; if(document.activeElement && document.activeElement.blur) document.activeElement.blur();   // dismiss the keyboard cleanly before the camera moves
   state.taskStats[i].timeSpent = Date.now() - state.taskStartTime;
   const valEl = el.querySelector(".solved-answer .val"); if(valEl) valEl.textContent = shownAnswer;
+  const explainEl = el.querySelector(".solved-answer .explain");
+  if(explainEl){ if(gaveUp && explanation){ explainEl.textContent = explanation; explainEl.style.display=""; } else { explainEl.style.display="none"; } }
   if(task.reward && task.reward.image && el.querySelector(".solved-answer")){
     const img = document.createElement("img"); img.className="reward-img"; img.src=task.reward.image; img.alt=task.reward.alt||""; img.loading="lazy";
     el.querySelector(".solved-answer").appendChild(img);
@@ -433,11 +450,12 @@ function solveCard(el, task, i, shownAnswer, gaveUp){
   el.dataset.stamp = gaveUp ? L("Avslørt","Revealed","Avslørt") : L("Løst","Solved","Løyst");
   el.classList.remove("is-active"); el.classList.add("is-solved");
 
+  const advanceDelay = gaveUp ? 3400 : 360;   // give-up reveal (+ explanation) needs real reading time before the camera pans away
   const isLast = state.currentTask === state.mystery.tasks.length - 1;
-  if(isLast){ updateProgress(); layoutBoard(); setCam(camForCard(el)); applyCam(); cameraTo(camForOverview(), reduceMotion?0:900); setTimeout(finishGame, reduceMotion?150:1300); return; }
+  if(isLast){ updateProgress(); layoutBoard(); setCam(camForCard(el)); applyCam(); cameraTo(camForOverview(), reduceMotion?0:900); setTimeout(finishGame, reduceMotion?150:(gaveUp?3400:1300)); return; }
   state.currentTask++; state.taskStartTime = Date.now(); SessionStore.save();
   applyStates(); layoutBoard(); setCam(camForCard(el)); applyCam(); updateProgress();   // recentre on the just-solved card so the reflow doesn't jump
-  setTimeout(()=> advanceCamera(state.currentTask+1), 360);
+  setTimeout(()=> advanceCamera(state.currentTask+1), advanceDelay);
 }
 
 /* ---- serial-murder (Fengselshotellet): compact case folders + a focused modal sheet ---- */
