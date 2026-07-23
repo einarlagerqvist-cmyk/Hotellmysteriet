@@ -703,6 +703,7 @@ const Storage = {
         clearAll() {
             localStorage.removeItem("hotellmysteriet_times");
             localStorage.removeItem("hotellmysteriet_feedback");
+            localStorage.removeItem("hotellmysteriet_visits");
         },
         getFeedback(mysteryId) {
             const all = JSON.parse(localStorage.getItem("hotellmysteriet_feedback") || "{}");
@@ -716,6 +717,19 @@ const Storage = {
             if (!all[mysteryId]) all[mysteryId] = [];
             all[mysteryId].push(feedback);
             localStorage.setItem("hotellmysteriet_feedback", JSON.stringify(all));
+        },
+        getVisits(mysteryId) {
+            const all = JSON.parse(localStorage.getItem("hotellmysteriet_visits") || "{}");
+            if (mysteryId) return (all[mysteryId] || []);
+            let entries = [];
+            for (const [mid, arr] of Object.entries(all)) entries = entries.concat(arr.map(e => ({ ...e, mysteryId: mid })));
+            return entries;
+        },
+        logVisit(mysteryId, visit) {
+            const all = JSON.parse(localStorage.getItem("hotellmysteriet_visits") || "{}");
+            if (!all[mysteryId]) all[mysteryId] = [];
+            all[mysteryId].push(visit);
+            localStorage.setItem("hotellmysteriet_visits", JSON.stringify(all));
         }
     },
     _firebase: null,
@@ -758,7 +772,7 @@ const Storage = {
     },
     async clearAll() {
         if (this._firebase) {
-            try { await this._firebase.ref("times").remove(); await this._firebase.ref("feedback").remove(); return; } catch (e) {}
+            try { await this._firebase.ref("times").remove(); await this._firebase.ref("feedback").remove(); await this._firebase.ref("visits").remove(); return; } catch (e) {}
         }
         this._local.clearAll();
     },
@@ -798,6 +812,24 @@ const Storage = {
             } catch (e) { console.warn("Firebase groups save failed", e); }
         }
         return null;
+    },
+    async getVisits(mysteryId) {
+        if (this._firebase) {
+            try {
+                const ref = mysteryId ? this._firebase.ref(`visits/${mysteryId}`) : this._firebase.ref("visits");
+                const snap = await ref.once("value"); const data = snap.val() || {};
+                if (mysteryId) return Object.entries(data).map(([key, val]) => ({ ...val, _key: key, mysteryId }));
+                let entries = [];
+                for (const [mid, obj] of Object.entries(data))
+                    for (const [key, val] of Object.entries(obj)) entries.push({ ...val, _key: key, mysteryId: mid });
+                return entries;
+            } catch (e) { console.warn("Firebase read failed", e); }
+        }
+        return this._local.getVisits(mysteryId);
+    },
+    async logVisit(mysteryId, visit) {
+        if (this._firebase) { try { await this._firebase.ref(`visits/${mysteryId}`).push(visit); return; } catch (e) {} }
+        this._local.logVisit(mysteryId, visit);
     }
 };
 

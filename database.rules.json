@@ -1,0 +1,31 @@
+{
+  "rules": {
+    "times": {
+      ".read": true,
+      "$mysteryId": {
+        ".write": true,
+        "$entryId": {
+          ".validate": "newData.hasChildren(['team', 'time', 'date', 'hints', 'totalTime'])"
+        }
+      }
+    },
+    "feedback": {
+      ".read": true,
+      "$mysteryId": {
+        ".write": true
+      }
+    },
+    "groups": {
+      ".read": true,
+      "$mysteryId": {
+        ".write": true
+      }
+    },
+    "visits": {
+      ".read": true,
+      "$mysteryId": {
+        ".write": true
+      }
+    }
+  }
+}

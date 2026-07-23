@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20260723a">
+<link rel="stylesheet" href="style.css?v=20260723b">
 </head>
 <body>
 <div class="app">
@@ -157,7 +157,7 @@
 </div>
 
 <!-- Real data + logic (CONFIG, UI_TEXT, Storage, scoring) — verbatim copy of script.js, init() neutralised -->
-<script src="script.js?v=20260701a"></script>
+<script src="script.js?v=20260723a"></script>
 
 <!-- Evidence Board view layer (reuses the globals above; declares nothing that collides) -->
 <script>
@@ -229,6 +229,14 @@ async function goEntry(id){
   $("#entry-title").textContent = res.name;
   $("#team-input").value = state.teamName || "";
   $("#btn-begin").disabled = !$("#team-input").value.trim();
+
+  if(state.preselected){
+    const visitFlag = "hm_visit_"+id;
+    if(!sessionStorage.getItem(visitFlag)){
+      sessionStorage.setItem(visitFlag, "1");
+      Promise.resolve(storageReadyPromise).then(()=> Storage.logVisit(id, { date:new Date().toISOString().split("T")[0], ts:Date.now() })).catch(()=>{});
+    }
+  }
 
   const gs = $("#group-select");
   gs.innerHTML = "";
@@ -825,11 +833,12 @@ async function openDashboard(){
   show("dashboard");
   $("#dash-date").textContent = new Date().toLocaleDateString(EN?"en-GB":"no-NO", {day:"numeric",month:"long",year:"numeric"});
   $("#dash-kpis").innerHTML = `<div class="dash-empty">${L("Laster…","Loading…")}</div>`;
-  let times=[], feedback=[];
+  let times=[], feedback=[], visits=[];
   try { times = await Storage.getEntries(null); } catch(e){}
   try { feedback = await Storage.getFeedback(null); } catch(e){}
+  try { visits = await Storage.getVisits(null); } catch(e){}
   const stats={};
-  CONFIG.mysteries.forEach(m=>{ const res=getMystery(m); stats[m.id]={ id:m.id, name:res.name, plays:0, totalTime:0, fastest:null, fastTeam:"", ratingSum:0, ratingCount:0, accent:ACCENTS[m.id]||"#6b4c2e", notes:[], taskAgg:(res.tasks||[]).map(()=>({hints:0,gaveUp:0,timeSum:0,timeCount:0})) }; });
+  CONFIG.mysteries.forEach(m=>{ const res=getMystery(m); stats[m.id]={ id:m.id, name:res.name, plays:0, visits:0, totalTime:0, fastest:null, fastTeam:"", ratingSum:0, ratingCount:0, accent:ACCENTS[m.id]||"#6b4c2e", notes:[], taskAgg:(res.tasks||[]).map(()=>({hints:0,gaveUp:0,timeSum:0,timeCount:0})) }; });
   times.forEach(t=>{
     const s=stats[t.mysteryId]; if(!s) return; s.plays++; const tt=t.totalTime||t.time||0; s.totalTime+=tt; if(s.fastest===null||tt<s.fastest){ s.fastest=tt; s.fastTeam=t.team; }
     if(Array.isArray(t.taskStats)) t.taskStats.forEach((ts,idx)=>{
@@ -839,15 +848,18 @@ async function openDashboard(){
       if(ts.timeSpent){ ta.timeSum+=ts.timeSpent; ta.timeCount++; }
     });
   });
+  visits.forEach(v=>{ const s=stats[v.mysteryId]; if(!s) return; s.visits++; });
   feedback.forEach(f=>{ const s=stats[f.mysteryId]; if(!s) return; s.ratingSum+=f.rating; s.ratingCount++; if(f.comment && f.comment.trim()) s.notes.push(f); });
-  const active = Object.values(stats).filter(s=> s.plays>0 || s.ratingCount>0);
+  const active = Object.values(stats).filter(s=> s.plays>0 || s.ratingCount>0 || s.visits>0);
   const totalPlays = active.reduce((a,s)=>a+s.plays,0);
+  const totalVisits = active.reduce((a,s)=>a+s.visits,0);
   const allTotalTimes = times.map(t=>t.totalTime||t.time||0).filter(Boolean);
   const avgAll = allTotalTimes.length ? Math.round(allTotalTimes.reduce((a,b)=>a+b,0)/allTotalTimes.length) : 0;
   const ratingsAll = feedback.map(f=>f.rating).filter(Boolean);
   const avgRating = ratingsAll.length ? (ratingsAll.reduce((a,b)=>a+b,0)/ratingsAll.length).toFixed(1) : "–";
   // KPIs
   const kpis = [
+    {l:L("Skannet inn","Scanned in"), v:String(totalVisits), n:L("alle saker","all cases")},
     {l:L("Spill totalt","Games total"), v:String(totalPlays), n:L("alle saker","all cases")},
     {l:L("Aktive saker","Active cases"), v:String(active.length||CONFIG.mysteries.length), n:L("mysterier","mysteries")},
     {l:L("Snittid","Avg. time"), v: avgAll? fmtT(avgAll).replace(/^00:/,"") : "–", n:L("per spill","per game")},
@@ -866,7 +878,7 @@ async function openDashboard(){
       const avgT = ta.timeCount ? fmtT(Math.round(ta.timeSum/ta.timeCount)).replace(/^00:/,"") : "–";
       return `<div class="trow"><span><b>${L("Oppgave","Task")} ${idx+1}</b></span><span>${L("Snitt-tid","Avg. time")} <b>${avgT}</b></span><span>${L("Hint brukt","Hints used")} <b>${ta.hints}/${s.plays}</b></span><span>${L("Ga opp","Gave up")} <b>${ta.gaveUp}</b></span></div>`;
     }).join("") : "";
-    return `<div class="crow"><div class="crow__name">${esc(s.name)}</div><div class="crow__rating">${rating?starRow(Math.round(rating))+" "+rating.toFixed(1):"–"}</div><div class="crow__meta"><span><b>${s.plays}</b> ${L("spill","games")}</span><span>${L("Snitt","Avg")} <b>${avg}</b></span>${s.fastTeam?`<span>${L("Raskest","Fastest")} <b>${esc(s.fastTeam)}</b> · ${fmtT(s.fastest).replace(/^00:/,"")}</span>`:""}</div>${taskRows?`<button type="button" class="crow__toggle" data-open="0">${L("Vis oppgavestatistikk","Show task stats")} ▾</button><div class="crow__tasks">${taskRows}</div>`:""}</div>`;
+    return `<div class="crow"><div class="crow__name">${esc(s.name)}</div><div class="crow__rating">${rating?starRow(Math.round(rating))+" "+rating.toFixed(1):"–"}</div><div class="crow__meta">${s.visits?`<span><b>${s.visits}</b> ${L("skannet inn","scanned in")}</span>`:""}<span><b>${s.plays}</b> ${L("spill","games")}</span><span>${L("Snitt","Avg")} <b>${avg}</b></span>${s.fastTeam?`<span>${L("Raskest","Fastest")} <b>${esc(s.fastTeam)}</b> · ${fmtT(s.fastest).replace(/^00:/,"")}</span>`:""}</div>${taskRows?`<button type="button" class="crow__toggle" data-open="0">${L("Vis oppgavestatistikk","Show task stats")} ▾</button><div class="crow__tasks">${taskRows}</div>`:""}</div>`;
   }).join("") : `<div class="dash-empty">${L("Ingen data ennå.","No data yet.")}</div>`;
   $$("#dash-cases .crow__toggle").forEach(btn=>{
     btn.addEventListener("click", ()=>{
@@ -956,13 +968,14 @@ function wireGroupField(){
   $("#new-group-input").addEventListener("keydown",e=>{ if(e.key==="Enter") createGroup(); if(e.key==="Escape") $("#new-group-row").style.display="none"; });
 }
 
+let storageReadyPromise = null;
 async function ebInit(){
   // language label for the brand subtitle
   $("#brand-sub").textContent = L("Uoppklarte saker","Unsolved cases");
   if(EN){ document.documentElement.lang="en"; applyEnLabels(); }
   renderArchive();
   wireGroupField();
-  Storage.init();   // loads Firebase SDK + connects (old times become available)
+  storageReadyPromise = Storage.init();   // loads Firebase SDK + connects (old times become available)
 
   const params = new URLSearchParams(location.search);
   const pre = params.get("m");

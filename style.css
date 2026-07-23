@@ -398,7 +398,7 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .dash__kicker{ font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:#cdb98c; }
 .dash__title{ font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(1.8rem,5vw,2.7rem); color:#f4ecd9; line-height:1; margin-top:6px; }
 .dash__date{ font-family:'Special Elite',monospace; font-size:.68rem; color:#e6dabf; border:1px solid rgba(232,220,192,.32); padding:7px 13px; transform:rotate(-1.4deg); background:rgba(0,0,0,.22); white-space:nowrap; }
-.kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+.kpis{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:24px; }
 @media(max-width:640px){ .kpis{ grid-template-columns:repeat(2,1fr); } }
 .kpi{ position:relative; background:linear-gradient(180deg,var(--paper),var(--paper-edge)); border-radius:4px; padding:20px 16px 16px; box-shadow:0 12px 24px rgba(0,0,0,.34); transform:rotate(var(--r,0deg)); }
 .kpi .pin{ top:-15px; left:24px; }
