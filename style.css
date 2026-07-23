@@ -350,8 +350,13 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .admin-box{ margin-top:24px; padding:18px; background:rgba(107,76,46,.06); border:1px solid rgba(107,76,46,.2); border-radius:12px; }
 .admin-box h3{ font-family:'Playfair Display',serif; color:#6b4c2e; margin-bottom:6px; }
 .admin-box p{ font-size:.78rem; color:var(--ink-faint); margin-bottom:14px; }
-.admin-entry{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid rgba(107,76,46,.12); font-size:.82rem; }
+.admin-entry{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid rgba(107,76,46,.12); font-size:.82rem; }
 .admin-del{ color:var(--stamp); font-size:.78rem; padding:4px 8px; }
+.admin-details{ color:#6b4c2e; font-size:.72rem; padding:4px 10px; background:transparent; border:1px solid rgba(107,76,46,.32); border-radius:14px; }
+.admin-details:hover{ background:rgba(107,76,46,.08); }
+.admin-taskdetails{ display:none; flex-basis:100%; margin-top:4px; padding:8px 10px; background:rgba(107,76,46,.05); border-radius:6px; font-size:.72rem; color:var(--ink-faint); }
+.admin-taskdetails.is-open{ display:block; }
+.admin-taskdetails div{ padding:2px 0; }
 .admin-box .btn-primary{ font-size:.74rem; padding:11px; }
 .admin-danger{ background:#7a1c1c !important; }
 
@@ -420,6 +425,12 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .crow__rating span{ color:#b8a98c; }
 .crow__meta{ grid-column:1/-1; display:flex; gap:14px; flex-wrap:wrap; font-size:.65rem; color:var(--ink-faint); }
 .crow__meta b{ color:var(--ink-soft); font-weight:600; }
+.crow__toggle{ grid-column:1/-1; justify-self:start; margin-top:4px; padding:0; font-family:'Inter',sans-serif; font-size:.64rem; letter-spacing:.04em; color:#8a6d3b; background:none; border:none; cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+.crow__toggle:hover{ color:#5a3c18; }
+.crow__tasks{ grid-column:1/-1; display:none; flex-direction:column; gap:5px; margin-top:6px; padding-top:8px; border-top:1px dashed rgba(60,40,18,.18); }
+.crow__tasks.is-open{ display:flex; }
+.trow{ display:flex; flex-wrap:wrap; gap:12px; font-size:.65rem; color:var(--ink-faint); }
+.trow b{ color:var(--ink-soft); font-weight:600; }
 .leaders{ list-style:none; display:flex; flex-direction:column; gap:8px; }
 .leaders li{ display:flex; align-items:center; gap:12px; padding:9px 11px; background:rgba(255,255,255,.42); border-radius:4px; }
 .lead__rank{ font-family:'Playfair Display',serif; font-weight:700; width:24px; text-align:center; color:#9a8a6c; font-size:1.05rem; }

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20260701a">
+<link rel="stylesheet" href="style.css?v=20260723a">
 </head>
 <body>
 <div class="app">
@@ -791,6 +791,16 @@ async function loadLB(mysteryId, activeBtn){
     entries.forEach(e=>{
       const row=document.createElement("div"); row.className="admin-entry";
       row.innerHTML=`<span>${esc(e.team)} · ${fmtT(e.totalTime||e.time)} (${esc(getMysteryName(e.mysteryId||mysteryId))})</span>`;
+      if(Array.isArray(e.taskStats) && e.taskStats.length){
+        const detBtn=document.createElement("button"); detBtn.type="button"; detBtn.className="admin-details"; detBtn.textContent=L("Detaljer","Details");
+        const detBox=document.createElement("div"); detBox.className="admin-taskdetails";
+        detBox.innerHTML = e.taskStats.map((ts,idx)=>`<div>${L("Oppgave","Task")} ${idx+1}: ${ts.timeSpent?fmtT(ts.timeSpent):"–"}${ts.hints?" · "+L("hint brukt","hint used"):""}${ts.gaveUp?" · "+L("ga opp","gave up"):""}</div>`).join("");
+        detBtn.addEventListener("click", ()=>{
+          const open=detBox.classList.toggle("is-open");
+          detBtn.textContent = open ? L("Skjul","Hide") : L("Detaljer","Details");
+        });
+        row.appendChild(detBtn); row.appendChild(detBox);
+      }
       const del=document.createElement("button"); del.className="admin-del"; del.textContent=L("Slett","Delete");
       del.addEventListener("click", async ()=>{ await Storage.deleteEntry(e.mysteryId||mysteryId, e._key); loadLB(mysteryId, activeBtn); });
       row.appendChild(del); ae.appendChild(row);
@@ -819,8 +829,16 @@ async function openDashboard(){
   try { times = await Storage.getEntries(null); } catch(e){}
   try { feedback = await Storage.getFeedback(null); } catch(e){}
   const stats={};
-  CONFIG.mysteries.forEach(m=>{ const res=getMystery(m); stats[m.id]={ id:m.id, name:res.name, plays:0, totalTime:0, fastest:null, fastTeam:"", ratingSum:0, ratingCount:0, accent:ACCENTS[m.id]||"#6b4c2e", notes:[] }; });
-  times.forEach(t=>{ const s=stats[t.mysteryId]; if(!s) return; s.plays++; const tt=t.totalTime||t.time||0; s.totalTime+=tt; if(s.fastest===null||tt<s.fastest){ s.fastest=tt; s.fastTeam=t.team; } });
+  CONFIG.mysteries.forEach(m=>{ const res=getMystery(m); stats[m.id]={ id:m.id, name:res.name, plays:0, totalTime:0, fastest:null, fastTeam:"", ratingSum:0, ratingCount:0, accent:ACCENTS[m.id]||"#6b4c2e", notes:[], taskAgg:(res.tasks||[]).map(()=>({hints:0,gaveUp:0,timeSum:0,timeCount:0})) }; });
+  times.forEach(t=>{
+    const s=stats[t.mysteryId]; if(!s) return; s.plays++; const tt=t.totalTime||t.time||0; s.totalTime+=tt; if(s.fastest===null||tt<s.fastest){ s.fastest=tt; s.fastTeam=t.team; }
+    if(Array.isArray(t.taskStats)) t.taskStats.forEach((ts,idx)=>{
+      const ta=s.taskAgg[idx]; if(!ta) return;
+      if(ts.hints) ta.hints++;
+      if(ts.gaveUp) ta.gaveUp++;
+      if(ts.timeSpent){ ta.timeSum+=ts.timeSpent; ta.timeCount++; }
+    });
+  });
   feedback.forEach(f=>{ const s=stats[f.mysteryId]; if(!s) return; s.ratingSum+=f.rating; s.ratingCount++; if(f.comment && f.comment.trim()) s.notes.push(f); });
   const active = Object.values(stats).filter(s=> s.plays>0 || s.ratingCount>0);
   const totalPlays = active.reduce((a,s)=>a+s.plays,0);
@@ -844,8 +862,20 @@ async function openDashboard(){
   $("#dash-cases").innerHTML = active.length ? active.slice().sort((a,b)=>b.plays-a.plays).map(s=>{
     const avg = s.plays? fmtT(Math.round(s.totalTime/s.plays)).replace(/^00:/,"") : "–";
     const rating = s.ratingCount ? (s.ratingSum/s.ratingCount) : 0;
-    return `<div class="crow"><div class="crow__name">${esc(s.name)}</div><div class="crow__rating">${rating?starRow(Math.round(rating))+" "+rating.toFixed(1):"–"}</div><div class="crow__meta"><span><b>${s.plays}</b> ${L("spill","games")}</span><span>${L("Snitt","Avg")} <b>${avg}</b></span>${s.fastTeam?`<span>${L("Raskest","Fastest")} <b>${esc(s.fastTeam)}</b> · ${fmtT(s.fastest).replace(/^00:/,"")}</span>`:""}</div></div>`;
+    const taskRows = (s.taskAgg||[]).filter(ta=>ta.timeCount||ta.hints||ta.gaveUp).length ? s.taskAgg.map((ta,idx)=>{
+      const avgT = ta.timeCount ? fmtT(Math.round(ta.timeSum/ta.timeCount)).replace(/^00:/,"") : "–";
+      return `<div class="trow"><span><b>${L("Oppgave","Task")} ${idx+1}</b></span><span>${L("Snitt-tid","Avg. time")} <b>${avgT}</b></span><span>${L("Hint brukt","Hints used")} <b>${ta.hints}/${s.plays}</b></span><span>${L("Ga opp","Gave up")} <b>${ta.gaveUp}</b></span></div>`;
+    }).join("") : "";
+    return `<div class="crow"><div class="crow__name">${esc(s.name)}</div><div class="crow__rating">${rating?starRow(Math.round(rating))+" "+rating.toFixed(1):"–"}</div><div class="crow__meta"><span><b>${s.plays}</b> ${L("spill","games")}</span><span>${L("Snitt","Avg")} <b>${avg}</b></span>${s.fastTeam?`<span>${L("Raskest","Fastest")} <b>${esc(s.fastTeam)}</b> · ${fmtT(s.fastest).replace(/^00:/,"")}</span>`:""}</div>${taskRows?`<button type="button" class="crow__toggle" data-open="0">${L("Vis oppgavestatistikk","Show task stats")} ▾</button><div class="crow__tasks">${taskRows}</div>`:""}</div>`;
   }).join("") : `<div class="dash-empty">${L("Ingen data ennå.","No data yet.")}</div>`;
+  $$("#dash-cases .crow__toggle").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const box = btn.nextElementSibling;
+      const open = box.classList.toggle("is-open");
+      btn.dataset.open = open ? "1" : "0";
+      btn.textContent = open ? `${L("Skjul oppgavestatistikk","Hide task stats")} ▴` : `${L("Vis oppgavestatistikk","Show task stats")} ▾`;
+    });
+  });
   // fastest teams across all
   const leaders = times.slice().sort((a,b)=>(a.totalTime||a.time)-(b.totalTime||b.time)).slice(0,5);
   $("#dash-leaders").innerHTML = leaders.length ? leaders.map((e,i)=>{ const cls=["gold","silver","bronze"][i]||""; return `<li><span class="lead__rank ${cls}">${i+1}</span><div class="lead__info"><div class="lead__team">${esc(e.team)}</div><div class="lead__myst">${esc(getMysteryName(e.mysteryId))}</div></div><span class="lead__time">${fmtT(e.totalTime||e.time)}</span></li>`; }).join("") : `<li class="dash-empty">${L("Ingen tider ennå.","No times yet.")}</li>`;
