@@ -229,6 +229,7 @@ async function goEntry(id){
   $("#entry-title").textContent = res.name;
   $("#team-input").value = state.teamName || "";
   $("#btn-begin").disabled = !$("#team-input").value.trim();
+  $("#btn-entry-back").style.display = state.preselected ? "none" : "";
 
   const gs = $("#group-select");
   gs.innerHTML = "";
