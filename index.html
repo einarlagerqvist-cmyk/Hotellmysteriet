@@ -229,7 +229,6 @@ async function goEntry(id){
   $("#entry-title").textContent = res.name;
   $("#team-input").value = state.teamName || "";
   $("#btn-begin").disabled = !$("#team-input").value.trim();
-  $("#btn-entry-back").style.display = state.preselected ? "none" : "";
 
   const gs = $("#group-select");
   gs.innerHTML = "";
@@ -248,7 +247,7 @@ async function goEntry(id){
 $("#team-input").addEventListener("input", ()=>{ $("#btn-begin").disabled = !$("#team-input").value.trim(); });
 $("#team-input").addEventListener("keydown", e=>{ if(e.key==="Enter" && !$("#btn-begin").disabled) $("#btn-begin").click(); });
 $("#btn-begin").addEventListener("click", ()=>{ state.teamName = $("#team-input").value.trim(); if(state.teamName) enterBoard(); });
-$("#btn-entry-back").addEventListener("click", ()=>{ if(state.preselected) return; show("menu"); });
+$("#btn-entry-back").addEventListener("click", ()=>{ state.preselected = false; show("menu"); });
 
 /* =========================================================================
    BOARD — build, camera, strings (engine adapted from the prototype)
