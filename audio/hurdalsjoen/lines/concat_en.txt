@@ -1,0 +1,7 @@
+file 'lines/en_01.mp3'
+file 'lines/pause.mp3'
+file 'lines/en_02.mp3'
+file 'lines/pause.mp3'
+file 'lines/en_03.mp3'
+file 'lines/pause.mp3'
+file 'lines/en_04.mp3'
