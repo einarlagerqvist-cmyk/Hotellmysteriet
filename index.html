@@ -238,19 +238,35 @@ async function goEntry(id){
     }
   }
 
+  populateGroups(id);
+
+  show("entry");
+  if(finePointer) setTimeout(()=>$("#team-input").focus(), 120);
+}
+
+// Fills the group dropdown. Always keeps a "no group" option first, so the
+// list is never empty (an empty <select> renders as "No Options" on iOS) and
+// so the visible choice matches state.groupId="" until the user picks one.
+// Runs without blocking the entry screen, and waits for Firebase to connect
+// before reading, otherwise existing groups are missed on a cold load.
+async function populateGroups(id){
   const gs = $("#group-select");
   gs.innerHTML = "";
+  const none = document.createElement("option");
+  none.value = ""; none.textContent = L("Ingen gruppe","No group");
+  none.dataset.name = "";
+  gs.appendChild(none);
   try {
+    await storageReadyPromise;
+    if(state.mysteryId !== id) return;
     const groups = await Storage.getGroups(id);
+    if(state.mysteryId !== id) return;
     groups.forEach(g => {
       const o = document.createElement("option");
       o.value = g._key; o.textContent = g.name; o.dataset.name = g.name;
       gs.appendChild(o);
     });
   } catch(e) {}
-
-  show("entry");
-  if(finePointer) setTimeout(()=>$("#team-input").focus(), 120);
 }
 $("#team-input").addEventListener("input", ()=>{ $("#btn-begin").disabled = !$("#team-input").value.trim(); });
 $("#team-input").addEventListener("keydown", e=>{ if(e.key==="Enter" && !$("#btn-begin").disabled) $("#btn-begin").click(); });
@@ -946,8 +962,10 @@ function wireGroupField(){
   const gs = $("#group-select");
   gs.addEventListener("change",()=>{
     const opt = gs.options[gs.selectedIndex];
-    state.groupId = opt ? opt.value : "";
-    state.groupName = opt ? (opt.dataset.name||opt.textContent) : "";
+    // The placeholder option has value "" and must clear the group, not adopt
+    // its own label ("Ingen gruppe") as the group name.
+    state.groupId = (opt && opt.value) ? opt.value : "";
+    state.groupName = state.groupId ? (opt.dataset.name||opt.textContent) : "";
   });
   $("#btn-new-group").addEventListener("click",()=>{
     $("#new-group-row").style.display="";
@@ -956,13 +974,24 @@ function wireGroupField(){
   });
   async function createGroup(){
     const name=$("#new-group-input").value.trim(); if(!name) return;
-    const key = await Storage.saveGroup(state.mysteryId,{name,createdAt:new Date().toISOString()});
+    const btn=$("#btn-create-group"); if(btn.disabled) return;
+    btn.disabled=true;
+    let key=null;
+    try {
+      await storageReadyPromise;
+      key = await Storage.saveGroup(state.mysteryId,{name,createdAt:new Date().toISOString()});
+    } catch(e){}
+    btn.disabled=false;
     if(key){
       const o=document.createElement("option"); o.value=key; o.textContent=name; o.dataset.name=name;
       gs.appendChild(o); gs.value=key;
       state.groupId=key; state.groupName=name;
+      $("#new-group-row").style.display="none";
+    } else {
+      // saveGroup returns null when Firebase is unreachable; say so instead of
+      // silently dropping the group the user just typed.
+      showAlert(L("Kunne ikke opprette gruppen. Sjekk nettforbindelsen og prøv igjen.","Could not create the group. Check your connection and try again."), L("GRUPPE","GROUP"));
     }
-    $("#new-group-row").style.display="none";
   }
   $("#btn-create-group").addEventListener("click",createGroup);
   $("#new-group-input").addEventListener("keydown",e=>{ if(e.key==="Enter") createGroup(); if(e.key==="Escape") $("#new-group-row").style.display="none"; });
