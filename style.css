@@ -192,13 +192,13 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 
 .answer-area{ margin-top:18px; }
 .answer-row{ display:flex; gap:8px; }
-.answer-input{ flex:1; min-width:0; padding:13px 14px; font-family:'Special Elite',monospace; font-size:1rem; text-align:center; text-transform:uppercase; letter-spacing:.1em; color:var(--ink); background:rgba(255,255,255,.72); border:1.5px solid rgba(60,42,18,.65); border-radius:3px; outline:none; box-shadow:inset 0 1px 3px rgba(60,42,18,.08); }
-.answer-input:focus{ border-color:var(--ink); box-shadow:0 0 0 2.5px rgba(33,26,18,.28), inset 0 1px 3px rgba(60,42,18,.06); }
-.answer-input.wrong{ border-color:var(--stamp); animation:shake .4s ease; }
-.answer-input.right{ border-color:var(--cleared); }
-.answer-submit{ flex:0 0 auto; padding:13px 18px; background:var(--ink); color:var(--paper); border-radius:3px; font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; transition:background .2s; }
-.answer-submit:hover{ background:#3a2c1a; }
-.err{ min-height:18px; margin-top:7px; font-size:.74rem; color:var(--stamp); text-align:center; }
+.answer-input,.codelock__input{ flex:1; min-width:0; padding:13px 14px; font-family:'Special Elite',monospace; font-size:1rem; text-align:center; text-transform:uppercase; letter-spacing:.1em; color:var(--ink); background:rgba(255,255,255,.72); border:1.5px solid rgba(60,42,18,.65); border-radius:3px; outline:none; box-shadow:inset 0 1px 3px rgba(60,42,18,.08); }
+.answer-input:focus,.codelock__input:focus{ border-color:var(--ink); box-shadow:0 0 0 2.5px rgba(33,26,18,.28), inset 0 1px 3px rgba(60,42,18,.06); }
+.answer-input.wrong,.codelock__input.wrong{ border-color:var(--stamp); animation:shake .4s ease; }
+.answer-input.right,.codelock__input.right{ border-color:var(--cleared); }
+.answer-submit,.codelock__btn{ flex:0 0 auto; padding:13px 18px; background:var(--ink); color:var(--paper); border-radius:3px; font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; transition:background .2s; }
+.answer-submit:hover,.codelock__btn:hover{ background:#3a2c1a; }
+.err,.codelock__err{ min-height:18px; margin-top:7px; font-size:.74rem; color:var(--stamp); text-align:center; }
 .kw-note{ font-size:.72rem; color:var(--ink-soft); margin-top:9px; text-align:center; line-height:1.35; background:rgba(214,154,28,.1); border:1px solid rgba(214,154,28,.28); border-radius:6px; padding:7px 10px; }
 /* confirmation that part 1 of a two-part task was answered correctly */
 .step-done{ display:flex; align-items:center; gap:9px; margin-bottom:13px; padding:9px 12px; background:rgba(47,107,52,.1); border:1px solid rgba(47,107,52,.32); border-radius:6px; animation:stepIn .3s var(--ease-out); }
@@ -216,6 +216,21 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .hm-giveup-answer{ font-family:'Special Elite',monospace; font-size:1.08rem; color:var(--ink); margin-bottom:6px; }
 .hm-giveup-explanation{ font-family:'Inter',sans-serif; font-weight:400; font-size:.85rem; line-height:1.5; color:var(--ink-faint); margin:2px 0 10px; }
 .hm-giveup-penalty{ font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--stamp); opacity:.8; }
+/* four-digit code lock guarding extra evidence on a card */
+.codelock{ margin-top:16px; padding:14px 15px 13px; background:rgba(60,42,18,.05); border:1.5px dashed rgba(60,42,18,.45); border-radius:4px; }
+.codelock.is-open{ background:rgba(47,107,52,.07); border-style:solid; border-color:rgba(47,107,52,.34); }
+.codelock__head{ display:flex; align-items:center; gap:8px; margin-bottom:9px; }
+.codelock__icon{ font-size:.9rem; line-height:1; color:var(--ink-faint); }
+.codelock.is-open .codelock__icon{ color:var(--cleared); }
+.codelock__label{ font-family:'Special Elite',monospace; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); }
+.codelock__prompt{ font-size:.82rem; line-height:1.5; color:var(--ink-faint); margin-bottom:11px; }
+.codelock__row{ display:flex; gap:8px; }
+.codelock__input{ letter-spacing:.3em; }
+.codelock__err{ min-height:16px; }
+.codelock__note{ font-size:.72rem; line-height:1.4; color:var(--ink-faint); font-style:italic; text-align:center; }
+.codelock__note--open{ font-style:normal; letter-spacing:.02em; margin-bottom:11px; }
+.codelock__open .evid-images{ margin-top:0; }
+.codelock__open .evid-image{ flex:1 1 100%; max-width:300px; margin:0 auto; }
 .hint{ margin-top:12px; padding:12px 14px; background:rgba(157,42,32,.09); border:1px solid rgba(157,42,32,.32); border-radius:3px; font-family:'Inter',sans-serif; font-weight:400; font-size:.9rem; line-height:1.5; color:#7a2018; }
 .hint b{ display:block; font-family:'Playfair Display',serif; font-weight:600; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--stamp); margin-bottom:4px; }
 .evid--brief .evid__q{ font-size:.92rem; }

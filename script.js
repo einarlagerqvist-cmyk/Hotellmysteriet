@@ -746,10 +746,12 @@ const CONFIG = {
                     answer: ["drap", "myrdet", "mord", "drept", "det var drap", "det var mord", "det var et drap",
                              "det var et mord", "han ble myrdet", "han ble drept", "noen drepte ham",
                              "han ble drept av noen", "det var overlagt drap", "overlagt drap",
-                             "ikke selvmord", "det var ikke selvmord", "nei, det var ikke selvmord", "nei"],
+                             "ikke selvmord", "det var ikke selvmord", "nei, det var ikke selvmord"],
                     answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
-                    hint: "Direktøren var høyrehendt. Se på hvilket håndledd kuttet satt i, og hold funnene opp mot utdraget fra den rettsmedisinske håndboken.",
-                    explanation: "Direktøren var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. Alle tre funnene bryter med mønsteret for selvpåførte kutt. Noen andre holdt kniven.",
+                    rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
+                                     "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
+                    hint: "Direktøren var høyrehendt. Se på hvilket håndledd kuttet satt i, om det finnes prøvekutt rundt det, og hvilken vinkel snittet hadde. Se også hva blodprøven inneholdt.",
+                    explanation: "Direktøren var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som bare oppstår hvis dosen kom i ham samme kveld, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
                         question: "Hva i obduksjonsrapporten utelukker selvmord?",
                         answer: ["høyre hånd", "høyre håndledd", "feil hånd", "dominant hånd", "den dominante hånden",
@@ -759,25 +761,27 @@ const CONFIG = {
                         answerContains: ["høyrehånd", "hoyrehand", "høyrehåndledd", "hoyrehandledd", "høyrehendt", "hoyrehendt",
                                          "dominant", "feilhånd", "feilhand", "prøvekutt", "provekutt",
                                          "rettvinkel", "rettevinkel", "snittvinkel", "ingenkutt"],
-                        hint: "Håndboken lister tre kjennetegn på selvpåførte kutt. Obduksjonen bryter med alle tre. Det holder å nevne ett av dem.",
+                        rejectContains: ["ikkedominant", "ikke-dominant", "ikkjedominant", "venstrehånd", "venstrehandledd",
+                                         "venstrehåndledd", "venstrehendt"],
+                        hint: "Tre ting ved selve kuttet passer dårlig med et selvpåført kutt: hvilken hånd det satt i, om det finnes prøvekutt, og snittvinkelen. Det holder å nevne ett av dem.",
                         explanation: "Selvpåførte kutt sitter normalt i den ikke-dominante hånden, har flere overflatiske prøvekutt, og har en skrå snittvinkel. Her satt kuttet i den dominante høyre hånden, det fantes ingen prøvekutt, og vinkelen var helt rett."
                     }
                 },
                 {
-                    question: "Åpne konvolutt 2.\n\nEn av de ansatte har fortalt sin versjon av kvelden. Stemmer historien med det bygget selv kan fortelle oss? Hvem har oppgitt et tidspunkt som ikke kan stemme?",
+                    question: "Åpne konvolutt 2.\n\nEn av de ansatte har oppgitt både klokkeslett og transportmiddel for da vedkommende forlot bygget. Loggene viser at akkurat den forklaringen er fysisk umulig.\n\nHvem?",
                     answer: ["Thomas Berge", "Thomas", "Berge", "salgssjefen", "salgssjef Thomas Berge"],
                     answerContains: ["thomas", "berge", "salgssjef"],
-                    hint: "Sammenlign klokkeslettet Thomas oppga for da han tok heisen, med vedlikeholdsloggen for Heis A.",
-                    explanation: "Thomas Berge forklarte at han tok heisen ned kvart over elleve. Heis A ble låst i vedlikeholdsmodus klokken 22:30, og nødalarmen gikk 22:31 fordi en passasjer ble fanget inne. Passasjeren ble sluppet ut først 23:45. Berge kan ikke ha tatt heisen 23:15, for da satt han fast i den.",
+                    hint: "Én av forklaringene nevner et bestemt transportmiddel ut av bygget. Hold klokkeslettet opp mot vedlikeholdsloggen.",
+                    explanation: "Thomas Berge forklarte at han tok heisen ned kvart over elleve. Vedlikeholdsloggen viser at Heis A stod låst i vedlikeholdsmodus fra 22:30 til 23:45 og ikke kunne brukes av noen. Baren han oppga som alibi var dessuten stengt for oppussing hele uken. Han var fortsatt i bygget: oppkastet på herretoalettet og snorkingen Fredrik Lie hørte etter midnatt peker mot at han sov av seg rusen der.",
                     followUp: {
                         question: "Hva avslører at forklaringen hans ikke kan stemme?",
-                        answer: ["heisen", "heis a", "vedlikeholdsloggen", "vedlikeholdslogg", "han satt fast i heisen",
-                                 "heisen var låst", "heisen sto stille", "han var fanget i heisen",
-                                 "heisen var i vedlikeholdsmodus", "nødalarmen"],
-                        answerContains: ["heis", "vedlikehold", "sattfast", "satfast", "fanget", "låst", "last",
-                                         "stostille", "stodstille", "nødalarm", "nodalarm"],
-                        hint: "Se på klokkeslettene i vedlikeholdsloggen for Heis A, og hvor lenge passasjeren satt fast.",
-                        explanation: "Vedlikeholdsloggen viser at Heis A var låst fra 22:30 til 23:45, og at en passasjer ble fanget inne fra 22:31. Berge hevdet at han tok den samme heisen ned klokken 23:15."
+                        answer: ["heisen", "heis a", "vedlikeholdsloggen", "vedlikeholdslogg",
+                                 "heisen var låst", "heisen sto stille", "heisen var ute av drift",
+                                 "heisen var i vedlikeholdsmodus", "baren var stengt"],
+                        answerContains: ["heis", "vedlikehold", "låst", "last",
+                                         "stostille", "stodstille", "barenvarstengt"],
+                        hint: "Se på klokkeslettene i vedlikeholdsloggen for Heis A, og hold dem mot klokkeslettet han oppga.",
+                        explanation: "Vedlikeholdsloggen viser at Heis A var låst i vedlikeholdsmodus fra 22:30 til 23:45, og at ingen kunne bruke den i det tidsrommet. Berge hevdet at han tok den samme heisen ned klokken 23:15."
                     }
                 },
                 {
@@ -799,26 +803,40 @@ const CONFIG = {
                     }
                 },
                 {
-                    question: "Åpne konvolutt 4.\n\nHvem er morderen?",
+                    question: "Åpne konvolutt 4.\n\nDirektørens telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHvem er morderen?",
                     answer: ["Vibeke Holm", "Vibeke", "Holm", "HR-direktøren", "hr direktøren", "HR-direktør Vibeke Holm"],
                     answerContains: ["vibeke", "holm", "hr-direktør", "hrdirektør", "hrdirektor"],
-                    hint: "Sammenlign håndskriften i avskjedsbrevet med de fire feriesøknadene. Se spesielt på bokstavene g og t.",
-                    explanation: "Avskjedsbrevet er ikke skrevet av direktøren. Håndskriften er identisk med Vibeke Holms egen håndskrift på feriesøknaden hennes, helt ned til bokstavformene på g og t. Hun drepte ham for å skjule underslaget, og skrev brevet selv for å iscenesette et selvmord.",
+                    codeLock: {
+                        code: ["1972"],
+                        label: "Direktørens telefon",
+                        prompt: "Sperret med firesifret kode. Kriminalteknisk seksjon kom aldri inn.",
+                        placeholder: "Kode",
+                        lockedNote: "Koden er skrevet ned et sted, men ikke som et tall.",
+                        unlockedNote: "Meldinger med Vibeke Holm, fredag 22. mai 2026.",
+                        errorText: "Feil kode.",
+                        images: [{
+                            src: "img/glassburet/telefon-chat.png",
+                            alt: "Meldingstråd mellom direktøren og Vibeke Holm fredag 22. mai 2026. Han ber henne møte ham i Glassburet klokken 23:05. Hun svarer klokken 23:52.",
+                            caption: "Tråden med Vibeke Holm"
+                        }]
+                    },
+                    hint: "Avskjedsbrevet er håndskrevet. Finn det ene andre stedet i bevismaterialet der noen har skrevet noe for hånd, og hold de to opp mot hverandre.",
+                    explanation: "Avskjedsbrevet er ikke skrevet av direktøren. Håndskriften er den samme som i den håndskrevne godkjenningssignaturen til V. Holm nederst på velferdsbudsjettet. Hun skrev brevet selv for å iscenesette et selvmord, og hun drepte ham for å skjule underslaget.",
                     followUp: {
                         question: "Hvordan avslørte dere henne?",
                         answer: ["håndskriften", "handskriften", "håndskrift", "skriften", "skriften hennes",
                                  "hun skrev avskjedsbrevet", "hun forfalsket brevet", "hun skrev brevet",
-                                 "samme håndskrift", "håndskriften på feriesøknaden", "feriesøknaden",
-                                 "bokstavene g og t", "g og t"],
+                                 "samme håndskrift", "signaturen", "signaturen hennes",
+                                 "signaturen på budsjettet", "godkjenningssignaturen"],
                         answerContains: ["håndskrift", "handskrift", "skriften", "sammeskrift", "skrevbrevet",
-                                         "skrevavskjedsbrevet", "forfalsket", "feriesøknad", "feriesoknad",
+                                         "skrevavskjedsbrevet", "forfalsket", "signatur", "underskrift",
                                          "sammehånd", "sammehand", "bokstav"],
-                        hint: "Legg avskjedsbrevet ved siden av de fire feriesøknadene og sammenlign bokstav for bokstav.",
-                        explanation: "Håndskriften i avskjedsbrevet matcher Vibeke Holms feriesøknad bokstav for bokstav, tydeligst på g og t. Direktøren skrev aldri brevet."
+                        hint: "Legg avskjedsbrevet ved siden av signaturen nederst på velferdsbudsjettet og sammenlign bokstavformene.",
+                        explanation: "Håndskriften i avskjedsbrevet er identisk med V. Holms godkjenningssignatur på velferdsbudsjettet. Direktøren skrev aldri brevet."
                     }
                 }
             ],
-            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er HR-direktør Vibeke Holm. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da direktøren oppdaget underslaget samme kveld og kalte henne til et møte i Glassburet klokken 23:05, konfronterte han henne, og hun drepte ham for å unngå avsløring.\n\nHun iscenesatte selvmord ved å kutte håndleddet hans og forfalsket et avskjedsbrev i hans navn. Men GHB-nivået i blodet viste at han var edru da han døde, og håndleddskuttet var biomekanisk umulig å påføre seg selv med hans hendthet.\n\nKjernebeviset var håndskriften: Da dere sammenlignet avskjedsbrevet med Vibekes egen håndskrift på en offisiell feriesøknad, matchet bokstavformene perfekt. Hun skrev brevet selv.\n\nThomas Berge var sint og full, men fanget av heisen og uskyldig i drapet. Fredrik Lie skjulte noe pinlig (sletting av nettleserhistorikk), men var heller ikke involvert.\n\nTakk for strålende etterforskningsarbeid!"
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er HR-direktør Vibeke Holm. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da direktøren oppdaget underslaget samme kveld og kalte henne til et møte i Glassburet klokken 23:05, konfronterte han henne, og hun drepte ham for å unngå avsløring.\n\nHun iscenesatte selvmord ved å kutte håndleddet hans og skrev et avskjedsbrev i hans navn. Men kuttet satt i hans dominante hånd, uten prøvekutt og med helt rett snittvinkel, og zopiklonet i blodet kunne bare ha kommet i ham samme kveld.\n\nKjernebeviset var håndskriften: avskjedsbrevet er skrevet med samme hånd som godkjenningssignaturen hennes nederst på velferdsbudsjettet. Hun skrev brevet selv.\n\nThomas Berge var sint og full, og løy både om heisen og om baren. Men han sov av seg rusen inne i bygget, og han drepte ingen. Fredrik Lie skjulte hva han egentlig gjorde der midt på natten, men det hadde ingenting med drapet å gjøre. Og GHB-en i blodprøven stammet fra gallamiddagen to døgn tidligere, ikke fra drapskvelden.\n\nTakk for strålende etterforskningsarbeid!"
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
@@ -845,6 +863,7 @@ let state = {
     taskStats: [],
     taskStartTime: null,
     followUpMode: false,
+    unlockedLocks: [],
     groupId: "", groupName: ""
 };
 
@@ -1014,6 +1033,7 @@ const SessionStore = {
             mysteryId: state.mysteryId, teamName: state.teamName, startTime: state.startTime,
             currentTask: state.currentTask, hintsUsed: state.hintsUsed, gaveUpCount: state.gaveUpCount,
             timerVisible: state.timerVisible, taskStats: state.taskStats, taskStartTime: state.taskStartTime,
+            unlockedLocks: state.unlockedLocks || [],
             groupId: state.groupId || "", groupName: state.groupName || ""
         };
         localStorage.setItem(SESSION_KEY, JSON.stringify(data));
@@ -1414,6 +1434,16 @@ function checkAnswer() {
         ? (Array.isArray(task.followUp.answer) ? task.followUp.answer : [task.followUp.answer])
         : (Array.isArray(task.answer) ? task.answer : [task.answer]);
     const activeContains = (state.followUpMode && task.followUp) ? task.followUp.answerContains : task.answerContains;
+    // rejectContains wins over everything: stops a stikkord-match from passing a negated answer
+    // ("det var ikke drap" contains "drap"), which would otherwise be scored as correct.
+    const activeReject = (state.followUpMode && task.followUp) ? task.followUp.rejectContains : task.rejectContains;
+    if (answer.length > 0 && Array.isArray(activeReject)
+        && activeReject.some(kw => { const k = normalizeAnswer(kw); return k.length > 0 && answer.includes(k); })) {
+        input.classList.remove("wrong"); void input.offsetWidth; input.classList.add("wrong");
+        document.getElementById("task-error").textContent = T('wrongAnswer');
+        setTimeout(() => { input.classList.remove("wrong"); }, 600);
+        return;
+    }
     const isMatch = activeAnswers.some(a => answer === normalizeAnswer(a) || (answerKey.length > 0 && answerKey === sortedWordKey(a)))
         || (answer.length > 0 && Array.isArray(activeContains)
             && activeContains.some(kw => {

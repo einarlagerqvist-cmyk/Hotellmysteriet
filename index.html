@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20260723b">
+<link rel="stylesheet" href="style.css?v=20260906e">
 </head>
 <body>
 <div class="app">
@@ -157,7 +157,7 @@
 </div>
 
 <!-- Real data + logic (CONFIG, UI_TEXT, Storage, scoring) — verbatim copy of script.js, init() neutralised -->
-<script src="script.js?v=20260723a"></script>
+<script src="script.js?v=20260906e"></script>
 
 <!-- Evidence Board view layer (reuses the globals above; declares nothing that collides) -->
 <script>
@@ -282,6 +282,7 @@ function enterBoard(){
   setLangFor(state.mysteryId); applyChrome();
   state.started = false; state.elapsed = 0; state.currentTask = 0;
   state.hintsUsed = 0; state.gaveUpCount = 0; state.followUpMode = false;
+  state.unlockedLocks = [];
   state.taskStats = state.mystery.tasks.map(()=>({ hints:0, gaveUp:false, timeSpent:0 }));
   state.timerVisible = true;
   $("#board-name").textContent = state.mystery.name;
@@ -366,13 +367,14 @@ function makeTaskCard(task, i){
   const kw = !!(task.answerContains || task.followUp);
   const interactive = (task.type==="serial-murder") ? serialHTML() : (answerHTML(kw) + solvedAnswerHTML());
   const audio = task.audio ? audioHTML(task) : "";
+  const lock = task.codeLock ? lockHTML(task.codeLock) : "";
   let inner;
   if(style==="photo"){
-    inner = `<div class="evid__pad"><div class="evid__photo">${L("Bevisfoto","Evidence photo")} · ${cardNo}</div><div class="evid__label">${label}</div>${q}${imgs}${audio}${interactive}</div><div class="evid__caption">${esc(caption)}</div>`;
+    inner = `<div class="evid__pad"><div class="evid__photo">${L("Bevisfoto","Evidence photo")} · ${cardNo}</div><div class="evid__label">${label}</div>${q}${imgs}${audio}${lock}${interactive}</div><div class="evid__caption">${esc(caption)}</div>`;
   } else if(style==="note"){
-    inner = `<div class="evid__label">${label}</div>${q}${imgs}${audio}${interactive}`;
+    inner = `<div class="evid__label">${label}</div>${q}${imgs}${audio}${lock}${interactive}`;
   } else {
-    inner = `<div class="dochead"><b>${L("BEVIS","CLUE")} ${String(cardNo).padStart(2,"0")}</b><span>${esc(caption).toUpperCase()}</span></div>${q}${imgs}${audio}${interactive}`;
+    inner = `<div class="dochead"><b>${L("BEVIS","CLUE")} ${String(cardNo).padStart(2,"0")}</b><span>${esc(caption).toUpperCase()}</span></div>${q}${imgs}${audio}${lock}${interactive}`;
   }
   el.innerHTML = `${pinHTML()}<span class="evid__tab">${L("Åpen sak","Open case","Open sak")}</span>
     <div class="evid__body paper">
@@ -380,6 +382,7 @@ function makeTaskCard(task, i){
       <div class="reveal">${inner}</div>
     </div>`;
   if(task.audio) wireAudio(el, task);
+  if(task.codeLock) wireLock(el, task, i);
   if(task.type==="serial-murder") wireSerial(el, task, i); else wireCard(el, task, i);
   return el;
 }
@@ -395,6 +398,63 @@ function imagesHTML(task){
 }
 function serialHTML(){ return `<div class="serial"></div>`; }
 
+/* ---- optional four-digit code lock that reveals extra evidence on a card ---- */
+function lockImagesHTML(cl){
+  if(!cl.images || !cl.images.length) return "";
+  return `<div class="evid-images">${cl.images.map(im=>
+    `<figure class="evid-image"><a href="${im.src}" target="_blank" rel="noopener"><img src="${im.src}" alt="${esc(im.alt||"")}" loading="lazy" onerror="this.closest('.evid-image').style.display='none'"></a><figcaption>${im.caption?esc(im.caption)+" · ":""}${L("trykk for full størrelse","tap for full size","trykk for full storleik")}</figcaption></figure>`
+  ).join("")}</div>`;
+}
+function lockHTML(cl){
+  return `<div class="codelock">
+    <div class="codelock__head"><span class="codelock__icon" aria-hidden="true">⌧</span><span class="codelock__label">${esc(cl.label||L("Låst bevis","Locked evidence","Låst bevis"))}</span></div>
+    <div class="codelock__shut">
+      ${cl.prompt?`<div class="codelock__prompt">${esc(cl.prompt)}</div>`:""}
+      <div class="codelock__row">
+        <input class="codelock__input" type="text" inputmode="numeric" autocomplete="off" maxlength="12"
+               placeholder="${esc(cl.placeholder||L("Kode","Code","Kode"))}" aria-label="${esc(cl.label||L("Kode","Code","Kode"))}">
+        <button class="codelock__btn">${L("Lås opp","Unlock","Lås opp")}</button>
+      </div>
+      <div class="codelock__err"></div>
+      ${cl.lockedNote?`<div class="codelock__note">${esc(cl.lockedNote)}</div>`:""}
+    </div>
+    <div class="codelock__open" hidden>
+      ${cl.unlockedNote?`<div class="codelock__note codelock__note--open">${esc(cl.unlockedNote)}</div>`:""}
+      ${lockImagesHTML(cl)}
+    </div>
+  </div>`;
+}
+function openLock(el, silent){
+  const box = $(".codelock", el); if(!box || box.classList.contains("is-open")) return;
+  box.classList.add("is-open");
+  const shut = $(".codelock__shut", box), open = $(".codelock__open", box);
+  if(shut) shut.hidden = true;
+  if(open) open.hidden = false;
+  if(!silent){ layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:380); }
+}
+function wireLock(el, task, i){
+  const cl = task.codeLock, idx = i+1;
+  const input = $(".codelock__input", el), btn = $(".codelock__btn", el), err = $(".codelock__err", el);
+  if(!input || !btn) return;
+  if((state.unlockedLocks||[]).includes(i)){ openLock(el, true); return; }
+  function tryCode(){
+    if(activeIdx()!==idx) return;
+    const v = nrm(input.value); if(!v) return;
+    if(toArr(cl.code).some(c=> nrm(c)===v)){
+      if(!state.unlockedLocks) state.unlockedLocks=[];
+      if(!state.unlockedLocks.includes(i)){ state.unlockedLocks.push(i); SessionStore.save(); }
+      input.classList.remove("wrong"); input.classList.add("right");
+      openLock(el, false);
+    } else {
+      input.classList.remove("right"); input.classList.add("wrong");
+      err.textContent = cl.errorText || L("Feil kode.","Wrong code.","Feil kode.");
+      setTimeout(()=>input.classList.remove("wrong"),450);
+    }
+  }
+  btn.addEventListener("click", tryCode);
+  input.addEventListener("keydown", e=>{ if(e.key==="Enter") tryCode(); });
+}
+
 /* ---- one hint per card (matches the original penalty rule) ---- */
 function chargeHint(i){ if(!state.taskStats[i].hints){ state.hintsUsed++; state.taskStats[i].hints = 1; SessionStore.save(); return true; } return false; }
 
@@ -409,6 +469,10 @@ function wireCard(el, task, i){
     const fu = followUp && task.followUp;
     const answers = toArr(fu ? task.followUp.answer : task.answer);
     const contains = fu ? task.followUp.answerContains : task.answerContains;
+    // rejectContains wins over everything: stops a stikkord-match from passing a negated answer
+    // ("det var ikke drap" contains "drap"), which would otherwise be scored as correct.
+    const reject = fu ? task.followUp.rejectContains : task.rejectContains;
+    if(Array.isArray(reject) && reject.some(kw=>{ const k=nrm(kw); return k.length>0 && v.includes(k); })) return false;
     return answers.some(a=> v===nrm(a) || (vKey.length>0 && vKey===sortedKey(a)))
       || (Array.isArray(contains) && contains.some(kw=>{
           const k=nrm(kw); if(k.length>0 && v.includes(k)) return true;
@@ -472,6 +536,7 @@ function solveCard(el, task, i, shownAnswer, gaveUp, explanation){
   }
   el.classList.toggle("gaveup", gaveUp);
   el.dataset.stamp = gaveUp ? L("Avslørt","Revealed","Avslørt") : L("Løst","Solved","Løyst");
+  if(task.codeLock) openLock(el, true);   // never leave a solved card sitting behind a lock
   el.classList.remove("is-active"); el.classList.add("is-solved");
 
   const advanceDelay = gaveUp ? 3400 : 360;   // give-up reveal (+ explanation) needs real reading time before the camera pans away
@@ -1030,6 +1095,7 @@ function resumeBoard(sess){
   const m = raw(sess.mysteryId); if(!m) return;
   state.mysteryId=sess.mysteryId; state.teamName=sess.teamName; state.startTime=sess.startTime;
   state.currentTask=sess.currentTask||0; state.hintsUsed=sess.hintsUsed||0; state.gaveUpCount=sess.gaveUpCount||0;
+  state.unlockedLocks = Array.isArray(sess.unlockedLocks) ? sess.unlockedLocks.slice() : [];
   state.timerVisible = sess.timerVisible!==false; state.mystery=getMystery(m); state.started=true;
   state.groupId=sess.groupId||""; state.groupName=sess.groupName||"";
   setLangFor(sess.mysteryId); applyChrome();
@@ -1037,7 +1103,7 @@ function resumeBoard(sess){
   state.taskStartTime = sess.taskStartTime || Date.now();
   $("#board-name").textContent = state.mystery.name;
   buildBoard();
-  for(let t=0;t<state.currentTask;t++){ const c=$(`.evid[data-idx="${t+1}"]`); if(c){ c.classList.add("is-solved"); c.dataset.stamp=STAMP_SOLVED; } }
+  for(let t=0;t<state.currentTask;t++){ const c=$(`.evid[data-idx="${t+1}"]`); if(c){ c.classList.add("is-solved"); c.dataset.stamp=STAMP_SOLVED; openLock(c, true); } }
   show("board"); startTimer(); applyStates(); updateProgress();
   requestAnimationFrame(()=>{ layoutBoard(); const c=$(`.evid[data-idx="${state.currentTask+1}"]`); if(c){ setCam(camForCard(c)); applyCam(); } });
 }
