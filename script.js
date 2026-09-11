@@ -785,27 +785,8 @@ const CONFIG = {
                     }
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nRenholderen fant noe hun trodde var søppel. Se nærmere på det, kanskje ikke alt er som det ser ut ved første øyekast. Hvem hadde direktøren avtalt å konfrontere i Glassburet klokken 23:05?",
-                    answer: ["Vibeke Holm", "Vibeke", "Holm", "HR-direktøren", "hr direktøren", "HR-direktør Vibeke Holm"],
-                    answerContains: ["vibeke", "holm", "hr-direktør", "hrdirektør", "hrdirektor"],
-                    hint: "Vipp og vri det svarte arket fra fellesprinteren i en vinkel under en lyskilde, ikke bakbelyst, se etter glansen fra blekket. Se deretter hvem som har godkjent postene i velferdsbudsjettet.",
-                    explanation: "Den skjulte teksten på det svarte arket er direktørens egen melding: han hadde funnet transaksjonene i velferdsbudsjettet og innkalte til møte i Glassburet klokken 23:05. Postene i budsjettet er godkjent av V. Holm, og adgangsloggen viser at Vibeke Holm aldri registrerte utpassering den kvelden. Hun var fortsatt i bygget.",
-                    followUp: {
-                        question: "Hva var det direktøren hadde oppdaget?",
-                        answer: ["underslag", "underslaget", "svindel", "økonomisk utroskap", "hun stjal penger",
-                                 "hun underslo penger", "penger fra velferdsbudsjettet", "fiktiv leverandør",
-                                 "falske fakturaer", "tyveri", "hun tok penger"],
-                        answerContains: ["underslag", "underslo", "svindel", "stjal", "stjålet", "tyveri",
-                                         "utroskap", "falskefaktura", "fiktivleverandør", "fiktivleverandor",
-                                         "tokpenger", "velferdsbudsjett"],
-                        hint: "Les utdraget fra velferdsbudsjettet. Tre store beløp går til samme leverandør, og alle er godkjent av samme person.",
-                        explanation: "Konto 6540 viser tre utbetalinger på til sammen 125 500 kroner til «Teambuilding leverandør AS», en fiktiv leverandør. Alle er godkjent av V. Holm."
-                    }
-                },
-                {
-                    question: "Åpne konvolutt 4.\n\nDirektørens telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHvem er morderen?",
-                    answer: ["Vibeke Holm", "Vibeke", "Holm", "HR-direktøren", "hr direktøren", "HR-direktør Vibeke Holm"],
-                    answerContains: ["vibeke", "holm", "hr-direktør", "hrdirektør", "hrdirektor"],
+                    question: "Åpne konvolutt 3.\n\nDirektørens telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHva er koden?",
+                    answer: ["1972"],
                     codeLock: {
                         code: ["1972"],
                         label: "Direktørens telefon",
@@ -820,8 +801,23 @@ const CONFIG = {
                             caption: "Tråden med Vibeke Holm"
                         }]
                     },
-                    hint: "Avskjedsbrevet er håndskrevet. Finn det ene andre stedet i bevismaterialet der noen har skrevet noe for hånd, og hold de to opp mot hverandre.",
-                    explanation: "Avskjedsbrevet er ikke skrevet av direktøren. Håndskriften er den samme som i den håndskrevne godkjenningssignaturen til V. Holm nederst på velferdsbudsjettet. Hun skrev brevet selv for å iscenesette et selvmord, og hun drepte ham for å skjule underslaget.",
+                    hint: "De fleste bruker noe kjent og lett å huske som kode på egen mobil, sjelden noe tilfeldig. Se om noe av det dere allerede vet om direktøren lar seg uttrykke med fire sifre.",
+                    explanation: "Koden er direktørens fødselsår. Obduksjonsrapporten viser at han var 54 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 54 gir fødselsåret 1972.",
+                    followUp: {
+                        question: "Hva fant dere i meldingene?",
+                        answer: ["møte i glassburet", "hun skulle møte ham i glassburet", "de avtalte å møtes i glassburet klokken 23:05",
+                                 "vibeke holm skulle møte ham", "han ba vibeke møte ham", "et møte klokken 23:05"],
+                        answerContains: ["glassburet", "23:05", "avtaltemøte", "skullemøte"],
+                        hint: "Se på klokkeslettet direktøren foreslår, og hvem han sender meldingen til.",
+                        explanation: "Direktøren ber Vibeke Holm møte ham i Glassburet klokken 23:05. Hun svarer klokken 23:52."
+                    }
+                },
+                {
+                    question: "Åpne konvolutt 4.\n\nRenholderen fant noe hun trodde var søppel, og et utdrag av velferdsbudsjettet ligger i mappen. Kanskje ikke alt er som det ser ut ved første øyekast.\n\nHvem er morderen?",
+                    answer: ["Vibeke Holm", "Vibeke", "Holm", "HR-direktøren", "hr direktøren", "HR-direktør Vibeke Holm"],
+                    answerContains: ["vibeke", "holm", "hr-direktør", "hrdirektør", "hrdirektor"],
+                    hint: "Avskjedsbrevet er håndskrevet. Finn det ene andre stedet i bevismaterialet der noen har skrevet noe for hånd, og hold de to opp mot hverandre. Det svarte arket fra fellesprinteren er ikke det det ser ut som.",
+                    explanation: "Avskjedsbrevet er ikke skrevet av direktøren. Håndskriften er den samme som i den håndskrevne godkjenningssignaturen til V. Holm nederst på velferdsbudsjettet. Konto 6540 viser tre utbetalinger på til sammen 125 500 kroner til «Teambuilding leverandør AS», en fiktiv leverandør, alle godkjent av V. Holm. Hun skrev brevet selv for å iscenesette et selvmord, og hun drepte ham for å skjule underslaget. Det svarte arket viste seg å være Fredrik Lies egen oppsigelse, skrevet ut samme natt, pinlig, men uten sammenheng med drapet.",
                     followUp: {
                         question: "Hvordan avslørte dere henne?",
                         answer: ["håndskriften", "handskriften", "håndskrift", "skriften", "skriften hennes",
