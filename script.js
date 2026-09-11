@@ -788,7 +788,7 @@ const CONFIG = {
                     question: "Åpne konvolutt 3.\n\nRenholderen fant noe hun trodde var søppel. Se nærmere på det, kanskje ikke alt er som det ser ut ved første øyekast. Hvem hadde direktøren avtalt å konfrontere i Glassburet klokken 23:05?",
                     answer: ["Vibeke Holm", "Vibeke", "Holm", "HR-direktøren", "hr direktøren", "HR-direktør Vibeke Holm"],
                     answerContains: ["vibeke", "holm", "hr-direktør", "hrdirektør", "hrdirektor"],
-                    hint: "Hold det svarte arket fra fellesprinteren opp mot en lyskilde. Se deretter hvem som har godkjent postene i velferdsbudsjettet.",
+                    hint: "Vipp og vri det svarte arket fra fellesprinteren i en vinkel under en lyskilde, ikke bakbelyst, se etter glansen fra blekket. Se deretter hvem som har godkjent postene i velferdsbudsjettet.",
                     explanation: "Den skjulte teksten på det svarte arket er direktørens egen melding: han hadde funnet transaksjonene i velferdsbudsjettet og innkalte til møte i Glassburet klokken 23:05. Postene i budsjettet er godkjent av V. Holm, og adgangsloggen viser at Vibeke Holm aldri registrerte utpassering den kvelden. Hun var fortsatt i bygget.",
                     followUp: {
                         question: "Hva var det direktøren hadde oppdaget?",
