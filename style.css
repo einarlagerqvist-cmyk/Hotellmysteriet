@@ -200,6 +200,7 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .answer-submit:hover,.codelock__btn:hover{ background:#3a2c1a; }
 .err,.codelock__err{ min-height:18px; margin-top:7px; font-size:.74rem; color:var(--stamp); text-align:center; }
 .kw-note{ font-size:.72rem; color:var(--ink-soft); margin-top:9px; text-align:center; line-height:1.35; background:rgba(214,154,28,.1); border:1px solid rgba(214,154,28,.28); border-radius:6px; padding:7px 10px; }
+.kw-note:empty{ display:none; margin-top:0; padding:0; border:none; }
 /* confirmation that part 1 of a two-part task was answered correctly */
 .step-done{ display:flex; align-items:center; gap:9px; margin-bottom:13px; padding:9px 12px; background:rgba(47,107,52,.1); border:1px solid rgba(47,107,52,.32); border-radius:6px; animation:stepIn .3s var(--ease-out); }
 .step-done__check{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:var(--cleared); color:#fff; font-size:.72rem; font-weight:700; flex-shrink:0; }

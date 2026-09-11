@@ -365,7 +365,7 @@ function makeTaskCard(task, i){
   const q = `<div class="evid__q js-q">${esc(task.question)}</div>`;
   const imgs = imagesHTML(task);
   const kw = !!(task.answerContains || task.followUp);
-  const interactive = (task.type==="serial-murder") ? serialHTML() : (answerHTML(kw) + solvedAnswerHTML());
+  const interactive = (task.type==="serial-murder") ? serialHTML() : (answerHTML(kw, task.answerHint) + solvedAnswerHTML());
   const audio = task.audio ? audioHTML(task) : "";
   const lock = task.codeLock ? lockHTML(task.codeLock) : "";
   let inner;
@@ -387,7 +387,8 @@ function makeTaskCard(task, i){
   return el;
 }
 
-function answerHTML(kw){ return `<div class="answer-area"><div class="answer-row"><input class="answer-input" type="text" inputmode="text" autocomplete="off" placeholder="${L("Svaret…","The answer…","Svaret…")}" aria-label="${L("Svar","Answer","Svar")}"><button class="answer-submit">${L("Svar","Answer","Svar")}</button></div>${kw?`<div class="kw-note">${L("💡 Stikkord holder, du trenger ikke skrive hele setninger.","💡 Keywords are enough, no need for full sentences.","💡 Stikkord held, du treng ikkje skrive heile setningar.")}</div>`:""}<div class="err"></div><div class="toolrow"><button class="tool tool--hint">${L("Vis hint (−5 min)","Show hint (−5 min)","Vis hint (−5 min)")}</button><button class="tool tool--giveup" style="display:none;">${L("Gi opp","Give up","Gje opp")}</button></div></div>`; }
+function kwNoteText(){ return L("💡 Stikkord holder, du trenger ikke skrive hele setninger.","💡 Keywords are enough, no need for full sentences.","💡 Stikkord held, du treng ikkje skrive heile setningar."); }
+function answerHTML(kw, hint){ const note = hint ? `📝 ${esc(hint)}` : (kw?kwNoteText():""); return `<div class="answer-area"><div class="answer-row"><input class="answer-input" type="text" inputmode="text" autocomplete="off" placeholder="${L("Svaret…","The answer…","Svaret…")}" aria-label="${L("Svar","Answer","Svar")}"><button class="answer-submit">${L("Svar","Answer","Svar")}</button></div><div class="kw-note js-note">${note}</div><div class="err"></div><div class="toolrow"><button class="tool tool--hint">${L("Vis hint (−5 min)","Show hint (−5 min)","Vis hint (−5 min)")}</button><button class="tool tool--giveup" style="display:none;">${L("Gi opp","Give up","Gje opp")}</button></div></div>`; }
 function solvedAnswerHTML(){ return `<div class="solved-answer"><div class="lbl">${L("Deres svar","Your answer","Dykkar svar")}</div><div class="val"></div><div class="explain"></div></div>`; }
 function audioHTML(task){ return `<div class="card-audio"><div class="card-audio__divider"><span>${esc(task.audio.divider||L("Bevis","Evidence"))}</span></div><button class="audio-btn"><span class="ico">✦</span><span class="lbl">${esc(task.audio.label||L("Hør brevet","Hear the letter"))}</span></button></div>`; }
 function imagesHTML(task){
@@ -490,6 +491,8 @@ function wireCard(el, task, i){
         done.innerHTML = `<span class="step-done__check">✓</span><span class="step-done__txt">${esc(ans)}</span>`;
         qEl.parentNode.insertBefore(done, qEl);   // show that part 1 was answered correctly, above the follow-up question
         qEl.textContent = task.followUp.question;
+        const noteEl = $(".js-note", el);
+        if(noteEl) noteEl.textContent = task.followUp.answerHint ? `📝 ${task.followUp.answerHint}` : kwNoteText();
         input.value=""; input.classList.remove("wrong","right"); err.textContent="";
         layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:300); if(finePointer) input.focus({preventScroll:true});
       } else {

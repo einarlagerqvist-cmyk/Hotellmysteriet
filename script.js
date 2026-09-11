@@ -541,6 +541,7 @@ const CONFIG = {
                              "det var drap", "det var et drap", "drap", "mord",
                              "han ble drept", "han ble myrdet", "nei det var drap", "nei det var mord"],
                     answerContains: ["nei", "ikke selvmord", "ikke et selvmord", "ble drept", "ble myrdet", "var drap"],
+                    answerHint: "Svar med ett ord: ja eller nei.",
                     hint: "Se nøye på politiets eget fotografi av rom 202. Er det noe på det bildet som umulig kan stemme med at en mann nettopp hoppet ut derfra?",
                     explanation: "Et selvmord krever at revisor Berge hoppet ut av vinduet og deretter haspet det igjen bak seg, noe som er fysisk umulig fra utsiden.",
                     followUp: {
@@ -592,6 +593,7 @@ const CONFIG = {
                                      "margit og erling", "erling og margit", "margit holm og erling", "erling nord og margit",
                                      "margit holm og erling nord", "erling nord og margit holm", "holm og nord", "nord og holm",
                                      "begge", "resepsjonisten og hovmester", "hovmester og resepsjonist"],
+                    answerHint: "Skriv navnene på begge to, atskilt med «og».",
                     hint: "Berge koblet noe til interntelefonen den kvelden. Les notatboken hans, og tenk over hva et slikt opptak ville avslørt om hvem som snakket sammen i natt.",
                     explanation: "Berge hadde tyvkoblet en spolebåndopptaker på linjen mellom kontoret og resepsjonen. Opptaket viser at Margit Holm og Erling Nord hadde kontakt klokken 23:41, stikk i strid med det begge forklarte i avhør.",
                     followUp: {
@@ -613,6 +615,7 @@ const CONFIG = {
                              "Gustav Tangen kjøkkensjefen", "kokken", "kokken Tangen", "Gustav Tangen kokken",
                              "det var Gustav Tangen", "det var Tangen"],
                     answerContains: ["tangen", "gustav", "kjøkkensjef", "kokken"],
+                    answerHint: "Skriv for- og/eller etternavnet til gjerningspersonen.",
                     hint: "Legg alle de håndskrevne dokumentene i mappen ved siden av hverandre. To av dem er skrevet av samme hånd. Hvem av de fire har jobben med å skrive det ene av dem?",
                     explanation: "Håndskriften på bestillingsseddelen fra kjøkkenet er identisk med håndskriften i det forfalskede selvmordsbrevet. Revisor Berge var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne kjøkkensjef Tangen ikke leve med.",
                     followUp: {
@@ -645,6 +648,7 @@ const CONFIG = {
                              "det var drap", "det var et drap", "drap", "mord",
                              "han ble drept", "han ble myrdet", "nei det var drap", "nei det var mord"],
                     answerContains: ["nei", "ikke selvmord", "ikke et selvmord", "ble drept", "ble myrdet", "var drap"],
+                    answerHint: "Svar med ett ord: ja eller nei.",
                     hint: "Se nøye på politiets eget fotografi av rom 402. Er det noe på det bildet som umulig kan stemme med at en mann nettopp hoppet ut derfra?",
                     explanation: "Et selvmord krever at revisor Berge hoppet ut av vinduet og deretter haspet det igjen bak seg, noe som er fysisk umulig fra utsiden.",
                     followUp: {
@@ -696,6 +700,7 @@ const CONFIG = {
                                      "margit og erling", "erling og margit", "margit holm og erling", "erling nord og margit",
                                      "margit holm og erling nord", "erling nord og margit holm", "holm og nord", "nord og holm",
                                      "begge", "resepsjonisten og hovmester", "hovmester og resepsjonist"],
+                    answerHint: "Skriv navnene på begge to, atskilt med «og».",
                     hint: "Berge koblet noe til interntelefonen den kvelden. Les notatboken hans, og tenk over hva et slikt opptak ville avslørt om hvem som snakket sammen i natt.",
                     explanation: "Berge hadde tyvkoblet en spolebåndopptaker på linjen mellom kontoret og resepsjonen. Opptaket viser at Margit Holm og Erling Nord hadde kontakt klokken 23:41, stikk i strid med det begge forklarte i avhør.",
                     followUp: {
@@ -717,6 +722,7 @@ const CONFIG = {
                              "Gustav Tangen kjøkkensjefen", "kokken", "kokken Tangen", "Gustav Tangen kokken",
                              "det var Gustav Tangen", "det var Tangen"],
                     answerContains: ["tangen", "gustav", "kjøkkensjef", "kokken"],
+                    answerHint: "Skriv for- og/eller etternavnet til gjerningspersonen.",
                     hint: "Legg alle de håndskrevne dokumentene i mappen ved siden av hverandre. To av dem er skrevet av samme hånd. Hvem av de fire har jobben med å skrive det ene av dem?",
                     explanation: "Håndskriften på bestillingsseddelen fra kjøkkenet er identisk med håndskriften i det forfalskede selvmordsbrevet. Revisor Berge var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne kjøkkensjef Tangen ikke leve med.",
                     followUp: {
