@@ -241,6 +241,8 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .codelock__note--open{ font-style:normal; letter-spacing:.02em; margin-bottom:11px; }
 .codelock__open .evid-images{ margin-top:0; }
 .codelock__open .evid-image{ flex:1 1 100%; max-width:300px; margin:0 auto; }
+.codelock__next{ display:block; width:100%; margin-top:14px; padding:13px 18px; background:var(--ink); color:var(--paper); border-radius:3px; font-family:'Special Elite',monospace; font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; text-align:center; transition:background .2s; }
+.codelock__next:hover{ background:#3a2c1a; }
 .hint{ margin-top:12px; padding:12px 14px; background:rgba(157,42,32,.09); border:1px solid rgba(157,42,32,.32); border-radius:3px; font-family:'Inter',sans-serif; font-weight:400; font-size:.9rem; line-height:1.5; color:#7a2018; }
 .hint b{ display:block; font-family:'Playfair Display',serif; font-weight:600; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--stamp); margin-bottom:4px; }
 .evid--brief .evid__q{ font-size:.92rem; }

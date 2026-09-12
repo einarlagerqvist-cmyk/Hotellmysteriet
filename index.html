@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20260912a">
+<link rel="stylesheet" href="style.css?v=20260912b">
 </head>
 <body>
 <div class="app">
@@ -157,7 +157,7 @@
 </div>
 
 <!-- Real data + logic (CONFIG, UI_TEXT, Storage, scoring) — verbatim copy of script.js, init() neutralised -->
-<script src="script.js?v=20260912a"></script>
+<script src="script.js?v=20260912b"></script>
 
 <!-- Evidence Board view layer (reuses the globals above; declares nothing that collides) -->
 <script>
@@ -365,7 +365,7 @@ function makeTaskCard(task, i){
   const q = `<div class="evid__q js-q">${esc(task.question)}</div>`;
   const imgs = imagesHTML(task);
   const kw = !!(task.answerContains || task.followUp);
-  const interactive = (task.type==="serial-murder") ? serialHTML() : (answerHTML(kw, task.answerHint) + solvedAnswerHTML());
+  const interactive = (task.type==="serial-murder") ? serialHTML() : task.codeLock ? solvedAnswerHTML() : (answerHTML(kw, task.answerHint) + solvedAnswerHTML());
   const audio = task.audio ? audioHTML(task) : "";
   const lock = task.codeLock ? lockHTML(task.codeLock) : "";
   let inner;
@@ -383,7 +383,8 @@ function makeTaskCard(task, i){
     </div>`;
   if(task.audio) wireAudio(el, task);
   if(task.codeLock) wireLock(el, task, i);
-  if(task.type==="serial-murder") wireSerial(el, task, i); else wireCard(el, task, i);
+  if(task.type==="serial-murder") wireSerial(el, task, i);
+  else if(!task.codeLock) wireCard(el, task, i);
   return el;
 }
 
@@ -412,6 +413,7 @@ function lockHTML(cl){
   const dots = `<div class="codelock__dots">${'<span class="codelock__dot"></span>'.repeat(len)}</div>`;
   const digits = ["1","2","3","4","5","6","7","8","9"].map(d=>`<button type="button" class="codelock__key" data-k="${d}">${d}</button>`).join("");
   const keypad = `<div class="codelock__keypad">${digits}<span class="codelock__key codelock__key--blank" aria-hidden="true"></span><button type="button" class="codelock__key" data-k="0">0</button><button type="button" class="codelock__key codelock__key--back" data-k="back" aria-label="${L("Slett","Backspace","Slett")}">⌫</button></div>`;
+  const toolrow = `<div class="toolrow"><button type="button" class="tool tool--hint">${L("Vis hint (−5 min)","Show hint (−5 min)","Vis hint (−5 min)")}</button><button type="button" class="tool tool--giveup" style="display:none;">${L("Gi opp","Give up","Gje opp")}</button></div>`;
   return `<div class="codelock">
     <div class="codelock__head"><span class="codelock__icon" aria-hidden="true">⌧</span><span class="codelock__label">${esc(cl.label||L("Låst bevis","Locked evidence","Låst bevis"))}</span></div>
     <div class="codelock__shut">
@@ -420,10 +422,12 @@ function lockHTML(cl){
       ${keypad}
       <div class="codelock__err"></div>
       ${cl.lockedNote?`<div class="codelock__note">${esc(cl.lockedNote)}</div>`:""}
+      ${toolrow}
     </div>
     <div class="codelock__open" hidden>
       ${cl.unlockedNote?`<div class="codelock__note codelock__note--open">${esc(cl.unlockedNote)}</div>`:""}
       ${lockImagesHTML(cl)}
+      <button type="button" class="codelock__next">${L("Neste →","Next →","Neste →")}</button>
     </div>
   </div>`;
 }
@@ -438,45 +442,71 @@ function openLock(el, silent){
     refit();
     // the revealed image's true height isn't known until it finishes loading, so the
     // first refit can be based on a too-short card; refit again once it has (fixes the
-    // answer field ending up stranded below the fold on small screens).
+    // "Neste" button ending up stranded below the fold on small screens).
     $$("img", open).forEach(img=>{ if(!img.complete) img.addEventListener("load", refit, {once:true}); });
   }
 }
 function wireLock(el, task, i){
   const cl = task.codeLock, idx = i+1;
   const dotsWrap = $(".codelock__dots", el), keys = $$(".codelock__key[data-k]", el), err = $(".codelock__err", el);
-  if(!dotsWrap || !keys.length) return;
-  if((state.unlockedLocks||[]).includes(i)){ openLock(el, true); return; }
-  const codeLen = lockCodeLength(cl);
-  const dots = $$(".codelock__dot", dotsWrap);
-  let buf = "";
-  function renderDots(){ dots.forEach((d,n)=> d.classList.toggle("is-filled", n<buf.length)); }
-  function tryCode(){
-    if(activeIdx()!==idx) return;
-    if(toArr(cl.code).some(c=> nrm(c)===nrm(buf))){
-      if(!state.unlockedLocks) state.unlockedLocks=[];
-      if(!state.unlockedLocks.includes(i)){ state.unlockedLocks.push(i); SessionStore.save(); }
-      dotsWrap.classList.remove("wrong"); dotsWrap.classList.add("right");
-      openLock(el, false);
-    } else {
-      dotsWrap.classList.remove("wrong"); void dotsWrap.offsetWidth; dotsWrap.classList.add("wrong");
-      err.textContent = cl.errorText || L("Feil kode.","Wrong code.","Feil kode.");
-      setTimeout(()=>{ buf=""; renderDots(); dotsWrap.classList.remove("wrong"); }, 450);
+  const hintBtn = $(".tool--hint", el), giveupBtn = $(".tool--giveup", el), nextBtn = $(".codelock__next", el);
+  if(!dotsWrap) return;
+  const alreadyUnlocked = (state.unlockedLocks||[]).includes(i);
+  if(alreadyUnlocked){
+    openLock(el, true);
+  } else {
+    const codeLen = lockCodeLength(cl);
+    const dots = $$(".codelock__dot", dotsWrap);
+    let buf = "";
+    const renderDots = ()=> dots.forEach((d,n)=> d.classList.toggle("is-filled", n<buf.length));
+    function tryCode(){
+      if(activeIdx()!==idx) return;
+      if(toArr(cl.code).some(c=> nrm(c)===nrm(buf))){
+        if(!state.unlockedLocks) state.unlockedLocks=[];
+        if(!state.unlockedLocks.includes(i)){ state.unlockedLocks.push(i); SessionStore.save(); }
+        dotsWrap.classList.add("right");
+        openLock(el, false);
+      } else {
+        dotsWrap.classList.remove("wrong"); void dotsWrap.offsetWidth; dotsWrap.classList.add("wrong");
+        err.textContent = cl.errorText || L("Feil kode.","Wrong code.","Feil kode.");
+        if(giveupBtn) giveupBtn.style.display="";
+        setTimeout(()=>{ buf=""; renderDots(); dotsWrap.classList.remove("wrong"); }, 450);
+      }
     }
+    function pressKey(k){
+      if(activeIdx()!==idx || dotsWrap.classList.contains("right")) return;
+      dotsWrap.classList.remove("wrong"); err.textContent = "";
+      if(k==="back"){ buf = buf.slice(0,-1); renderDots(); return; }
+      if(buf.length>=codeLen) return;
+      buf += k; renderDots();
+      if(buf.length===codeLen) setTimeout(tryCode, 120);
+    }
+    keys.forEach(btn=> btn.addEventListener("click", ()=> pressKey(btn.dataset.k)));
+    document.addEventListener("keydown", e=>{
+      if(activeIdx()!==idx || dotsWrap.classList.contains("right")) return;
+      if(/^[0-9]$/.test(e.key)) pressKey(e.key);
+      else if(e.key==="Backspace") pressKey("back");
+    });
   }
-  function pressKey(k){
-    if(activeIdx()!==idx || dotsWrap.classList.contains("right")) return;
-    dotsWrap.classList.remove("wrong"); err.textContent = "";
-    if(k==="back"){ buf = buf.slice(0,-1); renderDots(); return; }
-    if(buf.length>=codeLen) return;
-    buf += k; renderDots();
-    if(buf.length===codeLen) setTimeout(tryCode, 120);
-  }
-  keys.forEach(btn=> btn.addEventListener("click", ()=> pressKey(btn.dataset.k)));
-  document.addEventListener("keydown", e=>{
-    if(activeIdx()!==idx || dotsWrap.classList.contains("right")) return;
-    if(/^[0-9]$/.test(e.key)) pressKey(e.key);
-    else if(e.key==="Backspace") pressKey("back");
+  if(hintBtn) hintBtn.addEventListener("click", ()=>{
+    if($(".hint", el)) return;
+    chargeHint(i);
+    const h = document.createElement("div"); h.className="hint";
+    h.innerHTML = `<b>${L("Hint · 5 min strafftid","Hint · 5 min penalty","Hint · 5 min strafftid")}</b>${esc(task.hint||"")}`;
+    $(".codelock__shut", el).insertBefore(h, $(".toolrow", el));
+    if(giveupBtn) giveupBtn.style.display="";
+  });
+  if(giveupBtn) giveupBtn.addEventListener("click", async ()=>{
+    if(!await showConfirm(L("Er dere sikre? Dette koster +10 minutter strafftid.","Are you sure? This costs +10 minutes penalty."),L("Gi opp","Give up"),L("Prøv videre","Keep trying"),L("GI OPP","GIVE UP"))) return;
+    state.gaveUpCount++; state.taskStats[i].gaveUp = true; SessionStore.save();
+    if(!state.unlockedLocks) state.unlockedLocks=[];
+    if(!state.unlockedLocks.includes(i)) state.unlockedLocks.push(i);
+    openLock(el, false);
+    solveCard(el, task, i, String(toArr(cl.code)[0]), true, task.explanation);
+  });
+  if(nextBtn) nextBtn.addEventListener("click", ()=>{
+    if(activeIdx()!==idx) return;
+    solveCard(el, task, i, String(toArr(cl.code)[0]), false, task.explanation);
   });
 }
 
