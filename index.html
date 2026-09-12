@@ -726,15 +726,27 @@ function layoutBoard(){
 }
 
 /* ---- camera ---- */
+// All panning goes through #world's transform below; #viewport itself must stay
+// scrolled to (0,0). On some mobile browsers, focusing the answer-input inside a
+// card can nudge the ancestor's native scroll even though it's overflow:hidden
+// (a known keyboard-avoidance quirk), which would silently shift every card by
+// that amount relative to the fixed .hud until the page reloads. Snap it back.
+(function guardViewportScroll(){
+  const vp = $("#viewport");
+  vp.addEventListener("scroll", ()=>{ if(vp.scrollTop || vp.scrollLeft){ vp.scrollTop = 0; vp.scrollLeft = 0; } }, {passive:true});
+})();
 const cam = { x:0, y:0, s:1 }; let camRAF=null;
 function applyCam(){ $("#world").style.transform = `translate3d(${cam.x.toFixed(2)}px, ${cam.y.toFixed(2)}px, 0) scale(${cam.s.toFixed(4)})`; }
 function setCam(t){ cam.x=t.x; cam.y=t.y; cam.s=t.s; }
 function vpSize(){ const vp=$("#viewport"); return {vw:vp.clientWidth, vh:vp.clientHeight}; }
 function worldSize(){ const w=$("#world"); return {ww:parseFloat(w.style.width)||w.offsetWidth, wh:parseFloat(w.style.height)||w.offsetHeight}; }
 function camForPoint(wx,wy,s){ const {vw,vh}=vpSize(); return {x:vw/2-wx*s, y:vh/2-wy*s, s}; }
-const HUD_RESERVE = 84;
-function scaleForCard(card){ const {vw,vh}=vpSize(); return clamp(Math.min(vw*0.92/card.offsetWidth, (vh-HUD_RESERVE-44)/card.offsetHeight), 0.5, 1.7); }
-function camForCard(card){ const {vw,vh}=vpSize(); const s=scaleForCard(card); const cx=card.offsetLeft+card.offsetWidth/2, cy=card.offsetTop+card.offsetHeight/2; return { x:vw/2-cx*s, y:(HUD_RESERVE+(vh-HUD_RESERVE)/2)-cy*s, s }; }
+// Measured live instead of a fixed constant: the HUD can grow to a second line on
+// narrow phones when a long case name wraps (see .hud__name in style.css), and the
+// camera math below must reserve exactly that much space or cards drift under it.
+function hudReserve(){ const h=$("#hud"); return h ? Math.ceil(h.getBoundingClientRect().height)+10 : 84; }
+function scaleForCard(card){ const {vw,vh}=vpSize(); const reserve=hudReserve(); return clamp(Math.min(vw*0.92/card.offsetWidth, (vh-reserve-44)/card.offsetHeight), 0.5, 1.7); }
+function camForCard(card){ const {vw,vh}=vpSize(); const s=scaleForCard(card); const reserve=hudReserve(); const cx=card.offsetLeft+card.offsetWidth/2, cy=card.offsetTop+card.offsetHeight/2; return { x:vw/2-cx*s, y:(reserve+(vh-reserve)/2)-cy*s, s }; }
 function camForOverview(){ const {vw,vh}=vpSize(); const {ww,wh}=worldSize(); const s=Math.min(vw/ww, vh/wh)*0.86; return camForPoint(ww/2, wh/2, s); }
 function stopCam(){ if(camRAF){ cancelAnimationFrame(camRAF); camRAF=null; } }
 function cameraTo(t, dur, cb){
