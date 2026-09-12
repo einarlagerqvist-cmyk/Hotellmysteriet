@@ -225,8 +225,17 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .codelock.is-open .codelock__icon{ color:var(--cleared); }
 .codelock__label{ font-family:'Special Elite',monospace; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); }
 .codelock__prompt{ font-size:.82rem; line-height:1.5; color:var(--ink-faint); margin-bottom:11px; }
-.codelock__row{ display:flex; gap:8px; }
-.codelock__input{ letter-spacing:.3em; }
+.codelock__dots{ display:flex; justify-content:center; gap:15px; margin:2px 0 16px; }
+.codelock__dot{ width:13px; height:13px; border-radius:50%; border:1.5px solid rgba(60,42,18,.5); background:transparent; transition:background .15s, transform .15s; }
+.codelock__dot.is-filled{ background:var(--ink); transform:scale(1.08); }
+.codelock__dots.wrong{ animation:shake .4s ease; }
+.codelock__dots.wrong .codelock__dot.is-filled{ background:var(--stamp); }
+.codelock__dots.right .codelock__dot.is-filled{ background:var(--cleared); }
+.codelock__keypad{ display:grid; grid-template-columns:repeat(3,1fr); gap:9px; max-width:230px; margin:0 auto; }
+.codelock__key{ padding:14px 0; font-family:'Special Elite',monospace; font-size:1.05rem; color:var(--ink); background:rgba(255,255,255,.72); border:1.5px solid rgba(60,42,18,.35); border-radius:6px; transition:background .15s, transform .1s; }
+.codelock__key:active{ background:rgba(60,42,18,.16); transform:scale(.94); }
+.codelock__key--blank{ background:transparent; border:none; pointer-events:none; }
+.codelock__key--back{ font-size:.92rem; color:var(--ink-soft); }
 .codelock__err{ min-height:16px; }
 .codelock__note{ font-size:.72rem; line-height:1.4; color:var(--ink-faint); font-style:italic; text-align:center; }
 .codelock__note--open{ font-style:normal; letter-spacing:.02em; margin-bottom:11px; }

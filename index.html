@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20260906e">
+<link rel="stylesheet" href="style.css?v=20260912a">
 </head>
 <body>
 <div class="app">
@@ -157,7 +157,7 @@
 </div>
 
 <!-- Real data + logic (CONFIG, UI_TEXT, Storage, scoring) — verbatim copy of script.js, init() neutralised -->
-<script src="script.js?v=20260906e"></script>
+<script src="script.js?v=20260912a"></script>
 
 <!-- Evidence Board view layer (reuses the globals above; declares nothing that collides) -->
 <script>
@@ -403,19 +403,21 @@ function serialHTML(){ return `<div class="serial"></div>`; }
 function lockImagesHTML(cl){
   if(!cl.images || !cl.images.length) return "";
   return `<div class="evid-images">${cl.images.map(im=>
-    `<figure class="evid-image"><a href="${im.src}" target="_blank" rel="noopener"><img src="${im.src}" alt="${esc(im.alt||"")}" loading="lazy" onerror="this.closest('.evid-image').style.display='none'"></a><figcaption>${im.caption?esc(im.caption)+" · ":""}${L("trykk for full størrelse","tap for full size","trykk for full storleik")}</figcaption></figure>`
+    `<figure class="evid-image"><a href="${im.src}" target="_blank" rel="noopener"><img src="${im.src}" alt="${esc(im.alt||"")}" onerror="this.closest('.evid-image').style.display='none'"></a><figcaption>${im.caption?esc(im.caption)+" · ":""}${L("trykk for full størrelse","tap for full size","trykk for full storleik")}</figcaption></figure>`
   ).join("")}</div>`;
 }
+function lockCodeLength(cl){ return Math.max(...toArr(cl.code).map(c=>String(c).length)); }
 function lockHTML(cl){
+  const len = lockCodeLength(cl);
+  const dots = `<div class="codelock__dots">${'<span class="codelock__dot"></span>'.repeat(len)}</div>`;
+  const digits = ["1","2","3","4","5","6","7","8","9"].map(d=>`<button type="button" class="codelock__key" data-k="${d}">${d}</button>`).join("");
+  const keypad = `<div class="codelock__keypad">${digits}<span class="codelock__key codelock__key--blank" aria-hidden="true"></span><button type="button" class="codelock__key" data-k="0">0</button><button type="button" class="codelock__key codelock__key--back" data-k="back" aria-label="${L("Slett","Backspace","Slett")}">⌫</button></div>`;
   return `<div class="codelock">
     <div class="codelock__head"><span class="codelock__icon" aria-hidden="true">⌧</span><span class="codelock__label">${esc(cl.label||L("Låst bevis","Locked evidence","Låst bevis"))}</span></div>
     <div class="codelock__shut">
       ${cl.prompt?`<div class="codelock__prompt">${esc(cl.prompt)}</div>`:""}
-      <div class="codelock__row">
-        <input class="codelock__input" type="text" inputmode="numeric" autocomplete="off" maxlength="12"
-               placeholder="${esc(cl.placeholder||L("Kode","Code","Kode"))}" aria-label="${esc(cl.label||L("Kode","Code","Kode"))}">
-        <button class="codelock__btn">${L("Lås opp","Unlock","Lås opp")}</button>
-      </div>
+      ${dots}
+      ${keypad}
       <div class="codelock__err"></div>
       ${cl.lockedNote?`<div class="codelock__note">${esc(cl.lockedNote)}</div>`:""}
     </div>
@@ -431,29 +433,51 @@ function openLock(el, silent){
   const shut = $(".codelock__shut", box), open = $(".codelock__open", box);
   if(shut) shut.hidden = true;
   if(open) open.hidden = false;
-  if(!silent){ layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:380); }
+  if(!silent){
+    const refit = ()=> { layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:380); };
+    refit();
+    // the revealed image's true height isn't known until it finishes loading, so the
+    // first refit can be based on a too-short card; refit again once it has (fixes the
+    // answer field ending up stranded below the fold on small screens).
+    $$("img", open).forEach(img=>{ if(!img.complete) img.addEventListener("load", refit, {once:true}); });
+  }
 }
 function wireLock(el, task, i){
   const cl = task.codeLock, idx = i+1;
-  const input = $(".codelock__input", el), btn = $(".codelock__btn", el), err = $(".codelock__err", el);
-  if(!input || !btn) return;
+  const dotsWrap = $(".codelock__dots", el), keys = $$(".codelock__key[data-k]", el), err = $(".codelock__err", el);
+  if(!dotsWrap || !keys.length) return;
   if((state.unlockedLocks||[]).includes(i)){ openLock(el, true); return; }
+  const codeLen = lockCodeLength(cl);
+  const dots = $$(".codelock__dot", dotsWrap);
+  let buf = "";
+  function renderDots(){ dots.forEach((d,n)=> d.classList.toggle("is-filled", n<buf.length)); }
   function tryCode(){
     if(activeIdx()!==idx) return;
-    const v = nrm(input.value); if(!v) return;
-    if(toArr(cl.code).some(c=> nrm(c)===v)){
+    if(toArr(cl.code).some(c=> nrm(c)===nrm(buf))){
       if(!state.unlockedLocks) state.unlockedLocks=[];
       if(!state.unlockedLocks.includes(i)){ state.unlockedLocks.push(i); SessionStore.save(); }
-      input.classList.remove("wrong"); input.classList.add("right");
+      dotsWrap.classList.remove("wrong"); dotsWrap.classList.add("right");
       openLock(el, false);
     } else {
-      input.classList.remove("right"); input.classList.add("wrong");
+      dotsWrap.classList.remove("wrong"); void dotsWrap.offsetWidth; dotsWrap.classList.add("wrong");
       err.textContent = cl.errorText || L("Feil kode.","Wrong code.","Feil kode.");
-      setTimeout(()=>input.classList.remove("wrong"),450);
+      setTimeout(()=>{ buf=""; renderDots(); dotsWrap.classList.remove("wrong"); }, 450);
     }
   }
-  btn.addEventListener("click", tryCode);
-  input.addEventListener("keydown", e=>{ if(e.key==="Enter") tryCode(); });
+  function pressKey(k){
+    if(activeIdx()!==idx || dotsWrap.classList.contains("right")) return;
+    dotsWrap.classList.remove("wrong"); err.textContent = "";
+    if(k==="back"){ buf = buf.slice(0,-1); renderDots(); return; }
+    if(buf.length>=codeLen) return;
+    buf += k; renderDots();
+    if(buf.length===codeLen) setTimeout(tryCode, 120);
+  }
+  keys.forEach(btn=> btn.addEventListener("click", ()=> pressKey(btn.dataset.k)));
+  document.addEventListener("keydown", e=>{
+    if(activeIdx()!==idx || dotsWrap.classList.contains("right")) return;
+    if(/^[0-9]$/.test(e.key)) pressKey(e.key);
+    else if(e.key==="Backspace") pressKey("back");
+  });
 }
 
 /* ---- one hint per card (matches the original penalty rule) ---- */
