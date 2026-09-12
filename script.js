@@ -774,7 +774,7 @@ const CONFIG = {
                     }
                 },
                 {
-                    question: "Åpne konvolutt 2.\n\nEn av de ansatte har oppgitt både klokkeslett og transportmiddel for da vedkommende forlot bygget. Loggene viser at akkurat den forklaringen er fysisk umulig.\n\nHvem?",
+                    question: "Åpne konvolutt 2.\n\nDet er noen som lyver i avhøret sitt.\n\nHvem?",
                     answer: ["Thomas Berge", "Thomas", "Berge", "salgssjefen", "salgssjef Thomas Berge"],
                     answerContains: ["thomas", "berge", "salgssjef"],
                     hint: "Én av forklaringene nevner et bestemt transportmiddel ut av bygget. Hold klokkeslettet opp mot vedlikeholdsloggen.",
