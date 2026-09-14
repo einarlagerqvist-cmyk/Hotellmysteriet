@@ -756,7 +756,7 @@ const CONFIG = {
                     answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
                     rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
                                      "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
-                    hint: "Direktøren var høyrehendt. Se på hvilket håndledd kuttet satt i, om det finnes prøvekutt rundt det, og hvilken vinkel snittet hadde. Se også hva blodprøven inneholdt.",
+                    hint: "Se nøye på bildene av direktøren for å løse denne oppgaven.",
                     explanation: "Direktøren var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som bare oppstår hvis dosen kom i ham samme kveld, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
                         question: "Hva i obduksjonsrapporten utelukker selvmord?",
@@ -769,7 +769,7 @@ const CONFIG = {
                                          "rettvinkel", "rettevinkel", "snittvinkel", "ingenkutt"],
                         rejectContains: ["ikkedominant", "ikke-dominant", "ikkjedominant", "venstrehånd", "venstrehandledd",
                                          "venstrehåndledd", "venstrehendt"],
-                        hint: "Tre ting ved selve kuttet passer dårlig med et selvpåført kutt: hvilken hånd det satt i, om det finnes prøvekutt, og snittvinkelen. Det holder å nevne ett av dem.",
+                        hint: "Se nøye på bildene av direktøren for å løse denne oppgaven.",
                         explanation: "Selvpåførte kutt sitter normalt i den ikke-dominante hånden, har flere overflatiske prøvekutt, og har en skrå snittvinkel. Her satt kuttet i den dominante høyre hånden, det fantes ingen prøvekutt, og vinkelen var helt rett."
                     }
                 },
@@ -777,7 +777,7 @@ const CONFIG = {
                     question: "Åpne konvolutt 2.\n\nDet er noen som lyver i avhøret sitt.\n\nHvem?",
                     answer: ["Thomas Berge", "Thomas", "Berge", "salgssjefen", "salgssjef Thomas Berge"],
                     answerContains: ["thomas", "berge", "salgssjef"],
-                    hint: "Én av forklaringene nevner et bestemt transportmiddel ut av bygget. Hold klokkeslettet opp mot vedlikeholdsloggen.",
+                    hint: "Det er noe i den interne kommunikasjonen i Nordkast som strider mot avhørene.",
                     explanation: "Thomas Berge forklarte at han tok heisen ned kvart over elleve. Vedlikeholdsloggen viser at Heis A stod låst i vedlikeholdsmodus fra 22:30 til 23:45 og ikke kunne brukes av noen. Baren han oppga som alibi var dessuten stengt for oppussing hele uken. Han var fortsatt i bygget: oppkastet på herretoalettet og snorkingen Fredrik Lie hørte etter midnatt peker mot at han sov av seg rusen der.",
                     followUp: {
                         question: "Hva avslører at forklaringen hans ikke kan stemme?",
@@ -786,12 +786,12 @@ const CONFIG = {
                                  "heisen var i vedlikeholdsmodus", "baren var stengt"],
                         answerContains: ["heis", "vedlikehold", "låst", "last",
                                          "stostille", "stodstille", "barenvarstengt"],
-                        hint: "Se på klokkeslettene i vedlikeholdsloggen for Heis A, og hold dem mot klokkeslettet han oppga.",
+                        hint: "Se på klokkeslettene i den interne kommunikasjonen, og hold dem mot klokkeslettet han oppga.",
                         explanation: "Vedlikeholdsloggen viser at Heis A var låst i vedlikeholdsmodus fra 22:30 til 23:45, og at ingen kunne bruke den i det tidsrommet. Berge hevdet at han tok den samme heisen ned klokken 23:15."
                     }
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nDirektørens telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHva er koden?",
+                    question: "Direktørens telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHva er koden?",
                     answer: ["1972"],
                     codeLock: {
                         code: ["1972"],
@@ -808,21 +808,13 @@ const CONFIG = {
                         }]
                     },
                     hint: "De fleste bruker noe kjent og lett å huske som kode på egen mobil, sjelden noe tilfeldig. Se om noe av det dere allerede vet om direktøren lar seg uttrykke med fire sifre.",
-                    explanation: "Koden er direktørens fødselsår. Obduksjonsrapporten viser at han var 54 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 54 gir fødselsåret 1972.",
-                    followUp: {
-                        question: "Hva fant dere i meldingene?",
-                        answer: ["møte i glassburet", "hun skulle møte ham i glassburet", "de avtalte å møtes i glassburet klokken 23:05",
-                                 "vibeke holm skulle møte ham", "han ba vibeke møte ham", "et møte klokken 23:05"],
-                        answerContains: ["glassburet", "23:05", "avtaltemøte", "skullemøte"],
-                        hint: "Se på klokkeslettet direktøren foreslår, og hvem han sender meldingen til.",
-                        explanation: "Direktøren ber Vibeke Holm møte ham i Glassburet klokken 23:05. Hun svarer klokken 23:52."
-                    }
+                    explanation: "Koden er direktørens fødselsår. Obduksjonsrapporten viser at han var 54 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 54 gir fødselsåret 1972."
                 },
                 {
-                    question: "Åpne konvolutt 4.\n\nRenholderen fant noe hun trodde var søppel, og et utdrag av velferdsbudsjettet ligger i mappen. Kanskje ikke alt er som det ser ut ved første øyekast.\n\nHvem er morderen?",
+                    question: "Åpne konvolutt 3.\n\nNå har dere nok info til å finne morderen. Hvem drepte direktøren?",
                     answer: ["Vibeke Holm", "Vibeke", "Holm", "HR-direktøren", "hr direktøren", "HR-direktør Vibeke Holm"],
                     answerContains: ["vibeke", "holm", "hr-direktør", "hrdirektør", "hrdirektor"],
-                    hint: "Avskjedsbrevet er håndskrevet. Finn det ene andre stedet i bevismaterialet der noen har skrevet noe for hånd, og hold de to opp mot hverandre. Det svarte arket fra fellesprinteren er ikke det det ser ut som.",
+                    hint: "Det er noe rart med avskjedsbrevet.",
                     explanation: "Avskjedsbrevet er ikke skrevet av direktøren. Håndskriften er den samme som i den håndskrevne godkjenningssignaturen til V. Holm nederst på velferdsbudsjettet. Konto 6540 viser tre utbetalinger på til sammen 125 500 kroner til «Teambuilding leverandør AS», en fiktiv leverandør, alle godkjent av V. Holm. Hun skrev brevet selv for å iscenesette et selvmord, og hun drepte ham for å skjule underslaget. Det svarte arket viste seg å være Fredrik Lies egen oppsigelse, skrevet ut samme natt, pinlig, men uten sammenheng med drapet.",
                     followUp: {
                         question: "Hvordan avslørte dere henne?",
