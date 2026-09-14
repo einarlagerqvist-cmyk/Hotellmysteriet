@@ -37,17 +37,6 @@
       <div class="entry__rule"></div>
       <label class="entry__label" id="entry-label" for="team-input">Lagets navn</label>
       <input id="team-input" class="field-input" type="text" maxlength="30" autocomplete="off" placeholder="Skriv inn lagnavnet…">
-      <div id="group-wrap" class="entry__group-wrap">
-        <label class="entry__label entry__label--group" for="group-select">Gruppe <span class="entry__label-opt">(valgfritt)</span></label>
-        <div class="group-row">
-          <select id="group-select" class="field-select field-select--group"></select>
-          <button class="btn-group-new" id="btn-new-group" type="button">+ Ny</button>
-        </div>
-        <div id="new-group-row" class="new-group-row" style="display:none;">
-          <input id="new-group-input" class="field-input field-input--group" type="text" maxlength="40" placeholder="Gruppenavn…" autocomplete="off">
-          <button class="btn-group-create" id="btn-create-group" type="button">Opprett</button>
-        </div>
-      </div>
       <button class="btn-primary" id="btn-begin" disabled>Start etterforskningen</button>
       <button class="entry__back" id="btn-entry-back">◂ Tilbake til arkivet</button>
     </div></div>
@@ -107,7 +96,6 @@
     <div class="archive"><div class="lb__inner">
       <header class="masthead"><h1 class="masthead__title">Tidstavlen</h1><div class="masthead__rule"></div></header>
       <div class="lb__filter" id="lb-filter"></div>
-      <div class="lb__group-filter" id="lb-group-filter" style="display:none;"></div>
       <div class="lb-card"><div id="lb-list" class="tid-list"></div></div>
       <div class="admin-box" id="admin-box" style="display:none;">
         <h3>Admin</h3><p>Slett enkeltlag fra valgt sak, åpne dashboardet, eller slett alle data.</p>
@@ -224,7 +212,6 @@ async function goEntry(id){
   const m = raw(id); if(!m) return;
   const res = getMystery(m);
   state.mysteryId = id; state.mystery = res;
-  state.groupId = ""; state.groupName = "";
   setLangFor(id); applyChrome();
   $("#entry-title").textContent = res.name;
   $("#team-input").value = state.teamName || "";
@@ -238,36 +225,10 @@ async function goEntry(id){
     }
   }
 
-  populateGroups(id);
-
   show("entry");
   if(finePointer) setTimeout(()=>$("#team-input").focus(), 120);
 }
 
-// Fills the group dropdown. Always keeps a "no group" option first, so the
-// list is never empty (an empty <select> renders as "No Options" on iOS) and
-// so the visible choice matches state.groupId="" until the user picks one.
-// Runs without blocking the entry screen, and waits for Firebase to connect
-// before reading, otherwise existing groups are missed on a cold load.
-async function populateGroups(id){
-  const gs = $("#group-select");
-  gs.innerHTML = "";
-  const none = document.createElement("option");
-  none.value = ""; none.textContent = L("Ingen gruppe","No group");
-  none.dataset.name = "";
-  gs.appendChild(none);
-  try {
-    await storageReadyPromise;
-    if(state.mysteryId !== id) return;
-    const groups = await Storage.getGroups(id);
-    if(state.mysteryId !== id) return;
-    groups.forEach(g => {
-      const o = document.createElement("option");
-      o.value = g._key; o.textContent = g.name; o.dataset.name = g.name;
-      gs.appendChild(o);
-    });
-  } catch(e) {}
-}
 $("#team-input").addEventListener("input", ()=>{ $("#btn-begin").disabled = !$("#team-input").value.trim(); });
 $("#team-input").addEventListener("keydown", e=>{ if(e.key==="Enter" && !$("#btn-begin").disabled) $("#btn-begin").click(); });
 $("#btn-begin").addEventListener("click", ()=>{ state.teamName = $("#team-input").value.trim(); if(state.teamName) enterBoard(); });
@@ -794,7 +755,7 @@ async function finishGame(){
   state.elapsed = Date.now() - state.startTime;
   const penalty = state.hintsUsed*CONFIG.penaltyPerHint + state.gaveUpCount*CONFIG.penaltyPerGiveUp;
   const totalTime = state.elapsed + penalty;
-  const entry = { team:state.teamName, time:state.elapsed, hints:state.hintsUsed, gaveUp:state.gaveUpCount, penalty, totalTime, date:new Date().toISOString().split("T")[0], taskStats:state.taskStats, groupId:state.groupId||null, groupName:state.groupName||null };
+  const entry = { team:state.teamName, time:state.elapsed, hints:state.hintsUsed, gaveUp:state.gaveUpCount, penalty, totalTime, date:new Date().toISOString().split("T")[0], taskStats:state.taskStats };
   try { await Storage.saveEntry(state.mysteryId, entry); } catch(e){ console.warn("save failed", e); }
   $("#final-time").textContent = fmtT(totalTime);
   const parts=[];
@@ -806,19 +767,8 @@ async function finishGame(){
   $("#final-reward").innerHTML = (lastTask && lastTask.reward && lastTask.reward.image) ? `<img src="${lastTask.reward.image}" alt="${esc(lastTask.reward.alt||'')}">` : "";
   let entries=[]; try { entries = await Storage.getEntries(state.mysteryId); } catch(e){ entries=[]; }
   entries.sort((a,b)=>(a.totalTime||a.time)-(b.totalTime||b.time));
-  const groupEntries = state.groupId ? entries.filter(e=>e.groupId===state.groupId) : null;
-  const displayEntries = groupEntries || entries;
-  renderTidstavle(displayEntries, totalTime);
-  $("#tid-sub").textContent = state.groupName || state.mystery.name;
-  const oldToggle = document.getElementById("tid-toggle");
-  if(oldToggle) oldToggle.remove();
-  if(groupEntries && entries.length > groupEntries.length){
-    const tog = document.createElement("button");
-    tog.id="tid-toggle"; tog.className="tid-toggle";
-    tog.textContent = L(`Se alle ${entries.length} lag`, `See all ${entries.length} teams`);
-    tog.addEventListener("click",()=>{ tog.remove(); renderTidstavle(entries, totalTime); $("#tid-sub").textContent=state.mystery.name; });
-    $("#tid-list").after(tog);
-  }
+  renderTidstavle(entries, totalTime);
+  $("#tid-sub").textContent = state.mystery.name;
   state.currentRating=0; $("#fb").style.display=""; $("#fb-thanks").style.display="none"; $("#fb-text").value=""; $$("#fb-stars span").forEach(s=>s.classList.remove("on"));
   $("#overlay").classList.add("is-open");
 }
@@ -910,8 +860,7 @@ function renderLBEntries(entries){
   list.innerHTML = entries.slice(0,25).map((e,i)=>{
     const rk=i+1, rcls=rk<=3?` r${rk}`:"", t=e.totalTime||e.time;
     const mystery = e.mysteryId ? getMysteryName(e.mysteryId) : "";
-    const group = e.groupName ? e.groupName : "";
-    const parts = [mystery, group, e.date||""].filter(Boolean);
+    const parts = [mystery, e.date||""].filter(Boolean);
     const meta = parts.length ? parts.join(" · ") : "";
     return `<div class="tid-row${rcls}"><span class="tid-rank">${rk}</span><span class="tid-team">${esc(e.team)}${meta?`<span style="font-size:.62rem;color:var(--ink-faint)"> · ${esc(meta)}</span>`:""}</span><span class="tid-time">${fmtT(t)}</span></div>`;
   }).join("");
@@ -921,26 +870,7 @@ async function loadLB(mysteryId, activeBtn){
   $$(".fbtn").forEach(b=>b.classList.remove("active")); if(activeBtn) activeBtn.classList.add("active");
   let entries=[]; try { entries = await Storage.getEntries(mysteryId); } catch(e){}
   entries.sort((a,b)=>(a.totalTime||a.time)-(b.totalTime||b.time));
-
-  const gf = $("#lb-group-filter");
-  if(mysteryId){
-    let groups=[]; try { groups = await Storage.getGroups(mysteryId); } catch(e){}
-    if(groups.length>0){
-      gf.innerHTML=""; gf.style.display="";
-      const allBtn2 = document.createElement("button"); allBtn2.className="fbtn fbtn--sub"; allBtn2.textContent=L("Alle lag","All teams");
-      allBtn2.addEventListener("click",()=>{ $$(".fbtn--sub").forEach(b=>b.classList.remove("active")); allBtn2.classList.add("active"); renderLBEntries(entries); });
-      gf.appendChild(allBtn2);
-      let autoBtn=null;
-      groups.forEach(g=>{
-        const gb=document.createElement("button"); gb.className="fbtn fbtn--sub"; gb.textContent=g.name; gb.dataset.gid=g._key;
-        gb.addEventListener("click",()=>{ $$(".fbtn--sub").forEach(b=>b.classList.remove("active")); gb.classList.add("active"); renderLBEntries(entries.filter(e=>e.groupId===g._key)); });
-        gf.appendChild(gb);
-        if(g._key===state.groupId) autoBtn=gb;
-      });
-      if(autoBtn){ autoBtn.classList.add("active"); renderLBEntries(entries.filter(e=>e.groupId===state.groupId)); }
-      else { allBtn2.classList.add("active"); renderLBEntries(entries); }
-    } else { gf.innerHTML=""; gf.style.display="none"; renderLBEntries(entries); }
-  } else { gf.innerHTML=""; gf.style.display="none"; renderLBEntries(entries); }
+  renderLBEntries(entries);
 
   const box=$("#admin-box");
   if(state.isAdmin){
@@ -1092,52 +1022,12 @@ function applyChrome(){
   set("#fb-thanks", L("Takk for tilbakemeldingen!","Thanks for the feedback!","Takk for tilbakemeldinga!"));
   set("#btn-win-back", L("Tilbake til arkivet","Back to the archive","Tilbake til arkivet"));
 }
-function wireGroupField(){
-  const gs = $("#group-select");
-  gs.addEventListener("change",()=>{
-    const opt = gs.options[gs.selectedIndex];
-    // The placeholder option has value "" and must clear the group, not adopt
-    // its own label ("Ingen gruppe") as the group name.
-    state.groupId = (opt && opt.value) ? opt.value : "";
-    state.groupName = state.groupId ? (opt.dataset.name||opt.textContent) : "";
-  });
-  $("#btn-new-group").addEventListener("click",()=>{
-    $("#new-group-row").style.display="";
-    const inp=$("#new-group-input"); inp.value="";
-    setTimeout(()=>inp.focus(),80);
-  });
-  async function createGroup(){
-    const name=$("#new-group-input").value.trim(); if(!name) return;
-    const btn=$("#btn-create-group"); if(btn.disabled) return;
-    btn.disabled=true;
-    let key=null;
-    try {
-      await storageReadyPromise;
-      key = await Storage.saveGroup(state.mysteryId,{name,createdAt:new Date().toISOString()});
-    } catch(e){}
-    btn.disabled=false;
-    if(key){
-      const o=document.createElement("option"); o.value=key; o.textContent=name; o.dataset.name=name;
-      gs.appendChild(o); gs.value=key;
-      state.groupId=key; state.groupName=name;
-      $("#new-group-row").style.display="none";
-    } else {
-      // saveGroup returns null when Firebase is unreachable; say so instead of
-      // silently dropping the group the user just typed.
-      showAlert(L("Kunne ikke opprette gruppen. Sjekk nettforbindelsen og prøv igjen.","Could not create the group. Check your connection and try again."), L("GRUPPE","GROUP"));
-    }
-  }
-  $("#btn-create-group").addEventListener("click",createGroup);
-  $("#new-group-input").addEventListener("keydown",e=>{ if(e.key==="Enter") createGroup(); if(e.key==="Escape") $("#new-group-row").style.display="none"; });
-}
-
 let storageReadyPromise = null;
 async function ebInit(){
   // language label for the brand subtitle
   $("#brand-sub").textContent = L("Uoppklarte saker","Unsolved cases");
   if(EN){ document.documentElement.lang="en"; applyEnLabels(); }
   renderArchive();
-  wireGroupField();
   storageReadyPromise = Storage.init();   // loads Firebase SDK + connects (old times become available)
 
   const params = new URLSearchParams(location.search);
@@ -1166,7 +1056,6 @@ function resumeBoard(sess){
   state.currentTask=sess.currentTask||0; state.hintsUsed=sess.hintsUsed||0; state.gaveUpCount=sess.gaveUpCount||0;
   state.unlockedLocks = Array.isArray(sess.unlockedLocks) ? sess.unlockedLocks.slice() : [];
   state.timerVisible = sess.timerVisible!==false; state.mystery=getMystery(m); state.started=true;
-  state.groupId=sess.groupId||""; state.groupName=sess.groupName||"";
   setLangFor(sess.mysteryId); applyChrome();
   state.taskStats = sess.taskStats || state.mystery.tasks.map(()=>({hints:0,gaveUp:false,timeSpent:0}));
   state.taskStartTime = sess.taskStartTime || Date.now();

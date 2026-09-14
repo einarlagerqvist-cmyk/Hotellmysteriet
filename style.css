@@ -62,21 +62,6 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .btn-primary:disabled{ opacity:.4; cursor:not-allowed; }
 .entry__back{ margin-top:18px; font-family:'Special Elite',monospace; font-size:.64rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(26,15,6,.4); }
 .entry__back:hover{ color:#6b4c2e; }
-.entry__group-wrap{ margin-top:18px; }
-.entry__label--group{ margin-top:0; }
-.entry__label-opt{ font-size:.58rem; opacity:.55; text-transform:none; letter-spacing:.05em; }
-.group-row{ display:flex; gap:8px; align-items:stretch; }
-.field-select--group{ flex:1; margin-bottom:0; padding:11px 12px; font-size:.92rem; text-align:left; }
-.btn-group-new{ flex-shrink:0; padding:0 14px; background:rgba(107,76,46,.1); color:#6b4c2e; border:1px solid rgba(107,76,46,.3); border-radius:9px; font-family:'Special Elite',monospace; font-size:.7rem; letter-spacing:.1em; white-space:nowrap; transition:.2s; }
-.btn-group-new:hover{ background:rgba(107,76,46,.18); }
-.new-group-row{ display:flex; gap:8px; margin-top:8px; }
-.field-input--group{ flex:1; padding:11px 14px; font-size:.95rem; text-align:left; }
-.btn-group-create{ flex-shrink:0; padding:0 16px; background:#6b4c2e; color:#f4ecd8; border-radius:9px; font-family:'Special Elite',monospace; font-size:.7rem; letter-spacing:.1em; transition:.2s; }
-.btn-group-create:hover{ background:#4a3118; }
-.lb__group-filter{ display:flex; flex-wrap:wrap; gap:6px; padding:0 0 10px; }
-.fbtn--sub{ font-size:.7rem; padding:6px 13px; background:rgba(107,76,46,.07); border:1px solid rgba(107,76,46,.2); border-radius:20px; color:var(--ink-soft); font-family:'Special Elite',monospace; letter-spacing:.1em; transition:.2s; }
-.fbtn--sub:hover{ background:rgba(107,76,46,.15); }
-.fbtn--sub.active{ background:#6b4c2e; color:#f4ecd8; border-color:#6b4c2e; }
 .tid-toggle{ display:block; margin:10px auto 0; font-family:'Special Elite',monospace; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:#6b4c2e; border:none; background:none; opacity:.75; }
 .tid-toggle:hover{ opacity:1; }
 

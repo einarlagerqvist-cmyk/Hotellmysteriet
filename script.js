@@ -857,8 +857,7 @@ let state = {
     taskStats: [],
     taskStartTime: null,
     followUpMode: false,
-    unlockedLocks: [],
-    groupId: "", groupName: ""
+    unlockedLocks: []
 };
 
 // ============================================================
@@ -977,25 +976,6 @@ const Storage = {
         if (this._firebase) { try { await this._firebase.ref(`feedback/${mysteryId}`).push(feedback); return; } catch (e) {} }
         this._local.saveFeedback(mysteryId, feedback);
     },
-    async getGroups(mysteryId) {
-        if (this._firebase) {
-            try {
-                const snap = await this._firebase.ref(`groups/${mysteryId}`).once("value");
-                const data = snap.val() || {};
-                return Object.entries(data).map(([key, val]) => ({ ...val, _key: key }));
-            } catch (e) { console.warn("Firebase groups read failed", e); }
-        }
-        return [];
-    },
-    async saveGroup(mysteryId, group) {
-        if (this._firebase) {
-            try {
-                const ref = await this._firebase.ref(`groups/${mysteryId}`).push(group);
-                return ref.key;
-            } catch (e) { console.warn("Firebase groups save failed", e); }
-        }
-        return null;
-    },
     async getVisits(mysteryId) {
         if (this._firebase) {
             try {
@@ -1027,8 +1007,7 @@ const SessionStore = {
             mysteryId: state.mysteryId, teamName: state.teamName, startTime: state.startTime,
             currentTask: state.currentTask, hintsUsed: state.hintsUsed, gaveUpCount: state.gaveUpCount,
             timerVisible: state.timerVisible, taskStats: state.taskStats, taskStartTime: state.taskStartTime,
-            unlockedLocks: state.unlockedLocks || [],
-            groupId: state.groupId || "", groupName: state.groupName || ""
+            unlockedLocks: state.unlockedLocks || []
         };
         localStorage.setItem(SESSION_KEY, JSON.stringify(data));
     },
