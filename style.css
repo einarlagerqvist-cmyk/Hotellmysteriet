@@ -270,6 +270,10 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .serial-folder.wrong::after{ content:"✕"; color:var(--stamp); }
 .serial-folder.missed{ background:linear-gradient(160deg,#e7d39a,#d9c074); border-color:rgba(201,168,76,.7); }
 .serial-folder.missed::after{ content:"?"; color:#8a6d1c; }
+.serial-folder.locked{ background:linear-gradient(160deg,#d9d3c4,#c3bca9); border-color:rgba(60,42,18,.14); color:rgba(58,47,26,.4); box-shadow:none; cursor:default; pointer-events:none; }
+.serial-folder.locked::before{ opacity:.35; }
+.serial-folder.locked::after{ content:"🔒"; font-size:.66rem; opacity:.5; }
+.serial-progress{ font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin:-4px 0 10px; text-align:center; }
 .serial-proceed{ margin-top:14px; }
 .case-sheet{ position:fixed; inset:0; z-index:90; display:none; align-items:flex-start; justify-content:center; padding:9vh 16px 16px; background:rgba(20,12,4,.55); }
 .case-sheet.open{ display:flex; animation:fade .25s var(--ease); }

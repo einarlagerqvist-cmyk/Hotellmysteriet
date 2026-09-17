@@ -568,7 +568,7 @@ function solveCard(el, task, i, shownAnswer, gaveUp, explanation){
 /* ---- serial-murder (Fengselshotellet): compact case folders + a focused modal sheet ---- */
 let curCase = null;
 function openCase(c, folder, ctx){
-  if(!folder.classList.contains("pending")) return;
+  if(!folder.classList.contains("pending") || folder.classList.contains("locked")) return;
   curCase = { c, folder, ctx, hintShown:false };
   $("#cs-label").textContent = c.label;
   $("#cs-prompt").textContent = L("Hva avslørte at dette var mord? Stikkord holder.","What revealed this was murder? Keywords are fine.","Kva avslørte at dette var mord? Stikkord held.");
@@ -617,13 +617,18 @@ function wireSerial(el, task, i){
   const caseState={}; task.cases.forEach(c=>caseState[c.id]="pending");
   const note=document.createElement("div"); note.className="serial-note";
   note.textContent = L("💡 Stikkord holder. Du trenger ikke skrive hele setninger.","💡 Keywords are enough. You don't need full sentences.","💡 Stikkord held. Du treng ikkje skrive heile setningar.");
+  const progress=document.createElement("div"); progress.className="serial-progress";
   const grid=document.createElement("div"); grid.className="serial-grid";
   const proceed=document.createElement("button"); proceed.className="brief-start serial-proceed"; proceed.style.display="none"; proceed.textContent = L("Gå videre","Continue","Gå vidare")+" ▸";
   proceed.addEventListener("click", ()=> solveCard(el, task, i, L("Sakene gjennomgått","Cases reviewed","Sakene gjennomgått"), false));
-  function checkAll(){ const done = task.cases.filter(c=>c.isMurder).every(c=> caseState[c.id]==="correct"||caseState[c.id]==="gaveUp"); proceed.style.display = done?"block":"none"; if(done){ layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:300); } }
+  let revealed=0;
+  function updateProgressLabel(){ progress.textContent = L(`Sak ${Math.min(revealed,folders.length)} av ${folders.length} åpnet`,`Case ${Math.min(revealed,folders.length)} of ${folders.length} opened`,`Sak ${Math.min(revealed,folders.length)} av ${folders.length} opna`); }
+  function revealNext(){ if(revealed>=folders.length) return; folders[revealed].classList.remove("locked"); revealed++; updateProgressLabel(); }
+  function checkAll(){ const done = task.cases.filter(c=>c.isMurder).every(c=> caseState[c.id]==="correct"||caseState[c.id]==="gaveUp"); proceed.style.display = done?"block":"none"; if(done){ layoutBoard(); cameraTo(camForCard(el), reduceMotion?0:300); } revealNext(); }
   const ctx = { caseState, checkAll, taskIdx:i };
-  task.cases.forEach(c=>{ const f=document.createElement("button"); f.className="serial-folder pending"; f.textContent=c.label; f.dataset.id=c.id; f.addEventListener("click", ()=> openCase(c, f, ctx)); grid.appendChild(f); });
-  container.appendChild(note); container.appendChild(grid); container.appendChild(proceed);
+  const folders = task.cases.map(c=>{ const f=document.createElement("button"); f.className="serial-folder pending locked"; f.textContent=c.label; f.dataset.id=c.id; f.addEventListener("click", ()=> openCase(c, f, ctx)); grid.appendChild(f); return f; });
+  revealNext();
+  container.appendChild(note); container.appendChild(progress); container.appendChild(grid); container.appendChild(proceed);
 }
 
 /* ---- audio player on a card (mirrors the original) ---- */
