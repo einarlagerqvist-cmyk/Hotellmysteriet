@@ -863,6 +863,7 @@ const CONFIG = {
                     answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
                     rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
                                      "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
+                    answerHint: "Skriv «myrdet» eller «drap», ikke bare «ja»/«nei».",
                     hint: "Se nøye på bildene av direktøren for å løse denne oppgaven.",
                     explanation: "Direktøren var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som bare oppstår hvis dosen kom i ham samme kveld, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
