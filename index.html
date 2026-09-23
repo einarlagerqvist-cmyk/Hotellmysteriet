@@ -921,6 +921,10 @@ async function openDashboard(onlyId){
   if(barsPanel) barsPanel.style.display = dm ? "none" : "";
   const leadersPanel = $("#dash-leaders").closest(".panel");
   if(leadersPanel) leadersPanel.style.display = dm ? "none" : "";
+  const feedbackPanel = $("#dash-feedback").closest(".panel");
+  if(feedbackPanel) feedbackPanel.style.display = dm ? "none" : "";
+  const colsEl = document.querySelector(".dash__cols");
+  if(colsEl) colsEl.style.gridTemplateColumns = dm ? "1fr" : "";
   const casesHeading = $("#dash-cases").previousElementSibling;
   if(casesHeading) casesHeading.textContent = dm ? L("Ledertavle","Leaderboard") : L("Saksstatistikk","Case statistics");
   const titleEl = document.querySelector(".dash__title");
