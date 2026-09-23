@@ -906,22 +906,27 @@ $("#btn-admin").addEventListener("click", ()=>{
   if(pw === CONFIG.adminPassword){ state.isAdmin=true; openLeaderboard(); }
 });
 $("#btn-clear-all").addEventListener("click", async ()=>{ if(await showConfirm(L("Slette ALLE tider og tilbakemeldinger for ALLE mysterier? Kan ikke angres.","Delete ALL times and feedback for ALL mysteries? Cannot be undone."),L("Slett","Delete"),L("Avbryt","Cancel"),L("SLETT ALT","DELETE ALL"),true)){ await Storage.clearAll(); loadLB(null, $(".fbtn")); } });
-$("#btn-open-dash").addEventListener("click", openDashboard);
+$("#btn-open-dash").addEventListener("click", ()=> openDashboard());
 $("#btn-dash-back").addEventListener("click", ()=> openLeaderboard());
 
 /* =========================================================================
    DASHBOARD — real Firebase aggregates, styled as the HQ
    ========================================================================= */
 const starRow = n => `${"★".repeat(n)}<span>${"★".repeat(5-n)}</span>`;
-async function openDashboard(){
+async function openDashboard(onlyId){
   cur = EN ? "en" : "no";
   show("dashboard");
+  const dm = onlyId ? raw(onlyId) : null;
+  const barsPanel = $("#dash-bars").closest(".panel");
+  if(barsPanel) barsPanel.style.display = dm ? "none" : "";
+  const titleEl = document.querySelector(".dash__title");
+  if(titleEl) titleEl.textContent = dm ? getMystery(dm).name : L("Saksoversikt","Case overview");
   $("#dash-date").textContent = new Date().toLocaleDateString(EN?"en-GB":"no-NO", {day:"numeric",month:"long",year:"numeric"});
   $("#dash-kpis").innerHTML = `<div class="dash-empty">${L("Laster…","Loading…")}</div>`;
   let times=[], feedback=[], visits=[];
-  try { times = await Storage.getEntries(null); } catch(e){}
-  try { feedback = await Storage.getFeedback(null); } catch(e){}
-  try { visits = await Storage.getVisits(null); } catch(e){}
+  try { times = await Storage.getEntries(onlyId||null); } catch(e){}
+  try { feedback = await Storage.getFeedback(onlyId||null); } catch(e){}
+  try { visits = await Storage.getVisits(onlyId||null); } catch(e){}
   const stats={};
   CONFIG.mysteries.forEach(m=>{ const res=getMystery(m); stats[m.id]={ id:m.id, name:res.name, plays:0, visits:0, totalTime:0, fastest:null, fastTeam:"", ratingSum:0, ratingCount:0, accent:ACCENTS[m.id]||"#6b4c2e", notes:[], taskAgg:(res.tasks||[]).map(()=>({hints:0,gaveUp:0,timeSum:0,timeCount:0})) }; });
   times.forEach(t=>{
@@ -943,10 +948,11 @@ async function openDashboard(){
   const ratingsAll = feedback.map(f=>f.rating).filter(Boolean);
   const avgRating = ratingsAll.length ? (ratingsAll.reduce((a,b)=>a+b,0)/ratingsAll.length).toFixed(1) : "–";
   // KPIs
+  const scopeN = dm ? shortName(getMystery(dm).name) : L("alle saker","all cases");
   const kpis = [
-    {l:L("Skannet inn","Scanned in"), v:String(totalVisits), n:L("alle saker","all cases")},
-    {l:L("Spill totalt","Games total"), v:String(totalPlays), n:L("alle saker","all cases")},
-    {l:L("Aktive saker","Active cases"), v:String(active.length||CONFIG.mysteries.length), n:L("mysterier","mysteries")},
+    {l:L("Skannet inn","Scanned in"), v:String(totalVisits), n:scopeN},
+    {l:L("Spill totalt","Games total"), v:String(totalPlays), n:scopeN},
+    ...(dm ? [] : [{l:L("Aktive saker","Active cases"), v:String(active.length||CONFIG.mysteries.length), n:L("mysterier","mysteries")}]),
     {l:L("Snittid","Avg. time"), v: avgAll? fmtT(avgAll).replace(/^00:/,"") : "–", n:L("per spill","per game")},
     {l:L("Snittscore","Avg. score"), v:String(avgRating), n:L("av 5","of 5"), star:true},
   ];
@@ -1036,6 +1042,19 @@ async function ebInit(){
   storageReadyPromise = Storage.init();   // loads Firebase SDK + connects (old times become available)
 
   const params = new URLSearchParams(location.search);
+
+  const dashId = params.get("dash");
+  if(dashId){
+    const dm = raw(dashId.toLowerCase());
+    if(dm){
+      document.title = `${getMystery(dm).name} · Dashboard`;
+      await storageReadyPromise;
+      openDashboard(dm.id);
+      setInterval(()=> openDashboard(dm.id), 60000);
+      return;
+    }
+  }
+
   const pre = params.get("m");
   if(pre){
     const m = visibleMysteries().find(x=>x.id===pre.toLowerCase());
