@@ -114,6 +114,7 @@
         <button class="hud__back dash__back" id="btn-dash-back">◂ Tilbake</button>
         <div class="dash__titlewrap"><div class="dash__kicker">Politiets etterforskningssentral</div><h1 class="dash__title">Saksoversikt</h1></div>
         <div class="dash__date" id="dash-date"></div>
+        <button class="hud__back dash__back" id="btn-dash-fullscreen" type="button">⛶ Fullskjerm</button>
       </header>
       <div id="dash-kpis" class="kpis"></div>
       <div class="dash__cols">
@@ -908,6 +909,22 @@ $("#btn-admin").addEventListener("click", ()=>{
 $("#btn-clear-all").addEventListener("click", async ()=>{ if(await showConfirm(L("Slette ALLE tider og tilbakemeldinger for ALLE mysterier? Kan ikke angres.","Delete ALL times and feedback for ALL mysteries? Cannot be undone."),L("Slett","Delete"),L("Avbryt","Cancel"),L("SLETT ALT","DELETE ALL"),true)){ await Storage.clearAll(); loadLB(null, $(".fbtn")); } });
 $("#btn-open-dash").addEventListener("click", ()=> openDashboard());
 $("#btn-dash-back").addEventListener("click", ()=> openLeaderboard());
+
+function isFullscreen(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+function updateFullscreenBtn(){
+  const btn = $("#btn-dash-fullscreen"); if(!btn) return;
+  btn.textContent = isFullscreen() ? L("⤡ Avslutt fullskjerm","⤡ Exit fullscreen") : L("⛶ Fullskjerm","⛶ Fullscreen");
+}
+$("#btn-dash-fullscreen").addEventListener("click", ()=>{
+  if(isFullscreen()){
+    (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+  } else {
+    const el = document.documentElement;
+    (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
+  }
+});
+["fullscreenchange","webkitfullscreenchange"].forEach(ev=> document.addEventListener(ev, updateFullscreenBtn));
+updateFullscreenBtn();
 
 /* =========================================================================
    DASHBOARD — real Firebase aggregates, styled as the HQ
