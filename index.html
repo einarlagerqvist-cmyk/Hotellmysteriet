@@ -919,6 +919,10 @@ async function openDashboard(onlyId){
   const dm = onlyId ? raw(onlyId) : null;
   const barsPanel = $("#dash-bars").closest(".panel");
   if(barsPanel) barsPanel.style.display = dm ? "none" : "";
+  const leadersPanel = $("#dash-leaders").closest(".panel");
+  if(leadersPanel) leadersPanel.style.display = dm ? "none" : "";
+  const casesHeading = $("#dash-cases").previousElementSibling;
+  if(casesHeading) casesHeading.textContent = dm ? L("Ledertavle","Leaderboard") : L("Saksstatistikk","Case statistics");
   const titleEl = document.querySelector(".dash__title");
   if(titleEl) titleEl.textContent = dm ? getMystery(dm).name : L("Saksoversikt","Case overview");
   $("#dash-date").textContent = new Date().toLocaleDateString(EN?"en-GB":"no-NO", {day:"numeric",month:"long",year:"numeric"});
@@ -950,35 +954,43 @@ async function openDashboard(onlyId){
   // KPIs
   const scopeN = dm ? shortName(getMystery(dm).name) : L("alle saker","all cases");
   const kpis = [
-    {l:L("Skannet inn","Scanned in"), v:String(totalVisits), n:scopeN},
+    ...(dm ? [] : [{l:L("Skannet inn","Scanned in"), v:String(totalVisits), n:scopeN}]),
     {l:L("Spill totalt","Games total"), v:String(totalPlays), n:scopeN},
     ...(dm ? [] : [{l:L("Aktive saker","Active cases"), v:String(active.length||CONFIG.mysteries.length), n:L("mysterier","mysteries")}]),
     {l:L("Snittid","Avg. time"), v: avgAll? fmtT(avgAll).replace(/^00:/,"") : "–", n:L("per spill","per game")},
-    {l:L("Snittscore","Avg. score"), v:String(avgRating), n:L("av 5","of 5"), star:true},
+    ...(dm ? [] : [{l:L("Snittscore","Avg. score"), v:String(avgRating), n:L("av 5","of 5"), star:true}]),
   ];
   $("#dash-kpis").innerHTML = kpis.map((k,i)=>`<div class="kpi" style="--r:${(i%2?1:-1)*1.1}deg"><span class="pin"></span><div class="kpi__v">${k.v}${k.star?' <span class="star">★</span>':''}</div><div class="kpi__l">${k.l}</div><div class="kpi__n">${k.n}</div></div>`).join("");
   // bars (plays per mystery)
   const playsList = active.slice().sort((a,b)=>b.plays-a.plays);
   const maxN = Math.max(1, ...playsList.map(s=>s.plays));
   $("#dash-bars").innerHTML = playsList.length ? playsList.map(s=>`<div class="bar"><div class="bar__name">${esc(shortName(s.name))}</div><div class="bar__track"><div class="bar__fill" data-w="${Math.round(s.plays/maxN*100)}" style="--c:${s.accent}"></div></div><div class="bar__n">${s.plays}</div></div>`).join("") : `<div class="dash-empty">${L("Ingen spill ennå.","No games yet.")}</div>`;
-  // case table
-  $("#dash-cases").innerHTML = active.length ? active.slice().sort((a,b)=>b.plays-a.plays).map(s=>{
-    const avg = s.plays? fmtT(Math.round(s.totalTime/s.plays)).replace(/^00:/,"") : "–";
-    const rating = s.ratingCount ? (s.ratingSum/s.ratingCount) : 0;
-    const taskRows = (s.taskAgg||[]).filter(ta=>ta.timeCount||ta.hints||ta.gaveUp).length ? s.taskAgg.map((ta,idx)=>{
-      const avgT = ta.timeCount ? fmtT(Math.round(ta.timeSum/ta.timeCount)).replace(/^00:/,"") : "–";
-      return `<div class="trow"><span><b>${L("Oppgave","Task")} ${idx+1}</b></span><span>${L("Snitt-tid","Avg. time")} <b>${avgT}</b></span><span>${L("Hint brukt","Hints used")} <b>${ta.hints}/${s.plays}</b></span><span>${L("Ga opp","Gave up")} <b>${ta.gaveUp}</b></span></div>`;
-    }).join("") : "";
-    return `<div class="crow"><div class="crow__name">${esc(s.name)}</div><div class="crow__rating">${rating?starRow(Math.round(rating))+" "+rating.toFixed(1):"–"}</div><div class="crow__meta">${s.visits?`<span><b>${s.visits}</b> ${L("skannet inn","scanned in")}</span>`:""}<span><b>${s.plays}</b> ${L("spill","games")}</span><span>${L("Snitt","Avg")} <b>${avg}</b></span>${s.fastTeam?`<span>${L("Raskest","Fastest")} <b>${esc(s.fastTeam)}</b> · ${fmtT(s.fastest).replace(/^00:/,"")}</span>`:""}</div>${taskRows?`<button type="button" class="crow__toggle" data-open="0">${L("Vis oppgavestatistikk","Show task stats")} ▾</button><div class="crow__tasks">${taskRows}</div>`:""}</div>`;
-  }).join("") : `<div class="dash-empty">${L("Ingen data ennå.","No data yet.")}</div>`;
-  $$("#dash-cases .crow__toggle").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const box = btn.nextElementSibling;
-      const open = box.classList.toggle("is-open");
-      btn.dataset.open = open ? "1" : "0";
-      btn.textContent = open ? `${L("Skjul oppgavestatistikk","Hide task stats")} ▴` : `${L("Vis oppgavestatistikk","Show task stats")} ▾`;
+  // case table (admin, all mysteries) / clean leaderboard (kiosk, single mystery)
+  if(dm){
+    const board = times.slice().sort((a,b)=>(a.totalTime||a.time)-(b.totalTime||b.time));
+    $("#dash-cases").innerHTML = board.length ? `<ol class="leaders">${board.map((e,i)=>{
+      const cls=["gold","silver","bronze"][i]||"";
+      return `<li><span class="lead__rank ${cls}">${i+1}</span><div class="lead__info"><div class="lead__team">${esc(e.team)}</div></div><span class="lead__time">${fmtT(e.totalTime||e.time)}</span></li>`;
+    }).join("")}</ol>` : `<div class="dash-empty">${L("Ingen tider ennå.","No times yet.")}</div>`;
+  } else {
+    $("#dash-cases").innerHTML = active.length ? active.slice().sort((a,b)=>b.plays-a.plays).map(s=>{
+      const avg = s.plays? fmtT(Math.round(s.totalTime/s.plays)).replace(/^00:/,"") : "–";
+      const rating = s.ratingCount ? (s.ratingSum/s.ratingCount) : 0;
+      const taskRows = (s.taskAgg||[]).filter(ta=>ta.timeCount||ta.hints||ta.gaveUp).length ? s.taskAgg.map((ta,idx)=>{
+        const avgT = ta.timeCount ? fmtT(Math.round(ta.timeSum/ta.timeCount)).replace(/^00:/,"") : "–";
+        return `<div class="trow"><span><b>${L("Oppgave","Task")} ${idx+1}</b></span><span>${L("Snitt-tid","Avg. time")} <b>${avgT}</b></span><span>${L("Hint brukt","Hints used")} <b>${ta.hints}/${s.plays}</b></span><span>${L("Ga opp","Gave up")} <b>${ta.gaveUp}</b></span></div>`;
+      }).join("") : "";
+      return `<div class="crow"><div class="crow__name">${esc(s.name)}</div><div class="crow__rating">${rating?starRow(Math.round(rating))+" "+rating.toFixed(1):"–"}</div><div class="crow__meta">${s.visits?`<span><b>${s.visits}</b> ${L("skannet inn","scanned in")}</span>`:""}<span><b>${s.plays}</b> ${L("spill","games")}</span><span>${L("Snitt","Avg")} <b>${avg}</b></span>${s.fastTeam?`<span>${L("Raskest","Fastest")} <b>${esc(s.fastTeam)}</b> · ${fmtT(s.fastest).replace(/^00:/,"")}</span>`:""}</div>${taskRows?`<button type="button" class="crow__toggle" data-open="0">${L("Vis oppgavestatistikk","Show task stats")} ▾</button><div class="crow__tasks">${taskRows}</div>`:""}</div>`;
+    }).join("") : `<div class="dash-empty">${L("Ingen data ennå.","No data yet.")}</div>`;
+    $$("#dash-cases .crow__toggle").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const box = btn.nextElementSibling;
+        const open = box.classList.toggle("is-open");
+        btn.dataset.open = open ? "1" : "0";
+        btn.textContent = open ? `${L("Skjul oppgavestatistikk","Hide task stats")} ▴` : `${L("Vis oppgavestatistikk","Show task stats")} ▾`;
+      });
     });
-  });
+  }
   // fastest teams across all
   const leaders = times.slice().sort((a,b)=>(a.totalTime||a.time)-(b.totalTime||b.time)).slice(0,5);
   $("#dash-leaders").innerHTML = leaders.length ? leaders.map((e,i)=>{ const cls=["gold","silver","bronze"][i]||""; return `<li><span class="lead__rank ${cls}">${i+1}</span><div class="lead__info"><div class="lead__team">${esc(e.team)}</div><div class="lead__myst">${esc(getMysteryName(e.mysteryId))}</div></div><span class="lead__time">${fmtT(e.totalTime||e.time)}</span></li>`; }).join("") : `<li class="dash-empty">${L("Ingen tider ennå.","No times yet.")}</li>`;
