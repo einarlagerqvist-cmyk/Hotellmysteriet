@@ -965,14 +965,14 @@ const CONFIG = {
                     answer: ["rotter", "rotte", "rottene", "skadedyr"],
                     answerContains: ["rotte", "rotta", "skadedyr", "gnager"],
                     hint: "Se hva avisen skriver om hotellene som ble kjøpt opp, og hva de hadde til felles.",
-                    explanation: "«Selskapet» er rotter. Heggelund slapp rotter løs på hoteller for å ødelegge ryktet og presse prisen, og kjøpte dem billig etter konkursen. Britannia (1894) og Atlantic (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, og budet på 22 000 lå klart mot hotellets gjeld på ca. 40 000."
+                    explanation: "«Selskapet» er rotter. Heggelund slapp rotter løs på hoteller for å ødelegge ryktet og presse prisen, og kjøpte dem billig etter konkursen. Nordlys (1894) og Fjordheim (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, og budet på 22 000 lå klart mot hotellets gjeld på ca. 40 000."
                 },
                 {
                     question: "Behold konvolutt 2, dere trenger ingen ny ennå.\n\nNoen forsøkte å brenne et brev på hotellet i går, men ilden ga opp før papiret gjorde det. Lensmannen har ikke sett i peisene i annen etasje.\n\nFinn brevet. Hvilket kvinnenavn står i det?",
                     answer: ["Hilde"],
                     answerContains: ["hilde"],
                     hint: "Se i peisen i Damesalongen.",
-                    explanation: "Notatet er et brev fra Kristoffers søster. Hilde er kona hans, som døde vinteren 1897 etter at Atlantic tok alt de hadde."
+                    explanation: "Notatet er et brev fra Kristoffers søster. Hilde er kona hans, som døde vinteren 1897 etter at Fjordheim tok alt de hadde."
                 },
                 {
                     question: "Åpne konvolutt 3.\n\nNå har dere nok informasjon til å finne morderen. Hvem drepte Heggelund?",
@@ -980,17 +980,17 @@ const CONFIG = {
                     answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
                     rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
                     hint: "Hvem ble ikke avhørt ordentlig, og hvem var alltid nær åstedet?",
-                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berg» blant de oppsagte på Atlantic. Journalen viser at «Kristoffer Berge» begynte på Sandven i oktober samme år. Notatet i peisen er adressert til en Kristoffer og nevner Atlantic. Bestyreren av Sjøhuset var aldri en mistenkt, og han lå og sov bare noen meter fra åstedet.",
+                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berg» blant de oppsagte på Fjordheim. Journalen viser at «Kristoffer Berge» begynte på Sandven i oktober samme år. Notatet i peisen er adressert til en Kristoffer og nevner Fjordheim. Bestyreren av Sjøhuset var aldri en mistenkt, og han lå og sov bare noen meter fra åstedet.",
                     followUp: {
                         question: "Hva knytter ham til Heggelund?",
-                        answer: ["Atlantic", "Hotel Atlantic", "hevn", "kona", "Hilde"],
-                        answerContains: ["atlantic", "hevn", "kona", "kone", "hilde", "konkurs", "ødela"],
+                        answer: ["Fjordheim", "Hotel Fjordheim", "hevn", "kona", "Hilde"],
+                        answerContains: ["fjordheim", "hevn", "kona", "kone", "hilde", "konkurs", "ødela"],
                         hint: "Sammenlign navnene i avisen fra 1896 og i personalejournalen.",
-                        explanation: "Heggelund ødela Hotel Atlantic i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter."
+                        explanation: "Heggelund ødela Hotel Fjordheim i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter."
                     }
                 }
             ],
-            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Egentlig het han Kristoffer Berg og var underbestyrer på Hotel Atlantic i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen. Klokken 22:30 tok han et messinglodd fra butikkvekten og slo ham ned.\n\nSå iscenesatte han et innbrudd: han knuste vinduet utover, stilte lommeuret tilbake til 21:32 og la et falskt brev fra Bergen på pulten. Men glasskårene lå utenfor vinduet, og Marit hørte dumpet halv elleve.\n\nDet som felte ham, var et halvbrent brev i peisen. Søsteren ba ham la hevnen ligge, og navnet Kristoffer, hotellet Atlantic og kona Hilde pekte alle mot bestyreren som aldri var en mistenkt.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Egentlig het han Kristoffer Berg og var underbestyrer på Hotel Fjordheim i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen. Klokken 22:30 tok han et messinglodd fra butikkvekten og slo ham ned.\n\nSå iscenesatte han et innbrudd: han knuste vinduet utover, stilte lommeuret tilbake til 21:32 og la et falskt brev fra Bergen på pulten. Men glasskårene lå utenfor vinduet, og Marit hørte dumpet halv elleve.\n\nDet som felte ham, var et halvbrent brev i peisen. Søsteren ba ham la hevnen ligge, og navnet Kristoffer, hotellet Fjordheim og kona Hilde pekte alle mot bestyreren som aldri var en mistenkt.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
