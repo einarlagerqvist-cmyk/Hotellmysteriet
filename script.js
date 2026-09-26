@@ -961,11 +961,11 @@ const CONFIG = {
                     explanation: "Marit hørte «et dump» fra Sjøhuset omtrent halv elleve. Synneva så Heggelund i live ca. 21:10, og uret som viser 21:32 er stilt tilbake."
                 },
                 {
-                    question: "Åpne konvolutt 2.\n\nKonsul Heggelund kom ikke til Norheimsund for å hvile. Hva hadde han planlagt for Hotel Sandven?",
-                    answer: ["rotter", "slippe rotter", "sabotere hotellet", "kjøpe det billig", "kjøpe opp hotellet"],
-                    answerContains: ["rotte", "sabot", "kjøpe billig", "kjøpe opp", "kjøpe hotellet", "oppkjøp", "ødelegg", "overta", "ta over"],
-                    hint: "Se hva som skjedde med de to andre hotellene i notesboken.",
-                    explanation: "Heggelund slapp rotter løs på hoteller for å presse prisen og kjøpe dem billig. Britannia (1894) og Atlantic (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, og budet på 22 000 lå klart mot hotellets gjeld på ca. 40 000."
+                    question: "Åpne konvolutt 2.\n\nI notesboken skriver konsulen at «Selskapet» skal slippes ut lørdag kveld, og at seks kasser kommer med båten.\n\nHvem eller hva er «Selskapet»?",
+                    answer: ["rotter", "rotte", "rottene", "skadedyr"],
+                    answerContains: ["rotte", "rotta", "skadedyr", "gnager"],
+                    hint: "Se hva avisen skriver om hotellene som ble kjøpt opp, og hva de hadde til felles.",
+                    explanation: "«Selskapet» er rotter. Heggelund slapp rotter løs på hoteller for å ødelegge ryktet og presse prisen, og kjøpte dem billig etter konkursen. Britannia (1894) og Atlantic (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, og budet på 22 000 lå klart mot hotellets gjeld på ca. 40 000."
                 },
                 {
                     question: "Behold konvolutt 2, dere trenger ingen ny ennå.\n\nNoen forsøkte å brenne et brev på hotellet i går, men ilden ga opp før papiret gjorde det. Lensmannen har ikke sett i peisene i annen etasje.\n\nFinn brevet. Hvilket kvinnenavn står i det?",
