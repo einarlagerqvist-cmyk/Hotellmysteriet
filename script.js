@@ -947,11 +947,11 @@ const CONFIG = {
             tasks: [
                 {
                     question: "Åpne konvolutt 1.\n\nLensmannen har konkludert med innbrudd, og mener drapet skjedde klokken 21:32. Men noe i beslagsrapporten stemmer ikke med det. Hva?",
-                    answer: ["vinduet", "glasskårene", "glasset utenfor", "kronen", "uret"],
-                    answerContains: ["vindu", "glass", "krone", "uret", "lommeur"],
-                    rejectContains: ["ikkevindu", "ikkeglass", "ikkekrone"],
+                    answer: ["vinduet", "glasskårene", "glasset utenfor"],
+                    answerContains: ["vindu", "glass"],
+                    rejectContains: ["ikkevindu", "ikkeglass"],
                     hint: "Les gjenstandslisten en gang til. Hvor havnet glasset, og hva betyr det for et innbrudd?",
-                    explanation: "Glasskårene ligger utenfor vinduet. Et innbrudd utenfra ville knust glasset innover, så scenen er iscenesatt. I tillegg står kronen på lommeuret ute, noe den ikke skal gjøre, så noen har stilt tiden for hånd før uret ble knust."
+                    explanation: "Glasskårene ligger utenfor vinduet. Et innbrudd utenfra ville knust glasset innover, så scenen er iscenesatt. Da kan heller ikke lommeuret som viser 21:32 stoles på."
                 },
                 {
                     question: "Behold konvolutt 1, dere trenger ingen ny ennå.\n\nAvhørene forteller mer enn de ser ut til. Når ble Heggelund egentlig drept?\n\nSvar med klokkeslett (tt:mm), rundet til nærmeste halvtime.",
@@ -990,7 +990,7 @@ const CONFIG = {
                     }
                 }
             ],
-            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Egentlig het han Kristoffer Berg og var underbestyrer på Hotel Atlantic i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen. Klokken 22:30 tok han et messinglodd fra butikkvekten og slo ham ned.\n\nSå iscenesatte han et innbrudd: han knuste vinduet utover, stilte lommeuret tilbake til 21:32 og la et falskt brev fra Bergen på pulten. Men glasskårene lå utenfor, og kronen på uret sto ute.\n\nDet som felte ham, var et halvbrent brev i peisen. Søsteren ba ham la hevnen ligge, og navnet Kristoffer, hotellet Atlantic og kona Hilde pekte alle mot bestyreren som aldri var en mistenkt.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Egentlig het han Kristoffer Berg og var underbestyrer på Hotel Atlantic i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen. Klokken 22:30 tok han et messinglodd fra butikkvekten og slo ham ned.\n\nSå iscenesatte han et innbrudd: han knuste vinduet utover, stilte lommeuret tilbake til 21:32 og la et falskt brev fra Bergen på pulten. Men glasskårene lå utenfor vinduet, og Marit hørte dumpet halv elleve.\n\nDet som felte ham, var et halvbrent brev i peisen. Søsteren ba ham la hevnen ligge, og navnet Kristoffer, hotellet Atlantic og kona Hilde pekte alle mot bestyreren som aldri var en mistenkt.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
