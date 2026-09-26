@@ -954,28 +954,28 @@ const CONFIG = {
                     explanation: "Glasskårene ligger utenfor vinduet. Et innbrudd utenfra ville knust glasset innover, så scenen er iscenesatt. I tillegg står kronen på lommeuret ute, noe den ikke skal gjøre, så noen har stilt tiden for hånd før uret ble knust."
                 },
                 {
-                    question: "Åpne konvolutt 2.\n\nAvhørene forteller mer enn de ser ut til. Når ble Heggelund egentlig drept?\n\nSvar med klokkeslett (tt:mm), rundet til nærmeste halvtime.",
+                    question: "Behold konvolutt 1, dere trenger ingen ny ennå.\n\nAvhørene forteller mer enn de ser ut til. Når ble Heggelund egentlig drept?\n\nSvar med klokkeslett (tt:mm), rundet til nærmeste halvtime.",
                     answer: ["22:30", "22.30", "2230", "halv elleve"],
                     answerContains: ["22:30", "22.30", "2230", "22:15", "22.15", "22:45", "22.45", "halv elleve", "halv 11"],
                     hint: "Se hvem som gikk til rommet sitt sent på kvelden, og hva hun hørte på veien.",
                     explanation: "Marit hørte «et dump» fra Sjøhuset omtrent halv elleve. Synneva så Heggelund i live ca. 21:10, og uret som viser 21:32 er stilt tilbake."
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nKonsul Heggelund kom ikke til Norheimsund for å hvile. Hva hadde han planlagt for Hotel Sandven?",
+                    question: "Åpne konvolutt 2.\n\nKonsul Heggelund kom ikke til Norheimsund for å hvile. Hva hadde han planlagt for Hotel Sandven?",
                     answer: ["rotter", "slippe rotter", "sabotere hotellet", "kjøpe det billig", "kjøpe opp hotellet"],
                     answerContains: ["rotte", "sabot", "kjøpe billig", "kjøpe opp", "kjøpe hotellet", "oppkjøp", "ødelegg", "overta", "ta over"],
                     hint: "Se hva som skjedde med de to andre hotellene i notesboken.",
                     explanation: "Heggelund slapp rotter løs på hoteller for å presse prisen og kjøpe dem billig. Britannia (1894) og Atlantic (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, og budet på 22 000 lå klart mot hotellets gjeld på ca. 40 000."
                 },
                 {
-                    question: "Åpne konvolutt 4.\n\nNoen forsøkte å brenne et brev på hotellet i går, men ilden ga opp før papiret gjorde det. Lensmannen har ikke sett i peisene i annen etasje.\n\nFinn brevet. Hvilket kvinnenavn står i det?",
+                    question: "Behold konvolutt 2, dere trenger ingen ny ennå.\n\nNoen forsøkte å brenne et brev på hotellet i går, men ilden ga opp før papiret gjorde det. Lensmannen har ikke sett i peisene i annen etasje.\n\nFinn brevet. Hvilket kvinnenavn står i det?",
                     answer: ["Hilde"],
                     answerContains: ["hilde"],
                     hint: "Se i peisen i Damesalongen.",
                     explanation: "Notatet er et brev fra Kristoffers søster. Hilde er kona hans, som døde vinteren 1897 etter at Atlantic tok alt de hadde."
                 },
                 {
-                    question: "Åpne konvolutt 5.\n\nNå har dere nok informasjon til å finne morderen. Hvem drepte Heggelund?",
+                    question: "Åpne konvolutt 3.\n\nNå har dere nok informasjon til å finne morderen. Hvem drepte Heggelund?",
                     answer: ["Kristoffer Berge", "Kristoffer Berg", "Kristoffer", "Berge", "Berg"],
                     answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
                     rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
