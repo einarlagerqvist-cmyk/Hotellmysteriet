@@ -114,6 +114,7 @@ Gir tilgang til: slette resultater, statistikk per mysterium, all tilbakemelding
 | `dalen` | Dalen Hotel | NO/EN | 6 | `Mysterier/Dalen Hotel/` |
 | `hurdalsjoen` | Hurdalsjøen | NO/EN | 4 | `Mysterier/Hurdalsjøen Hotell/` |
 | `oslo` | The Oslo Mystery | EN | 4 | `Mysterier/The Oslo Mystery/` |
+| `sandven` | Hotel Sandven | NO | 5 | `Mysterier/Hotel Sandven/` |
 | — | Skrekkhytta | NO | — | `Mysterier/Skrekkhytta/` |
 
 ## Innholdsstruktur

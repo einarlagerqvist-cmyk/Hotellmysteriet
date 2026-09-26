@@ -939,6 +939,58 @@ const CONFIG = {
                 }
             ],
             finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er HR-direktør Vibeke Holm. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da direktøren oppdaget underslaget samme kveld og kalte henne til et møte i Glassburet klokken 23:05, konfronterte han henne, og hun drepte ham for å unngå avsløring.\n\nHun iscenesatte selvmord ved å kutte håndleddet hans og skrev et avskjedsbrev i hans navn. Men kuttet satt i hans dominante hånd, uten prøvekutt og med helt rett snittvinkel, og zopiklonet i blodet kunne bare ha kommet i ham samme kveld.\n\nKjernebeviset var håndskriften: avskjedsbrevet er skrevet med samme hånd som godkjenningssignaturen hennes nederst på velferdsbudsjettet. Hun skrev brevet selv.\n\nThomas Berge var sint og full, og løy både om heisen og om baren. Men han sov av seg rusen inne i bygget, og han drepte ingen. Fredrik Lie skjulte hva han egentlig gjorde der midt på natten, men det hadde ingenting med drapet å gjøre. Og GHB-en i blodprøven stammet fra gallamiddagen to døgn tidligere, ikke fra drapskvelden.\n\nTakk for strålende etterforskningsarbeid!"
+        },
+        {
+            id: "sandven",
+            name: "Mysteriet på Hotel Sandven",
+            intro: "Året er 1897. Sent i august ble konsul Bertel Heggelund funnet død i Sjøhuset, den gamle landhandelen ved bryggen i Norheimsund. Lensmannen har konkludert med innbrudd: et knust vindu, et stanset lommeur og et brev fra Bergen peker mot en ukjent gjerningsmann utenfra.\n\nMen hotelldirektør Nils Sandven er ikke overbevist. I bygda hviskes det allerede at det var han som gjorde det, og han kranglet tross alt høylytt med konsulen samme kveld.\n\nDere er tilkalt for å se forbi det åpenbare. Klokken tikker.",
+            tasks: [
+                {
+                    question: "Åpne konvolutt 1.\n\nLensmannen har konkludert med innbrudd, og mener drapet skjedde klokken 21:32. Men noe i beslagsrapporten stemmer ikke med det. Hva?",
+                    answer: ["vinduet", "glasskårene", "glasset utenfor", "kronen", "uret"],
+                    answerContains: ["vindu", "glass", "krone", "uret", "lommeur"],
+                    rejectContains: ["ikkevindu", "ikkeglass", "ikkekrone"],
+                    hint: "Les gjenstandslisten en gang til. Hvor havnet glasset, og hva betyr det for et innbrudd?",
+                    explanation: "Glasskårene ligger utenfor vinduet. Et innbrudd utenfra ville knust glasset innover, så scenen er iscenesatt. I tillegg står kronen på lommeuret ute, noe den ikke skal gjøre, så noen har stilt tiden for hånd før uret ble knust."
+                },
+                {
+                    question: "Åpne konvolutt 2.\n\nAvhørene forteller mer enn de ser ut til. Når ble Heggelund egentlig drept?\n\nSvar med klokkeslett (tt:mm), rundet til nærmeste halvtime.",
+                    answer: ["22:30", "22.30", "2230", "halv elleve"],
+                    answerContains: ["22:30", "22.30", "2230", "22:15", "22.15", "22:45", "22.45", "halv elleve", "halv 11"],
+                    hint: "Se hvem som gikk til rommet sitt sent på kvelden, og hva hun hørte på veien.",
+                    explanation: "Marit hørte «et dump» fra Sjøhuset omtrent halv elleve. Synneva så Heggelund i live ca. 21:10, og uret som viser 21:32 er stilt tilbake."
+                },
+                {
+                    question: "Åpne konvolutt 3.\n\nKonsul Heggelund kom ikke til Norheimsund for å hvile. Hva hadde han planlagt for Hotel Sandven?",
+                    answer: ["rotter", "slippe rotter", "sabotere hotellet", "kjøpe det billig", "kjøpe opp hotellet"],
+                    answerContains: ["rotte", "sabot", "kjøpe billig", "kjøpe opp", "kjøpe hotellet", "oppkjøp", "ødelegg", "overta", "ta over"],
+                    hint: "Se hva som skjedde med de to andre hotellene i notesboken.",
+                    explanation: "Heggelund slapp rotter løs på hoteller for å presse prisen og kjøpe dem billig. Britannia (1894) og Atlantic (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, og budet på 22 000 lå klart mot hotellets gjeld på ca. 40 000."
+                },
+                {
+                    question: "Åpne konvolutt 4.\n\nNoen forsøkte å brenne et brev på hotellet i går, men ilden ga opp før papiret gjorde det. Lensmannen har ikke sett i peisene i annen etasje.\n\nFinn brevet. Hvilket kvinnenavn står i det?",
+                    answer: ["Hilde"],
+                    answerContains: ["hilde"],
+                    hint: "Se i peisen i Damesalongen.",
+                    explanation: "Notatet er et brev fra Kristoffers søster. Hilde er kona hans, som døde vinteren 1897 etter at Atlantic tok alt de hadde."
+                },
+                {
+                    question: "Åpne konvolutt 5.\n\nNå har dere nok informasjon til å finne morderen. Hvem drepte Heggelund?",
+                    answer: ["Kristoffer Berge", "Kristoffer Berg", "Kristoffer", "Berge", "Berg"],
+                    answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
+                    rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
+                    hint: "Hvem ble ikke avhørt ordentlig, og hvem var alltid nær åstedet?",
+                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berg» blant de oppsagte på Atlantic. Journalen viser at «Kristoffer Berge» begynte på Sandven i oktober samme år. Notatet i peisen er adressert til en Kristoffer og nevner Atlantic. Bestyreren av Sjøhuset var aldri en mistenkt, og han lå og sov bare noen meter fra åstedet.",
+                    followUp: {
+                        question: "Hva knytter ham til Heggelund?",
+                        answer: ["Atlantic", "Hotel Atlantic", "hevn", "kona", "Hilde"],
+                        answerContains: ["atlantic", "hevn", "kona", "kone", "hilde", "konkurs", "ødela"],
+                        hint: "Sammenlign navnene i avisen fra 1896 og i personalejournalen.",
+                        explanation: "Heggelund ødela Hotel Atlantic i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter."
+                    }
+                }
+            ],
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Egentlig het han Kristoffer Berg og var underbestyrer på Hotel Atlantic i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen. Klokken 22:30 tok han et messinglodd fra butikkvekten og slo ham ned.\n\nSå iscenesatte han et innbrudd: han knuste vinduet utover, stilte lommeuret tilbake til 21:32 og la et falskt brev fra Bergen på pulten. Men glasskårene lå utenfor, og kronen på uret sto ute.\n\nDet som felte ham, var et halvbrent brev i peisen. Søsteren ba ham la hevnen ligge, og navnet Kristoffer, hotellet Atlantic og kona Hilde pekte alle mot bestyreren som aldri var en mistenkt.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
