@@ -980,12 +980,12 @@ const CONFIG = {
                     answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
                     rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
                     hint: "Hvem ble ikke avhørt ordentlig, og hvem var alltid nær åstedet?",
-                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berg» blant de oppsagte på Fjordheim. Journalen viser at «Kristoffer Berge» begynte på Sandven i oktober samme år. Notatet i peisen er adressert til en Kristoffer og nevner Fjordheim. Bestyreren av Sjøhuset var aldri en mistenkt, og han lå og sov bare noen meter fra åstedet.",
+                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berg» blant de oppsagte på Fjordheim. Brevet til advokat Bredesen viser at «Kristoffer Berge» begynte som bestyrer i Sjøhuset i oktober samme år. Notatet i peisen er adressert til en Kristoffer og nevner Fjordheim. Bestyreren av Sjøhuset var aldri en mistenkt, og han lå og sov bare noen meter fra åstedet.",
                     followUp: {
                         question: "Hva knytter ham til Heggelund?",
                         answer: ["Fjordheim", "Hotel Fjordheim", "hevn", "kona", "Hilde"],
                         answerContains: ["fjordheim", "hevn", "kona", "kone", "hilde", "konkurs", "ødela"],
-                        hint: "Sammenlign navnene i avisen fra 1896 og i personalejournalen.",
+                        hint: "Sammenlign navnene i avisen fra 1896 og i brevet til advokat Bredesen.",
                         explanation: "Heggelund ødela Hotel Fjordheim i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter."
                     }
                 }
