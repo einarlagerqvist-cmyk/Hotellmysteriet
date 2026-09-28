@@ -946,11 +946,11 @@ const CONFIG = {
             intro: "Året er 1897. Sent i august ble konsul Bertel Heggelund funnet død i Sjøhuset, den gamle landhandelen ved bryggen i Norheimsund. Lensmannen har konkludert med innbrudd: et knust vindu, et stanset lommeur og et brev fra Bergen peker mot en ukjent gjerningsmann utenfra.\n\nMen hotelldirektør Nils Sandven er ikke overbevist. I bygda hviskes det allerede at det var han som gjorde det, og han kranglet tross alt høylytt med konsulen samme kveld.\n\nDere er tilkalt for å se forbi det åpenbare. Klokken tikker.",
             tasks: [
                 {
-                    question: "Åpne konvolutt 1.\n\nLensmannen har konkludert med innbrudd, og mener drapet skjedde klokken 21:32. Men noe i beslagsrapporten stemmer ikke med det. Hva?",
+                    question: "Åpne konvolutt 1.\n\nLensmannen har konkludert med innbrudd, og mener drapet skjedde klokken 21:32. Men noe stemmer ikke med den teorien. Hva?",
                     answer: ["vinduet", "glasskårene", "glasset utenfor"],
                     answerContains: ["vindu", "glass"],
                     rejectContains: ["ikkevindu", "ikkeglass"],
-                    hint: "Les gjenstandslisten en gang til. Hvor havnet glasset, og hva betyr det for et innbrudd?",
+                    hint: "Se på fotografiet av det knuste vinduet og beslagsrapporten. Hvor havnet glasset, og hva betyr det for et innbrudd?",
                     explanation: "Glasskårene ligger utenfor vinduet. Et innbrudd utenfra ville knust glasset innover, så scenen er iscenesatt. Da kan heller ikke lommeuret som viser 21:32 stoles på."
                 },
                 {
