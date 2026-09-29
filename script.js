@@ -965,7 +965,7 @@ const CONFIG = {
                     answer: ["rotter", "rotte", "rottene", "skadedyr"],
                     answerContains: ["rotte", "rotta", "skadedyr", "gnager"],
                     hint: "Se hva avisen skriver om hotellene som ble kjøpt opp, og hva de hadde til felles.",
-                    explanation: "«Selskapet» er rotter. Heggelund slapp rotter løs på hoteller for å ødelegge ryktet og presse prisen, og kjøpte dem billig etter konkursen. Nordlys (1894) og Fjordheim (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, og budet på 22 000 lå klart mot hotellets gjeld på ca. 40 000."
+                    explanation: "«Selskapet» er rotter. Heggelund slapp rotter løs på hoteller for å ødelegge ryktet og presse prisen, og kjøpte dem billig etter konkursen. Nordlys (1894) og Fjordheim (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, samme dag som fristen han hadde gitt Nils. Han hadde lovet 55 000 i juli og la frem 22 000, under hotellets gjeld på ca. 40 000."
                 },
                 {
                     question: "Behold konvolutt 2, dere trenger ingen ny ennå.\n\nNoen forsøkte å brenne et brev på hotellet i går, men ilden ga opp før papiret gjorde det. Lensmannen har ikke sett i peisene i annen etasje.\n\nFinn brevet. Hvilket kvinnenavn står i det?",
@@ -980,12 +980,12 @@ const CONFIG = {
                     answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
                     rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
                     hint: "Hvem ble ikke avhørt ordentlig, og hvem var alltid nær åstedet?",
-                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berg» blant de oppsagte på Fjordheim. Brevet til advokat Bredesen viser at «Kristoffer Berge» begynte som bestyrer i Sjøhuset i oktober samme år. Notatet i peisen er adressert til en Kristoffer og nevner Fjordheim. Bestyreren av Sjøhuset var aldri en mistenkt, og han lå og sov bare noen meter fra åstedet.",
+                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berg» blant de oppsagte på Fjordheim. Søknaden fra september 1896 viser at «Kristoffer Berge» søkte bestyrerstillingen i Sjøhuset, og Nils sier i avhøret at bestyrer Berge har hatt den siden oktober og bor i rommet bak butikken. Notatet i peisen er adressert til en Kristoffer og nevner Fjordheim. Bestyreren av Sjøhuset var aldri en mistenkt, og han lå og sov bare noen meter fra åstedet.",
                     followUp: {
                         question: "Hva knytter ham til Heggelund?",
                         answer: ["Fjordheim", "Hotel Fjordheim", "hevn", "kona", "Hilde"],
                         answerContains: ["fjordheim", "hevn", "kona", "kone", "hilde", "konkurs", "ødela"],
-                        hint: "Sammenlign navnene i avisen fra 1896 og i brevet til advokat Bredesen.",
+                        hint: "Sammenlign navnene i avisen fra 1896 og i søknaden.",
                         explanation: "Heggelund ødela Hotel Fjordheim i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter."
                     }
                 }
