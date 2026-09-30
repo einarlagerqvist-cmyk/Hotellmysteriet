@@ -979,8 +979,8 @@ const CONFIG = {
                     answer: ["Kristoffer Berge", "Kristoffer Berg", "Kristoffer", "Berge", "Berg"],
                     answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
                     rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
-                    hint: "Hvem ble ikke avhørt ordentlig, og hvem var alltid nær åstedet?",
-                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berge» blant de oppsagte på Fjordheim. Søknaden fra september 1896 viser at samme mann søkte bestyrerstillingen i Sjøhuset, og Nils sier i avhøret at bestyrer Berge har hatt den siden oktober og bor i rommet bak butikken. Notatet i peisen er adressert til en Kristoffer og nevner Fjordheim. Bestyreren av Sjøhuset var aldri en mistenkt, og han lå og sov bare noen meter fra åstedet.",
+                    hint: "Hvem sa noe i avhøret som ikke stemmer med papirene, og hvem var alltid nær åstedet?",
+                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berge» blant de oppsagte på Fjordheim. Søknaden fra september 1896 viser at samme mann søkte bestyrerstillingen i Sjøhuset, og Nils sier i avhøret at bestyrer Berge har hatt den siden oktober og bor i rommet bak butikken. Notatet i peisen er adressert til en Kristoffer og nevner Fjordheim. Berge sa i avhøret at han aldri hadde sett Heggelund før, men han var oppsagt fra Fjordheim, som konsulen kjøpte. Han sa også at han ikke hørte noe, selv om han lå og sov bare noen meter fra åstedet og Marit hørte «et dump» fra hotellet.",
                     followUp: {
                         question: "Hva knytter ham til Heggelund?",
                         answer: ["Fjordheim", "Hotel Fjordheim", "hevn", "kona", "Hilde"],
