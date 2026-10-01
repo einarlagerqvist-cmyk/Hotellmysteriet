@@ -943,7 +943,7 @@ const CONFIG = {
         {
             id: "sandven",
             name: "Mysteriet på Hotel Sandven",
-            intro: "Året er 1897. Sent i august ble konsul Bertel Heggelund funnet død i Sjøhuset, den gamle landhandelen ved bryggen i Norheimsund. Lensmannen har konkludert med innbrudd: et knust vindu, et stanset lommeur og et brev fra Bergen peker mot en ukjent gjerningsmann utenfra.\n\nMen hotelldirektør Nils Sandven er ikke overbevist. I bygda hviskes det allerede at det var han som gjorde det, og han kranglet tross alt høylytt med konsulen samme kveld.\n\nDere er tilkalt for å se forbi det åpenbare. Klokken tikker.",
+            intro: "Året er 1897. Sent i august ble konsul Bertel Heggelund funnet død i Sjøhuset, den gamle landhandelen ved bryggen i Norheimsund. Lensmannen har konkludert med innbrudd: et knust vindu og et stanset lommeur peker mot en ukjent gjerningsmann utenfra.\n\nMen hotelldirektør Nils Sandven er ikke overbevist. I bygda hviskes det allerede at det var han som gjorde det, og han kranglet tross alt høylytt med konsulen samme kveld.\n\nDere er tilkalt for å se forbi det åpenbare. Klokken tikker.",
             tasks: [
                 {
                     question: "Åpne konvolutt 1.\n\nLensmannen har konkludert med innbrudd, og mener drapet skjedde klokken 21:32. Men noe stemmer ikke med den teorien. Hva?",
@@ -968,29 +968,29 @@ const CONFIG = {
                     explanation: "«Selskapet» er rotter. Heggelund slapp rotter løs på hoteller for å ødelegge ryktet og presse prisen, og kjøpte dem billig etter konkursen. Nordlys (1894) og Fjordheim (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, samme dag som fristen han hadde gitt Nils. Han hadde lovet 55 000 i juli og la frem 22 000, under hotellets gjeld på ca. 40 000."
                 },
                 {
-                    question: "Behold konvolutt 2, dere trenger ingen ny ennå.\n\nNoen forsøkte å brenne et brev på hotellet i går, men ilden ga opp før papiret gjorde det. Lensmannen har ikke sett i peisene i annen etasje.\n\nFinn brevet. Hvilket kvinnenavn står i det?",
-                    answer: ["Hilde"],
-                    answerContains: ["hilde"],
+                    question: "Behold konvolutt 2, dere trenger ingen ny ennå.\n\nNoen forsøkte å brenne en lapp på hotellet i går, men ilden ga opp før papiret gjorde det. Lensmannen har ikke sett i peisene.\n\nFinn lappen. Hvem later den til å være fra?",
+                    answer: ["Nils", "Nils Sandven", "Sandven", "direktøren", "N. S."],
+                    answerContains: ["nils", "sandven", "direktør", "n.s"],
                     hint: "Se i peisen i Damesalongen.",
-                    explanation: "Notatet er et brev fra Kristoffers søster. Hilde er kona hans, som døde vinteren 1897 etter at Fjordheim tok alt de hadde."
+                    explanation: "Lappen er signert N. S. og lokker Heggelund alene til Sjøhuset med løfte om å signere kontrakten. Den later til å komme fra Nils Sandven."
                 },
                 {
                     question: "Åpne konvolutt 3.\n\nNå har dere nok informasjon til å finne morderen. Hvem drepte Heggelund?",
                     answer: ["Kristoffer Berge", "Kristoffer Berg", "Kristoffer", "Berge", "Berg"],
                     answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
                     rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
-                    hint: "Hvem sa noe i avhøret som ikke stemmer med papirene, og hvem var alltid nær åstedet?",
-                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berge» blant de oppsagte på Fjordheim. Søknaden fra september 1896 viser at samme mann søkte bestyrerstillingen i Sjøhuset, og Nils sier i avhøret at bestyrer Berge har hatt den siden oktober og bor i rommet bak butikken. Notatet i peisen er adressert til en Kristoffer og nevner Fjordheim. Berge sa i avhøret at han aldri hadde sett Heggelund før, men han var oppsagt fra Fjordheim, som konsulen kjøpte. Han sa også at han ikke hørte noe, selv om han lå og sov bare noen meter fra åstedet og Marit hørte «et dump» fra hotellet.",
+                    hint: "Sammenlign skriften på lappen med skriften i de andre papirene.",
+                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berge» blant de oppsagte på Fjordheim. Søknaden fra september 1896 viser at samme mann søkte bestyrerstillingen i Sjøhuset, og Nils sier i avhøret at bestyrer Berge har hatt den siden oktober og bor i rommet bak butikken. Berge sa i avhøret at han aldri hadde sett Heggelund før, men han var oppsagt fra Fjordheim, som konsulen kjøpte. Lappen i peisen er signert N. S., men skriften er hans egen, den samme som i søknaden.",
                     followUp: {
-                        question: "Hva knytter ham til Heggelund?",
-                        answer: ["Fjordheim", "Hotel Fjordheim", "hevn", "kona", "Hilde"],
-                        answerContains: ["fjordheim", "hevn", "kona", "kone", "hilde", "konkurs", "ødela"],
-                        hint: "Sammenlign navnene i avisen fra 1896 og i søknaden.",
-                        explanation: "Heggelund ødela Hotel Fjordheim i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter."
+                        question: "Hva avslører ham?",
+                        answer: ["skriften", "håndskriften", "håndskrift", "lappen"],
+                        answerContains: ["skrift", "håndskrift", "lapp"],
+                        hint: "Se nøye på skriften på lappen og i søknaden.",
+                        explanation: "Lappen var signert N. S., men skriften er Kristoffers, den samme som i søknaden hans."
                     }
                 }
             ],
-            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Han var tidligere underbestyrer på Hotel Fjordheim i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen. Klokken 22:30 tok han et messinglodd fra butikkvekten og slo ham ned.\n\nSå iscenesatte han et innbrudd: han knuste vinduet utover, stilte lommeuret tilbake til 21:32 og la et falskt brev fra Bergen på pulten. Men glasskårene lå utenfor vinduet, og Marit hørte dumpet halv elleve.\n\nDet som felte ham, var et halvbrent brev i peisen. Søsteren ba ham la hevnen ligge, og navnet Kristoffer, hotellet Fjordheim og kona Hilde pekte alle mot bestyreren som aldri var en mistenkt.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Han var tidligere underbestyrer på Hotel Fjordheim i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen.\n\nHan skrev en lapp i direktørens navn og la den under døren til Heggelund: «Møt meg alene i Sjøhuset.» Klokken 22:30 gikk Heggelund dit for å signere kontrakten. Kristoffer tok et messinglodd fra butikkvekten og slo ham ned. Så iscenesatte han et innbrudd: han knuste vinduet utover og stilte lommeuret tilbake til 21:32. Lappen tok han fra lommen og brant i peisen, men ilden ga opp før papiret gjorde det.\n\nDet som felte ham, var skriften. Lappen var signert N. S., men håndskriften var Kristoffers, den samme som i søknaden hans. Glasskårene lå utenfor, og Marit hørte dumpet halv elleve.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
