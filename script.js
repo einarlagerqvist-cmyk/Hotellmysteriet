@@ -954,13 +954,6 @@ const CONFIG = {
                     explanation: "Glasskårene ligger utenfor vinduet. Et innbrudd utenfra ville knust glasset innover, så scenen er iscenesatt. Da kan heller ikke lommeuret som viser 21:32 stoles på."
                 },
                 {
-                    question: "Behold konvolutt 1, dere trenger ingen ny ennå.\n\nAvhørene forteller mer enn de ser ut til. Når ble Heggelund egentlig drept?\n\nSvar med klokkeslett (tt:mm), rundet til nærmeste halvtime.",
-                    answer: ["22:30", "22.30", "2230", "halv elleve"],
-                    answerContains: ["22:30", "22.30", "2230", "22:15", "22.15", "22:45", "22.45", "halv elleve", "halv 11"],
-                    hint: "Se hvem som gikk til rommet sitt sent på kvelden, og hva hun hørte på veien.",
-                    explanation: "Marit hørte «et dump» fra Sjøhuset omtrent halv elleve. Synneva så Heggelund i live ca. 21:10, og uret som viser 21:32 er stilt tilbake."
-                },
-                {
                     question: "Åpne konvolutt 2.\n\nI notesboken skriver konsulen at «Selskapet» skal slippes ut lørdag kveld, og at seks kasser kommer med båten.\n\nHvem eller hva er «Selskapet»?",
                     answer: ["rotter", "rotte", "rottene", "skadedyr"],
                     answerContains: ["rotte", "rotta", "skadedyr", "gnager"],
@@ -990,7 +983,7 @@ const CONFIG = {
                     }
                 }
             ],
-            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Han var tidligere underbestyrer på Hotel Fjordheim i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen.\n\nHan skrev en lapp i direktørens navn og la den under døren til Heggelund: «Møt meg alene i Sjøhuset.» Heggelund gikk tidlig ned og ventet på Nils ved pulten. Klokken 22:30 kom Kristoffer i stedet. Han tok et messinglodd fra butikkvekten og slo ham ned. Så iscenesatte han et innbrudd: han knuste vinduet utover og stilte lommeuret tilbake til 21:32. Lappen tok han fra lommen og brant i peisen, men ilden ga opp før papiret gjorde det.\n\nDet som felte ham, var skriften. Lappen var signert N. S., men håndskriften var Kristoffers, den samme som i søknaden hans. Glasskårene lå utenfor, og Marit hørte dumpet halv elleve.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Han var tidligere underbestyrer på Hotel Fjordheim i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen.\n\nHan skrev en lapp i direktørens navn og la den under døren til Heggelund: «Møt meg alene i Sjøhuset.» Heggelund gikk tidlig ned og ventet på Nils ved pulten. Sent på kvelden kom Kristoffer i stedet. Han tok et messinglodd fra butikkvekten og slo ham ned. Så iscenesatte han et innbrudd: han knuste vinduet utover og stilte lommeuret tilbake til 21:32. Lappen tok han fra lommen og brant i peisen, men ilden ga opp før papiret gjorde det.\n\nDet som felte ham, var skriften. Lappen var signert N. S., men håndskriften var Kristoffers, den samme som i søknaden hans. Glasskårene lå utenfor, og Marit hørte et dump sent på kvelden.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
