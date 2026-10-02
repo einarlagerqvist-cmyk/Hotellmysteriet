@@ -957,7 +957,7 @@ const CONFIG = {
                     question: "Åpne konvolutt 2.\n\nI notesboken skriver konsulen at «Selskapet» skal slippes ut lørdag kveld, og at seks kasser kommer med båten.\n\nHvem eller hva er «Selskapet»?",
                     answer: ["rotter", "rotte", "rottene", "skadedyr"],
                     answerContains: ["rotte", "rotta", "skadedyr", "gnager"],
-                    hint: "Se hva avisen skriver om hotellene som ble kjøpt opp, og hva de hadde til felles.",
+                    hint: "Se hva avisen skriver om Fjordheim, og sammenlign med hva konsulen skriver om hotellene i notesboken.",
                     explanation: "«Selskapet» er rotter. Heggelund slapp rotter løs på hoteller for å ødelegge ryktet og presse prisen, og kjøpte dem billig etter konkursen. Nordlys (1894) og Fjordheim (1896) endte begge hos ham. På Sandven skulle seks kasser komme lørdag 28. august, samme dag som fristen han hadde gitt Nils. Han hadde lovet 55 000 i juli og la frem 22 000, under hotellets gjeld på ca. 40 000."
                 },
                 {
