@@ -973,7 +973,7 @@ const CONFIG = {
                     answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
                     rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
                     hint: "Sammenlign skriften på lappen med skriften i de andre papirene.",
-                    explanation: "Utklippet fra 1896 nevner «underbestyrer Kristoffer Berge» blant de oppsagte på Fjordheim. Søknaden fra september 1896 viser at samme mann søkte bestyrerstillingen i Sjøhuset, og Nils sier i avhøret at bestyrer Berge har hatt den siden oktober og bor i rommet bak butikken. Berge sa i avhøret at han aldri hadde sett Heggelund før, men han var oppsagt fra Fjordheim, som konsulen kjøpte. Lappen i peisen er signert N. S., men skriften er hans egen, den samme som i søknaden.",
+                    explanation: "Søknaden fra september 1896 viser at «Kristoffer Berge» var underbestyrer på Hotel Fjordheim og søkte bestyrerstillingen i Sjøhuset, og Nils sier i avhøret at bestyrer Berge har hatt den siden oktober og bor i rommet bak butikken. Utklippet fra 1896 forteller at Fjordheim ble kjøpt av Heggelunds firma. Berge sa i avhøret at han aldri hadde sett Heggelund før, men han var oppsagt fra Fjordheim, som konsulen kjøpte. Lappen i peisen er signert N. S., men skriften er hans egen, den samme som i søknaden.",
                     followUp: {
                         question: "Hva avslører ham?",
                         answer: ["skriften", "håndskriften", "håndskrift", "lappen"],
