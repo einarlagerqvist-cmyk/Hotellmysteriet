@@ -633,7 +633,103 @@ const CONFIG = {
                     }
                 }
             ],
-            finalMessage: "Dere klarte det dere ble hyret inn for.\n\nDet var aldri et selvmord. Vinduet i rom 202 var haspet igjen fra innsiden. Revisor Berge kunne umulig ha hoppet ut og låst vinduet etter seg. Han ble dyttet, og rommet ble låst utenfra med universalnøkkelen for å iscenesette et selvmord.\n\nMargit Holm og Erling Nord løy begge, men ikke fordi de drepte noen. De fryktet å bli mistenkt etter Erlings trusler mot eieren. Den virkelige morderen var kjøkkensjef Gustav Tangen. Revisoren var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne Tangen ikke leve med.\n\nDet som felte ham, var hans egen hånd: håndskriften i det forfalskede selvmordsbrevet var den samme som på bestillingsseddelen fra kjøkkenet. Politiet ville arkivert saken i kveld. Dere så det ingen andre så."
+            finalMessage: "Dere klarte det dere ble hyret inn for.\n\nDet var aldri et selvmord. Vinduet i rom 202 var haspet igjen fra innsiden. Revisor Berge kunne umulig ha hoppet ut og låst vinduet etter seg. Han ble dyttet, og rommet ble låst utenfra med universalnøkkelen for å iscenesette et selvmord.\n\nMargit Holm og Erling Nord løy begge, men ikke fordi de drepte noen. De fryktet å bli mistenkt etter Erlings trusler mot eieren. Den virkelige morderen var kjøkkensjef Gustav Tangen. Revisoren var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne Tangen ikke leve med.\n\nDet som felte ham, var hans egen hånd: håndskriften i det forfalskede selvmordsbrevet var den samme som på bestillingsseddelen fra kjøkkenet. Politiet ville arkivert saken i kveld. Dere så det ingen andre så.",
+            en: {
+                name: "The Mystery at Leangkollen",
+                intro: "On the night of 14 November 1956, a change of ownership at Leangkollen turns into two deaths: the new owner lies strangled in the dining room, and his auditor lies shattered on the ground beneath the window of room 202. The police have already passed judgement. Murder and suicide, and the case will be closed before the evening is out.\n\nBut there are details that simply do not add up, and someone has gone to great lengths to make the truth disappear. You have been hired to examine the file one last time before it is archived for good. The clock is ticking, and justice rests on you.",
+                tasks: [
+                    {
+                        question: "Open envelope 1 and go through the documents carefully.\n\nThe police have already written their conclusion: auditor Berge strangled the owner, locked himself in room 202 and threw himself out of the window. The case will be archived tonight, unless you find something they overlooked.\n\nWas this really a suicide?",
+                        answer: ["no", "nope", "no it was not", "no it wasn't", "no it wasnt", "no it was not suicide",
+                                 "no it was not a suicide", "it was not suicide", "it wasn't suicide", "not suicide", "not a suicide",
+                                 "absolutely not", "definitely not", "certainly not",
+                                 "it was murder", "murder", "he was killed", "he was murdered", "no it was murder", "nei"],
+                        answerContains: ["not suicide", "not a suicide", "wasn't suicide", "wasnt suicide", "wasn't a suicide",
+                                         "wasnt a suicide", "was murder", "was murdered", "was killed", "was pushed"],
+                        answerHint: "Answer with one word: yes or no.",
+                        hint: "Look closely at the police's own photograph of room 202. Is there anything in that picture that cannot possibly be right if a man had just jumped out of it?",
+                        explanation: "A suicide would require auditor Berge to jump out of the window and then latch it again behind him, which is physically impossible from the outside.",
+                        followUp: {
+                            question: "What in the evidence proves that Berge did not jump of his own accord?",
+                            answer: ["the window", "window", "the window was closed", "the window was shut", "the window was latched",
+                                     "the window was latched shut", "the latch was on", "the window latch", "window latch", "the latch", "latch",
+                                     "the window was locked", "the window was closed from the inside", "the windows were closed",
+                                     "closed windows", "a closed window", "closed window", "shut window",
+                                     "he could not have jumped", "he couldn't have jumped", "he could not jump",
+                                     "you cannot latch the window from outside", "you can't latch the window from outside",
+                                     "the sleeve was torn", "the jacket sleeve was torn", "his sleeve was torn", "torn sleeve",
+                                     "he was pushed", "he was pushed out", "he was shoved", "he was shoved out", "he was grabbed",
+                                     "the room was locked from outside", "the door was locked from outside", "locked from outside",
+                                     "the master key disappeared", "the key disappeared", "the key was missing",
+                                     "vinduet", "haspen", "ermet"],
+                            answerContains: ["latch", "window was closed", "window closed", "closed window", "closed windows",
+                                             "windows were closed", "windows closed", "window was shut", "shut window", "window was locked",
+                                             "sleeve", "torn", "was pushed", "was shoved", "was grabbed", "locked from outside",
+                                             "locked from the outside", "key disappeared", "key was missing", "key was gone",
+                                             "haspe", "vinduet var lukket", "ermet"],
+                            hint: "Study the window in the photograph of room 202. Then read what the autopsy report says about Berge's jacket.",
+                            explanation: "The window was closed and latched from the inside when the room was opened. No one can latch a window from the outside after jumping out, and the torn jacket sleeve suggests that Berge was grabbed and pushed, not that he jumped of his own accord."
+                        }
+                    },
+                    {
+                        question: "Open envelope 2.\n\nFour members of staff were interviewed the morning after the deaths. They all say they kept to themselves that night.\n\nAt least two of the statements do not hold up.\n\nWho lied in their interview?",
+                        answer: ["Margit Holm and Erling Nord", "Erling Nord and Margit Holm",
+                                 "Margit and Erling", "Erling and Margit", "Holm and Nord", "Nord and Holm",
+                                 "Margit Holm, Erling Nord", "Erling Nord, Margit Holm", "Margit, Erling", "Erling, Margit",
+                                 "Margit Holm & Erling Nord", "Erling Nord & Margit Holm", "Margit & Erling", "Erling & Margit",
+                                 "Margit Holm og Erling Nord", "Margit og Erling",
+                                 "both", "both of them", "the two of them", "both lied", "they both lied",
+                                 "the receptionist and the maître d'", "the maître d' and the receptionist",
+                                 "the receptionist and the maitre d", "the maitre d and the receptionist",
+                                 "the receptionist and the head waiter", "the head waiter and the receptionist"],
+                        answerContains: ["margit erling", "holm nord", "margit nord", "holm erling",
+                                         "margit maître", "margit maitre", "holm maître", "holm maitre", "margit waiter", "holm waiter",
+                                         "erling receptionist", "nord receptionist",
+                                         "receptionist maître", "receptionist maitre", "receptionist waiter",
+                                         "both", "begge"],
+                        answerHint: "Write both names, separated by “and”.",
+                        hint: "Berge connected something to the internal telephone that evening. Read his notebook, and think about what such a recording would reveal about who spoke to whom that night.",
+                        explanation: "Berge had secretly wired a reel-to-reel tape recorder into the line between the office and reception. The recording shows that Margit Holm and Erling Nord were in contact at 23:41, flatly contradicting what both of them said in their interviews.",
+                        followUp: {
+                            question: "They stuck to the same story to cover something up. What did they lie about?",
+                            answer: ["they were in contact", "that they were in contact", "contact", "they were in contact with each other",
+                                     "they called", "they phoned", "the phone call", "the call", "erling called margit", "erling phoned margit",
+                                     "the key", "the master key", "about the key", "that the key was missing",
+                                     "they talked", "they spoke", "that they talked to each other", "the telephone",
+                                     "they left their posts", "that they left the desk"],
+                            answerContains: ["contact", "call", "phone", "key", "talked", "spoke", "talking", "speaking",
+                                             "left the desk", "left their post", "left the office",
+                                             "kontakt", "nøkkel", "telefon", "samtale"],
+                            hint: "Both were asked the same question in their interviews: had they been in contact with any of the other staff that night? Look at what they answered, and at what the tape at the switchboard would have picked up.",
+                            explanation: "They lied about having been in contact with each other. Both stated that they kept to themselves all night, but the recording from the switchboard shows that they spoke at 23:41."
+                        }
+                    },
+                    {
+                        question: "Open envelope 3.\n\nWho killed both the owner and the auditor?",
+                        answer: ["Gustav Tangen", "Tangen", "Gustav", "the head chef", "head chef", "the chef", "chef",
+                                 "chef Tangen", "head chef Tangen", "Gustav Tangen the head chef", "the cook", "cook",
+                                 "it was Gustav Tangen", "it was Tangen", "kjøkkensjefen", "kokken"],
+                        answerContains: ["tangen", "gustav", "chef", "cook", "kjøkkensjef", "kokken"],
+                        answerHint: "Write the first and/or last name of the culprit.",
+                        hint: "Lay all the handwritten documents in the file side by side. Two of them are written by the same hand. Which of the four has the job of writing one of them?",
+                        explanation: "The handwriting on the kitchen's order slip is identical to the handwriting in the forged suicide note. Auditor Berge was about to uncover the meat fraud that was draining the hotel of money, and head chef Tangen could not live with that.",
+                        followUp: {
+                            question: "How did you work out that he was the murderer?",
+                            answer: ["the handwriting", "handwriting", "his handwriting", "the handwriting on the letter",
+                                     "the handwriting on the suicide note", "the writing", "his writing",
+                                     "he wrote the suicide note", "he forged the letter", "he wrote the letter",
+                                     "the handwriting matches", "same handwriting", "the handwriting is the same",
+                                     "the handwriting on the kitchen note", "same hand", "håndskriften"],
+                            answerContains: ["handwriting", "hand writing", "writing", "same hand", "wrote the letter", "wrote the note",
+                                             "wrote the suicide note", "forged the letter", "forged the note", "wrote the farewell letter",
+                                             "his hand", "håndskrift", "handskrift"],
+                            hint: "Compare the farewell letter from room 202 with the order slip from the kitchen, letter by letter.",
+                            explanation: "The handwriting on the kitchen's order slip matches the handwriting in the forged suicide note, letter by letter."
+                        }
+                    }
+                ],
+                finalMessage: "You did what you were hired to do.\n\nIt was never a suicide. The window in room 202 was latched from the inside. Auditor Berge could not possibly have jumped out and locked the window behind him. He was pushed, and the room was locked from the outside with the master key to stage a suicide.\n\nMargit Holm and Erling Nord both lied, but not because they had killed anyone. They feared becoming suspects after Erling's threats against the owner. The real murderer was head chef Gustav Tangen. The auditor was about to uncover the meat fraud that was draining the hotel of money, and Tangen could not live with that.\n\nWhat brought him down was his own hand: the handwriting in the forged suicide note was the same as on the order slip from the kitchen. The police would have archived the case tonight. You saw what no one else saw."
+            }
         },
         {
             id: "sundvolden",
