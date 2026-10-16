@@ -1245,6 +1245,113 @@ const CONFIG = {
             finalMessage: "Dere klarte det dere ble hyret inn for.\n\nDet var aldri et selvmord. Vinduet i rom 402 var haspet igjen fra innsiden. Revisor Berge kunne umulig ha hoppet ut og låst vinduet etter seg. Han ble dyttet, og rommet ble låst utenfra med universalnøkkelen for å iscenesette et selvmord.\n\nMargit Holm og Erling Nord løy begge, men ikke fordi de drepte noen. De fryktet å bli mistenkt etter Erlings trusler mot eieren. Den virkelige morderen var kjøkkensjef Gustav Tangen. Revisoren var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne Tangen ikke leve med.\n\nDet som felte ham, var hans egen hånd: håndskriften i det forfalskede selvmordsbrevet var den samme som på bestillingsseddelen fra kjøkkenet. Politiet ville arkivert saken i kveld. Dere så det ingen andre så."
         },
         {
+            id: "andalsnes",
+            name: "Mysteriet på Grand Hotel Åndalsnes",
+            intro: "Natt til 14. november 1956 forvandles et eierskifte på Grand Hotel Åndalsnes til to dødsfall: den nye eieren ligger kvalt i spisesalen, revisoren hans ligger knust på bakken under vinduet til rom 413. Politiet har allerede felt sin dom. Drap og selvmord, og saken lukkes før kvelden er omme.\n\nMen det skjuler seg detaljer som rett og slett ikke stemmer, og noen har gått langt for å få sannheten til å forsvinne. Dere er hyret inn for å granske mappen én siste gang før den arkiveres for godt. Klokken tikker, og rettferdigheten hviler på dere.",
+            tasks: [
+                {
+                    question: "Åpne konvolutt 1 og gå nøye gjennom dokumentene.\n\nPolitiet har allerede skrevet konklusjonen: revisor Berge kvalte eieren, låste seg inne på rom 413 og kastet seg ut av vinduet. Saken arkiveres i kveld, med mindre dere finner noe de overså.\n\nVar dette egentlig et selvmord?",
+                    answer: ["nei", "no", "nope", "nei det var det ikke", "nei det var ikke selvmord",
+                             "nei det var ikke et selvmord", "det var ikke selvmord", "ikke selvmord",
+                             "absolutt ikke", "nei absolutt ikke", "neida", "nei da",
+                             "det var drap", "det var et drap", "drap", "mord",
+                             "han ble drept", "han ble myrdet", "nei det var drap", "nei det var mord"],
+                    answerContains: ["nei", "ikke selvmord", "ikke et selvmord", "ble drept", "ble myrdet", "var drap"],
+                    answerHint: "Svar med ett ord: ja eller nei.",
+                    hint: "Se nøye på politiets eget fotografi av rom 413. Er det noe på det bildet som umulig kan stemme med at en mann nettopp hoppet ut derfra?",
+                    explanation: "Et selvmord krever at revisor Berge hoppet ut av vinduet og deretter haspet det igjen bak seg, noe som er fysisk umulig fra utsiden.",
+                    followUp: {
+                        question: "Hva i bevismaterialet beviser at Berge ikke hoppet selv?",
+                        answer: ["vinduet", "vinduet var lukket", "vinduet var stengt", "vinduet var lukket og haspen var på",
+                                 "haspen var på", "vindushaspen var på", "vindushaspen", "haspen", "vinduet var haspet",
+                                 "vinduet var haspet igjen", "vinduet var lukket fra innsiden", "vinduet var låst",
+                                 "vinduene var lukket", "lukkede vinduer", "vinduene lukket", "et lukket vindu",
+                                 "han kunne ikke ha hoppet", "han kunne ikke hoppe", "han kunne ikke hoppet ut",
+                                 "man kan ikke haspe vinduet utenfra", "lukket vindu", "stengt vindu",
+                                 "ermet var revet", "jakkeermet var revet opp", "ermet hans var revet opp",
+                                 "han ble dyttet", "han ble dyttet ut", "han ble skjøvet ut", "han ble skjøvet",
+                                 "han ble grepet", "rommet ble låst utenfra", "døren ble låst utenfra", "låst utenfra",
+                                 "universalnøkkelen forsvant", "nøkkelen forsvant", "nøkkelen var borte"],
+                        answerContains: ["haspe", "vinduet var lukket", "vinduet lukket", "lukket vindu",
+                                         "lukkede vinduer", "vinduene var lukket", "vinduene lukket",
+                                         "vinduet var stengt", "stengt vindu", "vinduet var låst", "ermet",
+                                         "revet opp", "ble dyttet", "ble skjøvet", "ble grepet", "låst utenfra",
+                                         "nøkkelen forsvant", "nøkkelen var borte"],
+                        hint: "Studer vinduet på fotografiet av rom 413. Les deretter hva obduksjonsrapporten sier om jakken til Berge.",
+                        explanation: "Vinduet var lukket og haspet fra innsiden da rommet ble åpnet. Ingen kan haspe et vindu fra utsiden etter å ha hoppet ut, og det revne jakkeermet tyder på at Berge ble grepet og dyttet, ikke at han hoppet av seg selv."
+                    }
+                },
+                {
+                    question: "Åpne konvolutt 2.\n\nFire ansatte ble avhørt morgenen etter dødsfallene. Alle sier at de holdt seg for seg selv den natten.\n\nMinst to av forklaringene holder ikke.\n\nHvem løy i avhøret sitt?",
+                    answer: ["Margit Holm og Erling Nord", "Erling Nord og Margit Holm",
+                             "Margit og Erling", "Erling og Margit", "Holm og Nord", "Nord og Holm",
+                             "Margit Holm, Erling Nord", "Erling Nord, Margit Holm", "Margit, Erling", "Erling, Margit",
+                             "Holm, Nord", "Nord, Holm", "Margit Holm & Erling Nord", "Erling Nord & Margit Holm",
+                             "Margit Holm / Erling Nord", "Erling Nord / Margit Holm",
+                             "Margit/Erling", "Erling/Margit", "Margit Holm/Erling Nord", "Erling Nord/Margit Holm",
+                             "Margit+Erling", "Erling+Margit", "Margit & Erling", "Erling & Margit",
+                             "Margit Holm Erling Nord", "Erling Nord Margit Holm", "Margit Erling", "Erling Margit",
+                             "Margit Holm og Erling", "Erling og Margit Holm", "Margit og Erling Nord", "Erling Nord og Margit",
+                             "Holm og Erling", "Nord og Margit", "Margit og Nord", "Erling og Holm",
+                             "fru Holm og herr Nord", "herr Nord og fru Holm",
+                             "begge", "begge to", "begge lyver", "begge løy", "de begge", "de to", "de to ansatte",
+                             "begge deler", "de lyver begge", "begge sammen",
+                             "resepsjonisten og hovmesteren", "hovmesteren og resepsjonisten",
+                             "resepsjonisten og hovmester", "hovmester og resepsjonist",
+                             "Margit Holm og hovmesteren", "hovmesteren og Margit Holm",
+                             "Erling Nord og resepsjonisten", "resepsjonisten og Erling Nord",
+                             "Margit og hovmesteren", "hovmesteren og Margit",
+                             "Erling og resepsjonisten", "resepsjonisten og Erling"],
+                    answerContains: ["margit erling", "holm nord", "margit nord", "holm erling",
+                                     "margit hovmester", "margit hovmesteren", "holm hovmesteren",
+                                     "erling resepsjonist", "erling resepsjonisten", "nord resepsjonisten",
+                                     "resepsjonist hovmester", "resepsjonisten hovmesteren",
+                                     "margit og erling", "erling og margit", "margit holm og erling", "erling nord og margit",
+                                     "margit holm og erling nord", "erling nord og margit holm", "holm og nord", "nord og holm",
+                                     "begge", "resepsjonisten og hovmester", "hovmester og resepsjonist"],
+                    answerHint: "Skriv navnene på begge to, atskilt med «og».",
+                    hint: "Berge koblet noe til interntelefonen den kvelden. Les notatboken hans, og tenk over hva et slikt opptak ville avslørt om hvem som snakket sammen i natt.",
+                    explanation: "Berge hadde tyvkoblet en spolebåndopptaker på linjen mellom kontoret og resepsjonen. Opptaket viser at Margit Holm og Erling Nord hadde kontakt klokken 23:41, stikk i strid med det begge forklarte i avhør.",
+                    followUp: {
+                        question: "De holdt seg til samme historie for å dekke over noe. Hva løy de om?",
+                        answer: ["de hadde kontakt", "at de hadde kontakt", "kontakt", "de hadde kontakt med hverandre",
+                                 "de ringte", "at de ringte", "erling ringte", "erling ringte margit", "telefonsamtalen",
+                                 "samtalen", "nøkkelen", "universalnøkkelen", "om nøkkelen", "at nøkkelen var borte",
+                                 "de løy om nøkkelen", "de snakket sammen", "at de snakket sammen", "telefonen",
+                                 "de forlot posten sin", "at de forlot pulten"],
+                        answerContains: ["kontakt", "ringte", "samtale", "telefon", "nøkkel", "snakket sammen",
+                                         "snakket med hverandre", "forlot pulten", "forlot posten", "forlot kontoret"],
+                        hint: "Begge fikk det samme spørsmålet i avhør: hadde de hatt kontakt med noen av de andre ansatte den natten? Se på hva de svarte, og på hva båndet i hussentralen ville fanget opp.",
+                        explanation: "De løy om at de hadde kontakt med hverandre. Begge forklarte at de holdt seg for seg selv hele natten, men opptaket fra hussentralen viser at de snakket sammen klokken 23:41."
+                    }
+                },
+                {
+                    question: "Åpne konvolutt 3.\n\nHvem drepte både eieren og revisoren?",
+                    answer: ["Gustav Tangen", "Tangen", "Gustav", "kjøkkensjefen", "kjøkkensjef Tangen",
+                             "Gustav Tangen kjøkkensjefen", "kokken", "kokken Tangen", "Gustav Tangen kokken",
+                             "det var Gustav Tangen", "det var Tangen"],
+                    answerContains: ["tangen", "gustav", "kjøkkensjef", "kokken"],
+                    answerHint: "Skriv for- og/eller etternavnet til gjerningspersonen.",
+                    hint: "Legg alle de håndskrevne dokumentene i mappen ved siden av hverandre. To av dem er skrevet av samme hånd. Hvem av de fire har jobben med å skrive det ene av dem?",
+                    explanation: "Håndskriften på bestillingsseddelen fra kjøkkenet er identisk med håndskriften i det forfalskede selvmordsbrevet. Revisor Berge var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne kjøkkensjef Tangen ikke leve med.",
+                    followUp: {
+                        question: "Hvordan skjønte dere at han var morderen?",
+                        answer: ["håndskriften", "handskriften", "håndskrift", "handskrift", "håndskriften hans",
+                                 "håndskriften på brevet", "håndskriften på selvmordsbrevet", "skriften", "skriften hans",
+                                 "han skrev selvmordsbrevet", "han forfalsket brevet", "han skrev brevet",
+                                 "håndskriften matcher", "samme håndskrift", "håndskriften er lik",
+                                 "håndskriften på kjøkkenseddelen", "samme hånd"],
+                        answerContains: ["håndskrift", "handskrift", "skriften", "samme skrift", "skrev brevet",
+                                         "skrev selvmordsbrevet", "forfalsket brevet", "skrev avskjedsbrevet",
+                                         "samme hånd", "hånden hans"],
+                        hint: "Sammenlign avskjedsbrevet fra rom 413 med bestillingsseddelen fra kjøkkenet, bokstav for bokstav.",
+                        explanation: "Håndskriften på bestillingsseddelen fra kjøkkenet matcher håndskriften i det forfalskede selvmordsbrevet, bokstav for bokstav."
+                    }
+                }
+            ],
+            finalMessage: "Dere klarte det dere ble hyret inn for.\n\nDet var aldri et selvmord. Vinduet i rom 413 var haspet igjen fra innsiden. Revisor Berge kunne umulig ha hoppet ut og låst vinduet etter seg. Han ble dyttet, og rommet ble låst utenfra med universalnøkkelen for å iscenesette et selvmord.\n\nMargit Holm og Erling Nord løy begge, men ikke fordi de drepte noen. De fryktet å bli mistenkt etter Erlings trusler mot eieren. Den virkelige morderen var kjøkkensjef Gustav Tangen. Revisoren var i ferd med å avdekke kjøttsvindelen som tappet hotellet for penger, og det kunne Tangen ikke leve med.\n\nDet som felte ham, var hans egen hånd: håndskriften i det forfalskede selvmordsbrevet var den samme som på bestillingsseddelen fra kjøkkenet. Politiet ville arkivert saken i kveld. Dere så det ingen andre så."
+        },
+        {
             id: "soria-moria",
             name: "Mysteriet på Soria Moria",
             intro: "Natt til 14. november 1956 forvandles et eierskifte på Soria Moria til to dødsfall: den nye eieren ligger kvalt i spisesalen, revisoren hans ligger knust på bakken under vinduet til rom 305. Politiet har allerede felt sin dom. Drap og selvmord, og saken lukkes før kvelden er omme.\n\nMen det skjuler seg detaljer som rett og slett ikke stemmer, og noen har gått langt for å få sannheten til å forsvinne. Dere er hyret inn for å granske mappen én siste gang før den arkiveres for godt. Klokken tikker, og rettferdigheten hviler på dere.",
@@ -1354,10 +1461,10 @@ const CONFIG = {
         {
             id: "glassburet",
             name: "Mysteriet i Glassburet",
-            intro: "Administrerende direktør er funnet livløs i møterommet «Glassburet». Politiet konkluderte raskt med selvmord og lukket saken.\n\nMen familien tror ikke på det, og har hyret dere inn for å gå gjennom bevisene på nytt.\n\nKlokken tikker.",
+            intro: "Daglig leder Roger Skoglund er funnet livløs i møterommet «Glassburet» hos Uniconsult. Politiet konkluderte raskt med selvmord og lukket saken.\n\nMen familien tror ikke på det, og har hyret dere inn for å gå gjennom bevisene på nytt.\n\nKlokken tikker.",
             tasks: [
                 {
-                    question: "Åpne konvolutt 1.\n\nPolitiet konkluderte med selvmord. Undersøk de rettsmedisinske funnene nøye. Var dette selvmord, eller ble direktøren myrdet?",
+                    question: "Åpne konvolutt 1.\n\nPolitiet konkluderte med selvmord. Undersøk de rettsmedisinske funnene nøye. Var dette selvmord, eller ble den daglige lederen myrdet?",
                     answer: ["drap", "myrdet", "mord", "drept", "det var drap", "det var mord", "det var et drap",
                              "det var et mord", "han ble myrdet", "han ble drept", "noen drepte ham",
                              "han ble drept av noen", "det var overlagt drap", "overlagt drap",
@@ -1366,8 +1473,8 @@ const CONFIG = {
                     rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
                                      "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
                     answerHint: "Skriv «myrdet» eller «drap», ikke bare «ja»/«nei».",
-                    hint: "Se nøye på bildene av direktøren for å løse denne oppgaven.",
-                    explanation: "Direktøren var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som bare oppstår hvis dosen kom i ham samme kveld, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
+                    hint: "Se nøye på bildene av Roger Skoglund for å løse denne oppgaven.",
+                    explanation: "Roger Skoglund var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i ham cirka en time før han døde, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
                         question: "Hva i obduksjonsrapporten utelukker selvmord?",
                         answer: ["høyre hånd", "høyre håndledd", "feil hånd", "dominant hånd", "den dominante hånden",
@@ -1379,16 +1486,16 @@ const CONFIG = {
                                          "rettvinkel", "rettevinkel", "snittvinkel", "ingenkutt"],
                         rejectContains: ["ikkedominant", "ikke-dominant", "ikkjedominant", "venstrehånd", "venstrehandledd",
                                          "venstrehåndledd", "venstrehendt"],
-                        hint: "Se nøye på bildene av direktøren for å løse denne oppgaven.",
+                        hint: "Se nøye på bildene av Roger Skoglund for å løse denne oppgaven.",
                         explanation: "Selvpåførte kutt sitter normalt i den ikke-dominante hånden, har flere overflatiske prøvekutt, og har en skrå snittvinkel. Her satt kuttet i den dominante høyre hånden, det fantes ingen prøvekutt, og vinkelen var helt rett."
                     }
                 },
                 {
-                    question: "Åpne konvolutt 2.\n\nDet er noen som lyver i avhøret sitt.\n\nHvem?",
-                    answer: ["Thomas Berge", "Thomas", "Berge", "salgssjefen", "salgssjef Thomas Berge"],
-                    answerContains: ["thomas", "berge", "salgssjef"],
-                    hint: "Det er noe i den interne kommunikasjonen i Nordkast som strider mot avhørene.",
-                    explanation: "Thomas Berge forklarte at han tok heisen ned kvart over elleve. Vedlikeholdsloggen viser at Heis A stod låst i vedlikeholdsmodus fra 22:30 til 23:45 og ikke kunne brukes av noen. Baren han oppga som alibi var dessuten stengt for oppussing hele uken. Han var fortsatt i bygget: oppkastet på herretoalettet og snorkingen Fredrik Lie hørte etter midnatt peker mot at han sov av seg rusen der.",
+                    question: "Åpne konvolutt 2.\n\nNoen forklarer seg i strid med dokumentene i mappen.\n\nHvem?",
+                    answer: ["Erlend Høie", "Erlend Hoie", "Erlend", "Høie", "Hoie", "partner Erlend Høie"],
+                    answerContains: ["erlend", "høie", "hoie"],
+                    hint: "Det er noe i den interne kommunikasjonen i Uniconsult som strider mot avhørene.",
+                    explanation: "Erlend Høie forklarte at han tok heisen ned kvart over elleve. Beskjeden i Uniconsult Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og ikke kunne brukes av noen. Han var fortsatt i bygget: oppkastet ved herretoalettet, som Kaja Enger kjente lukten av, og lydene Audun Dragland hørte etter midnatt peker mot at han sov av seg rusen der.",
                     followUp: {
                         question: "Hva avslører at forklaringen hans ikke kan stemme?",
                         answer: ["heisen", "heis a", "vedlikeholdsloggen", "vedlikeholdslogg",
@@ -1397,35 +1504,35 @@ const CONFIG = {
                         answerContains: ["heis", "vedlikehold", "låst", "last",
                                          "stostille", "stodstille", "barenvarstengt"],
                         hint: "Se på klokkeslettene i den interne kommunikasjonen, og hold dem mot klokkeslettet han oppga.",
-                        explanation: "Vedlikeholdsloggen viser at Heis A var låst i vedlikeholdsmodus fra 22:30 til 23:45, og at ingen kunne bruke den i det tidsrommet. Berge hevdet at han tok den samme heisen ned klokken 23:15."
+                        explanation: "Beskjeden i Uniconsult Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og at ingen kunne bruke den i det tidsrommet. Erlend Høie hevdet at han tok heisen ned klokken 23:15."
                     }
                 },
                 {
-                    question: "Direktørens telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHva er koden?",
-                    answer: ["1972"],
+                    question: "Rogers telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHva er koden?",
+                    answer: ["1975"],
                     codeLock: {
-                        code: ["1972"],
-                        label: "Direktørens telefon",
+                        code: ["1975"],
+                        label: "Rogers telefon",
                         prompt: "Sperret med firesifret kode. Kriminalteknisk seksjon kom aldri inn.",
                         placeholder: "Kode",
                         lockedNote: "Koden er skrevet ned et sted, men ikke som et tall.",
-                        unlockedNote: "Meldinger med Vibeke Holm, fredag 22. mai 2026.",
+                        unlockedNote: "Meldinger med Cecilie Schjander, fredag 22. mai 2026.",
                         errorText: "Feil kode.",
                         images: [{
                             src: "img/glassburet/telefon-chat.png",
-                            alt: "Meldingstråd mellom direktøren og Vibeke Holm fredag 22. mai 2026. Han ber henne møte ham i Glassburet klokken 23:05. Hun svarer klokken 23:52.",
-                            caption: "Tråden med Vibeke Holm"
+                            alt: "Meldingstråd mellom Roger Skoglund og Cecilie Schjander fredag 22. mai 2026. Han ber henne møte ham i Glassburet klokken 23:05. Hun svarer klokken 23:52.",
+                            caption: "Tråden med Cecilie Schjander"
                         }]
                     },
-                    hint: "De fleste bruker noe kjent og lett å huske som kode på egen mobil, sjelden noe tilfeldig. Se om noe av det dere allerede vet om direktøren lar seg uttrykke med fire sifre.",
-                    explanation: "Koden er direktørens fødselsår. Obduksjonsrapporten viser at han var 54 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 54 gir fødselsåret 1972."
+                    hint: "De fleste bruker noe kjent og lett å huske som kode på egen mobil, sjelden noe tilfeldig. Se om noe av det dere allerede vet om Roger lar seg uttrykke med fire sifre.",
+                    explanation: "Koden er Rogers fødselsår. Obduksjonsrapporten viser at han var 51 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 51 gir fødselsåret 1975."
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nNå har dere nok info til å finne morderen. Hvem drepte direktøren?",
-                    answer: ["Vibeke Holm", "Vibeke", "Holm", "HR-direktøren", "hr direktøren", "HR-direktør Vibeke Holm"],
-                    answerContains: ["vibeke", "holm", "hr-direktør", "hrdirektør", "hrdirektor"],
+                    question: "Åpne konvolutt 3.\n\nNå har dere nok info til å finne morderen. Hvem drepte Roger Skoglund?",
+                    answer: ["Cecilie Schjander", "Cecilie", "Schjander", "Cecilie Skjander", "Skjander", "Sjander", "partner Cecilie Schjander"],
+                    answerContains: ["cecilie", "schjander", "skjander", "sjander"],
                     hint: "Det er noe rart med avskjedsbrevet.",
-                    explanation: "Avskjedsbrevet er ikke skrevet av direktøren. Håndskriften er den samme som i den håndskrevne godkjenningssignaturen til V. Holm nederst på velferdsbudsjettet. Konto 6540 viser tre utbetalinger på til sammen 125 500 kroner til «Teambuilding leverandør AS», en fiktiv leverandør, alle godkjent av V. Holm. Hun skrev brevet selv for å iscenesette et selvmord, og hun drepte ham for å skjule underslaget. Det svarte arket viste seg å være Fredrik Lies egen oppsigelse, skrevet ut samme natt, pinlig, men uten sammenheng med drapet.",
+                    explanation: "Avskjedsbrevet er ikke skrevet av Roger. Håndskriften er den samme som i den håndskrevne signaturen til Cecilie Schjander nederst på velferdsbudsjettet. Konto 6540 viser tre utbetalinger på til sammen 125 500 kroner til «Teambuilding leverandør AS», en fiktiv leverandør, alle signert av Cecilie Schjander. Hun påstod at hun dro rett hjem klokken ti, men Roger ba henne møte ham i Glassburet klokken 23:05. Hun skrev brevet selv for å iscenesette et selvmord, og hun drepte ham for å skjule underslaget. Utskriftsloggen viser at Audun Dragland skrev ut sin egen oppsigelse samme natt, pinlig, men uten sammenheng med drapet.",
                     followUp: {
                         question: "Hvordan avslørte dere henne?",
                         answer: ["håndskriften", "handskriften", "håndskrift", "skriften", "skriften hennes",
@@ -1436,11 +1543,11 @@ const CONFIG = {
                                          "skrevavskjedsbrevet", "forfalsket", "signatur", "underskrift",
                                          "sammehånd", "sammehand", "bokstav"],
                         hint: "Legg avskjedsbrevet ved siden av signaturen nederst på velferdsbudsjettet og sammenlign bokstavformene.",
-                        explanation: "Håndskriften i avskjedsbrevet er identisk med V. Holms godkjenningssignatur på velferdsbudsjettet. Direktøren skrev aldri brevet."
+                        explanation: "Håndskriften i avskjedsbrevet er identisk med Cecilie Schjanders signatur på velferdsbudsjettet. Roger skrev aldri brevet."
                     }
                 }
             ],
-            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er HR-direktør Vibeke Holm. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da direktøren oppdaget underslaget samme kveld og kalte henne til et møte i Glassburet klokken 23:05, konfronterte han henne, og hun drepte ham for å unngå avsløring.\n\nHun iscenesatte selvmord ved å kutte håndleddet hans og skrev et avskjedsbrev i hans navn. Men kuttet satt i hans dominante hånd, uten prøvekutt og med helt rett snittvinkel, og zopiklonet i blodet kunne bare ha kommet i ham samme kveld.\n\nKjernebeviset var håndskriften: avskjedsbrevet er skrevet med samme hånd som godkjenningssignaturen hennes nederst på velferdsbudsjettet. Hun skrev brevet selv.\n\nThomas Berge var sint og full, og løy både om heisen og om baren. Men han sov av seg rusen inne i bygget, og han drepte ingen. Fredrik Lie skjulte hva han egentlig gjorde der midt på natten, men det hadde ingenting med drapet å gjøre. Og GHB-en i blodprøven stammet fra gallamiddagen to døgn tidligere, ikke fra drapskvelden.\n\nTakk for strålende etterforskningsarbeid!"
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er partner Cecilie Schjander. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da Roger Skoglund oppdaget underslaget samme kveld, kalte han henne til et møte i Glassburet klokken 23:05. Han ga henne en sjanse til å forklare seg, bare de to, uten at det ble en sak. Hun brukte den til å drepe ham.\n\nHun iscenesatte selvmord ved å kutte håndleddet hans og skrev et avskjedsbrev i hans navn. Men kuttet satt i hans dominante hånd, uten prøvekutt og med helt rett snittvinkel, og zopiklonet i blodet kom i ham bare cirka en time før han døde.\n\nKjernebeviset var håndskriften: avskjedsbrevet er skrevet med samme hånd som godkjenningssignaturen hennes nederst på velferdsbudsjettet. Hun skrev brevet selv.\n\nErlend Høie var sint og full, og forklaringen hans om heisen holdt ikke. Men han sov av seg rusen inne i bygget, og han drepte ingen. Audun Dragland skjulte hva han egentlig gjorde der midt på natten, men det hadde ingenting med drapet å gjøre. Og GHB-en i blodprøven stammet fra gallamiddagen onsdag kveld, 48 timer tidligere (fire halveringstider), ikke fra drapskvelden.\n\nTakk for strålende etterforskningsarbeid!"
         },
         {
             id: "sandven",
