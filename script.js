@@ -733,8 +733,8 @@ const CONFIG = {
         },
         {
             id: "fleischers",
-            name: "Mysteriet på Fleischers",
-            intro: "Natt til 14. november 1956 forvandles et eierskifte på Fleischers til to dødsfall: den nye eieren ligger kvalt i spisesalen, revisoren hans ligger knust på bakken under vinduet til rom 213. Politiet har allerede felt sin dom. Drap og selvmord, og saken lukkes før kvelden er omme.\n\nMen det skjuler seg detaljer som rett og slett ikke stemmer, og noen har gått langt for å få sannheten til å forsvinne. Dere er hyret inn for å granske mappen én siste gang før den arkiveres for godt. Klokken tikker, og rettferdigheten hviler på dere.",
+            name: "Mysteriet på Fleischer’s",
+            intro: "Natt til 14. november 1956 forvandles et eierskifte på Fleischer’s til to dødsfall: den nye eieren ligger kvalt i spisesalen, revisoren hans ligger knust på bakken under vinduet til rom 213. Politiet har allerede felt sin dom. Drap og selvmord, og saken lukkes før kvelden er omme.\n\nMen det skjuler seg detaljer som rett og slett ikke stemmer, og noen har gått langt for å få sannheten til å forsvinne. Dere er hyret inn for å granske mappen én siste gang før den arkiveres for godt. Klokken tikker, og rettferdigheten hviler på dere.",
             tasks: [
                 {
                     question: "Åpne konvolutt 1 og gå nøye gjennom dokumentene.\n\nPolitiet har allerede skrevet konklusjonen: revisor Berge kvalte eieren, låste seg inne på rom 213 og kastet seg ut av vinduet. Saken arkiveres i kveld, med mindre dere finner noe de overså.\n\nVar dette egentlig et selvmord?",
