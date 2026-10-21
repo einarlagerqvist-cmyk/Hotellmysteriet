@@ -875,7 +875,16 @@ const CONFIG = {
                         }
                     },
                     {
-                        question: "Open envelope 2.\n\nFour members of staff were interviewed the morning after the deaths. They all say they kept to themselves that night.\n\nAt least two of the statements do not hold up.\n\nWho lied in their interview?",
+                        question: "Open envelope 2.\n\nBerge's notebook mentions a tape recorder. It was found wired into the hotel switchboard.\n\nWhich line did he tap? Dial the two extensions to play the tape.",
+                        answer: ["21 10", "21-10", "2110", "21/10", "21,10", "21, 10", "21 and 10", "21 & 10", "21 og 10",
+                                 "10 21", "10-21", "1021", "10/21", "10,21", "10, 21", "10 and 21", "10 & 21", "10 og 21"],
+                        answerHint: "Write the two extension numbers.",
+                        hint: "Read Berge's notebook again. Which two places did he say the line ran between? Then find them on the list from the switchboard.",
+                        explanation: "Berge tapped the line between the maître d's office (21) and reception (10)."
+                    },
+                    {
+                        question: "The tape from the switchboard is now unlocked. Listen to it.\n\nFour members of staff were interviewed the morning after the deaths. They all say they kept to themselves that night.\n\nAt least two of the statements do not hold up.\n\nWho lied in their interview?",
+                        audio: { src: "audio/fleischers/switchboard-tape-en.mp3", label: "Play the tape", playingLabel: "Playing...", divider: "Recording: Hotel switchboard" },
                         answer: ["Margit Holm and Erling Nord", "Erling Nord and Margit Holm",
                                  "Margit and Erling", "Erling and Margit", "Holm and Nord", "Nord and Holm",
                                  "Margit Holm, Erling Nord", "Erling Nord, Margit Holm", "Margit, Erling", "Erling, Margit",
