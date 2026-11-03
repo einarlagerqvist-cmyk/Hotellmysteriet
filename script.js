@@ -1559,6 +1559,97 @@ const CONFIG = {
             finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er partner Cecilie Schjander. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da Roger Skoglund oppdaget underslaget samme kveld, kalte han henne til et møte i Glassburet klokken 23:05. Han ga henne en sjanse til å forklare seg, bare de to, uten at det ble en sak. Hun brukte den til å drepe ham.\n\nHun iscenesatte selvmord ved å kutte håndleddet hans og skrev et avskjedsbrev i hans navn. Men kuttet satt i hans dominante hånd, uten prøvekutt og med helt rett snittvinkel, og zopiklonet i blodet kom i ham bare cirka en time før han døde.\n\nKjernebeviset var håndskriften: avskjedsbrevet er skrevet med samme hånd som godkjenningssignaturen hennes nederst på velferdsbudsjettet. Hun skrev brevet selv.\n\nErlend Høie var sint og full, og forklaringen hans om heisen holdt ikke. Men han sov av seg rusen inne i bygget, og han drepte ingen. Audun Dragland skjulte hva han egentlig gjorde der midt på natten, men det hadde ingenting med drapet å gjøre. Og GHB-en i blodprøven stammet fra gallamiddagen onsdag kveld, 48 timer tidligere (fire halveringstider), ikke fra drapskvelden.\n\nTakk for strålende etterforskningsarbeid!"
         },
         {
+            id: "aon",
+            name: "Mysteriet i Glassburet",
+            intro: "Daglig leder Lene Isaksen er funnet livløs i møterommet «Glassburet» hos Aon. Politiet konkluderte raskt med selvmord og lukket saken.\n\nMen familien tror ikke på det, og har hyret dere inn for å gå gjennom bevisene på nytt.\n\nKlokken tikker.",
+            tasks: [
+                {
+                    question: "Åpne konvolutt 1.\n\nPolitiet konkluderte med selvmord. Undersøk de rettsmedisinske funnene nøye. Var dette selvmord, eller ble den daglige lederen myrdet?",
+                    answer: ["drap", "myrdet", "mord", "drept", "det var drap", "det var mord", "det var et drap",
+                             "det var et mord", "hun ble myrdet", "hun ble drept", "noen drepte henne",
+                             "hun ble drept av noen", "det var overlagt drap", "overlagt drap",
+                             "ikke selvmord", "det var ikke selvmord", "nei, det var ikke selvmord"],
+                    answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
+                    rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
+                                     "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
+                    answerHint: "Skriv «myrdet» eller «drap», ikke bare «ja»/«nei».",
+                    hint: "Se nøye på bildene av Lene Isaksen for å løse denne oppgaven.",
+                    explanation: "Lene Isaksen var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i henne cirka en time før hun døde, og hun hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
+                    followUp: {
+                        question: "Hva i obduksjonsrapporten utelukker selvmord?",
+                        answer: ["høyre hånd", "høyre håndledd", "feil hånd", "dominant hånd", "den dominante hånden",
+                                 "hun var høyrehendt", "kuttet satt i høyre hånd", "kuttet var i høyre håndledd",
+                                 "ingen prøvekutt", "mangler prøvekutt", "rett vinkel", "snittvinkelen",
+                                 "alt sammen", "alle tre"],
+                        answerContains: ["høyrehånd", "hoyrehand", "høyrehåndledd", "hoyrehandledd", "høyrehendt", "hoyrehendt",
+                                         "dominant", "feilhånd", "feilhand", "prøvekutt", "provekutt",
+                                         "rettvinkel", "rettevinkel", "snittvinkel", "ingenkutt"],
+                        rejectContains: ["ikkedominant", "ikke-dominant", "ikkjedominant", "venstrehånd", "venstrehandledd",
+                                         "venstrehåndledd", "venstrehendt"],
+                        hint: "Se nøye på bildene av Lene Isaksen for å løse denne oppgaven.",
+                        explanation: "Selvpåførte kutt sitter normalt i den ikke-dominante hånden, har flere overflatiske prøvekutt, og har en skrå snittvinkel. Her satt kuttet i den dominante høyre hånden, det fantes ingen prøvekutt, og vinkelen var helt rett."
+                    }
+                },
+                {
+                    question: "Åpne konvolutt 2.\n\nNoen forklarer seg i strid med dokumentene i mappen.\n\nHvem?",
+                    answer: ["Robin Sanden", "Robin", "Sanden", "IT-support Robin Sanden"],
+                    answerContains: ["robin", "sanden"],
+                    hint: "Det er noe i den interne kommunikasjonen i Aon som strider mot avhørene.",
+                    explanation: "Robin Sanden forklarte at han tok heisen ned kvart over elleve. Beskjeden i Aon Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og ikke kunne brukes av noen. Han var fortsatt i bygget: oppkastet ved herretoalettet, som Varsha Jeyakumar kjente lukten av, og lydene Tobias Edborg-Torjussen hørte etter midnatt peker mot at han sov av seg rusen der.",
+                    followUp: {
+                        question: "Hva avslører at forklaringen hans ikke kan stemme?",
+                        answer: ["heisen", "heis a", "vedlikeholdsloggen", "vedlikeholdslogg",
+                                 "heisen var låst", "heisen sto stille", "heisen var ute av drift",
+                                 "heisen var i vedlikeholdsmodus", "baren var stengt"],
+                        answerContains: ["heis", "vedlikehold", "låst", "last",
+                                         "stostille", "stodstille", "barenvarstengt"],
+                        hint: "Se på klokkeslettene i den interne kommunikasjonen, og hold dem mot klokkeslettet han oppga.",
+                        explanation: "Beskjeden i Aon Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og at ingen kunne bruke den i det tidsrommet. Robin Sanden hevdet at han tok heisen ned klokken 23:15."
+                    }
+                },
+                {
+                    question: "Lenes telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHva er koden?",
+                    answer: ["1975"],
+                    codeLock: {
+                        code: ["1975"],
+                        label: "Lenes telefon",
+                        prompt: "Sperret med firesifret kode. Kriminalteknisk seksjon kom aldri inn.",
+                        placeholder: "Kode",
+                        lockedNote: "Koden er skrevet ned et sted, men ikke som et tall.",
+                        unlockedNote: "Meldinger med Marianne Jacobsen, fredag 22. mai 2026.",
+                        errorText: "Feil kode.",
+                        images: [{
+                            src: "img/aon/telefon-chat.png",
+                            alt: "Meldingstråd mellom Lene Isaksen og Marianne Jacobsen fredag 22. mai 2026. Hun ber henne møte seg i Glassburet klokken 23:05. Hun svarer klokken 23:52.",
+                            caption: "Tråden med Marianne Jacobsen"
+                        }]
+                    },
+                    hint: "De fleste bruker noe kjent og lett å huske som kode på egen mobil, sjelden noe tilfeldig. Se om noe av det dere allerede vet om Lene lar seg uttrykke med fire sifre.",
+                    explanation: "Koden er Lenes fødselsår. Obduksjonsrapporten viser at hun var 51 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 51 gir fødselsåret 1975."
+                },
+                {
+                    question: "Åpne konvolutt 3.\n\nNå har dere nok info til å finne morderen. Hvem drepte Lene Isaksen?",
+                    answer: ["Marianne Jacobsen", "Marianne", "Jacobsen", "Marianne Jakobsen", "Jakobsen", "HR-sjef Marianne Jacobsen"],
+                    answerContains: ["marianne", "jacobsen", "jakobsen"],
+                    hint: "Det er noe rart med avskjedsbrevet.",
+                    explanation: "Avskjedsbrevet er ikke skrevet av Lene. Håndskriften er den samme som i den håndskrevne signaturen til Marianne Jacobsen nederst på velferdsbudsjettet. Konto 6540 viser tre utbetalinger på til sammen 125 500 kroner til «Teambuilding leverandør AS», en fiktiv leverandør, alle signert av Marianne Jacobsen. Hun påstod at hun dro rett hjem klokken ti, men Lene ba henne møte seg i Glassburet klokken 23:05. Hun skrev brevet selv for å iscenesette et selvmord, og hun drepte Lene for å skjule underslaget. Utskriftsloggen viser at Tobias Edborg-Torjussen skrev ut sin egen oppsigelse samme natt, pinlig, men uten sammenheng med drapet.",
+                    followUp: {
+                        question: "Hvordan avslørte dere henne?",
+                        answer: ["håndskriften", "handskriften", "håndskrift", "skriften", "skriften hennes",
+                                 "hun skrev avskjedsbrevet", "hun forfalsket brevet", "hun skrev brevet",
+                                 "samme håndskrift", "signaturen", "signaturen hennes",
+                                 "signaturen på budsjettet", "godkjenningssignaturen"],
+                        answerContains: ["håndskrift", "handskrift", "skriften", "sammeskrift", "skrevbrevet",
+                                         "skrevavskjedsbrevet", "forfalsket", "signatur", "underskrift",
+                                         "sammehånd", "sammehand", "bokstav"],
+                        hint: "Legg avskjedsbrevet ved siden av signaturen nederst på velferdsbudsjettet og sammenlign bokstavformene.",
+                        explanation: "Håndskriften i avskjedsbrevet er identisk med Marianne Jacobsens signatur på velferdsbudsjettet. Lene skrev aldri brevet."
+                    }
+                }
+            ],
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er HR-sjef Marianne Jacobsen. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da Lene Isaksen oppdaget underslaget samme kveld, kalte hun Marianne inn til et møte i Glassburet klokken 23:05. Lene ga henne en sjanse til å forklare seg, bare de to, uten at det ble en sak. Marianne brukte den til å drepe henne.\n\nHun iscenesatte selvmord ved å kutte håndleddet til Lene og skrev et avskjedsbrev i hennes navn. Men kuttet satt i hennes dominante hånd, uten prøvekutt og med helt rett snittvinkel, og zopiklonet i blodet kom i henne bare cirka en time før hun døde.\n\nKjernebeviset var håndskriften: avskjedsbrevet er skrevet med samme hånd som godkjenningssignaturen hennes nederst på velferdsbudsjettet. Hun skrev brevet selv.\n\nRobin Sanden var sint og full, og forklaringen hans om heisen holdt ikke. Men han sov av seg rusen inne i bygget, og han drepte ingen. Tobias Edborg-Torjussen skjulte hva han egentlig gjorde der midt på natten, men det hadde ingenting med drapet å gjøre. Og GHB-en i blodprøven stammet fra gallamiddagen onsdag kveld, 48 timer tidligere (fire halveringstider), ikke fra drapskvelden.\n\nTakk for strålende etterforskningsarbeid!"
+        },
+        {
             id: "sandven",
             name: "Mysteriet på Hotel Sandven",
             intro: "Året er 1897. Sent i august ble konsul Bertel Heggelund funnet død i Sjøhuset, den gamle landhandelen ved bryggen i Norheimsund. Lensmannen har konkludert med innbrudd: et knust vindu og et stanset lommeur peker mot en ukjent gjerningsmann utenfra.\n\nMen hotelldirektør Nils Sandven er ikke overbevist. I bygda hviskes det allerede at det var han som gjorde det, og han kranglet tross alt høylytt med konsulen samme kveld.\n\nDere er tilkalt for å se forbi det åpenbare. Klokken tikker.",
