@@ -1652,7 +1652,7 @@ const CONFIG = {
         {
             id: "sandven",
             name: "Mysteriet på Hotel Sandven",
-            intro: "Året er 1897. Sent i august ble konsul Bertel Heggelund funnet død i Sjøhuset, den gamle landhandelen ved bryggen i Norheimsund. Lensmannen har konkludert med innbrudd: et knust vindu og et stanset lommeur peker mot en ukjent gjerningsmann utenfra.\n\nMen hotelldirektør Nils Sandven er ikke overbevist. I bygda hviskes det allerede at det var han som gjorde det, og han kranglet tross alt høylytt med konsulen samme kveld.\n\nDere er tilkalt for å se forbi det åpenbare. Klokken tikker.",
+            intro: "Året er 1897. Sent i august ble konsul Bertel Heggelund funnet død i Sjøhuset, den gamle landhandelen ved bryggen i Norheimsund. Lensmannen har konkludert med innbrudd: et knust vindu og et knust lommeur peker mot en ukjent gjerningsmann utenfra.\n\nMen hotelldirektør Nils Sandven er ikke overbevist. I bygda hviskes det allerede at det var han som gjorde det, og han kranglet tross alt høylytt med konsulen samme kveld.\n\nDere er tilkalt for å se forbi det åpenbare. Klokken tikker.",
             tasks: [
                 {
                     question: "Åpne konvolutt 1.\n\nLensmannen har konkludert med innbrudd, og mener drapet skjedde klokken 21:32. Men noe stemmer ikke med den teorien. Hva?",
@@ -1677,22 +1677,32 @@ const CONFIG = {
                     explanation: "Lappen er signert N. S. og lokker Heggelund alene til Sjøhuset med løfte om å signere kontrakten. Den later til å komme fra Nils Sandven."
                 },
                 {
-                    question: "Åpne konvolutt 3.\n\nNå har dere nok informasjon til å finne morderen. Hvem drepte Heggelund?",
+                    question: "Behold fortsatt konvolutt 2.\n\nLommeuret viser 21:32, men dere vet allerede at åstedet er iscenesatt. Når ble Heggelund egentlig drept?",
+                    answer: ["halv elleve", "klokken halv elleve", "klokka halv elleve", "kl. halv elleve", "kl halv elleve",
+                             "22:30", "22.30", "2230", "kl. 22:30", "kl 22:30", "klokken 22:30", "10:30", "10.30"],
+                    answerContains: ["halv elleve", "halv 11", "22:3", "22.3", "2230", "10:3", "10.3"],
+                    rejectContains: ["ikkehalvelleve", "ikke22"],
+                    hint: "Hva står det på lappen fra peisen? Og hvem så konsulen sist, og når?",
+                    explanation: "Lappen lokker Heggelund til Sjøhuset klokken halv elleve, og Whitcombe så ham stå og vente i døren til Sjøhuset nettopp da, da han trakk for gardinene. Konsulen levde altså lenge etter 21:32. Uret ble stilt tilbake for å flytte drapet til tidspunktet rett etter Synnevas besøk."
+                },
+                {
+                    question: "Åpne konvolutt 3.\n\nLappen er signert N. S., men noen andre enn Nils kan ha skrevet den. Hvem drepte Heggelund?",
                     answer: ["Kristoffer Berge", "Kristoffer Berg", "Kristoffer", "Berge", "Berg"],
                     answerContains: ["kristoffer", "bestyreren av sjøhuset", "bestyrer berge", "sjøhusbestyrer"],
                     rejectContains: ["ikkekristoffer", "ikkeberge", "ikkebestyrer"],
-                    hint: "Sammenlign skriften på lappen med skriften i de andre papirene.",
-                    explanation: "Søknaden fra september 1896 viser at «Kristoffer Berge» var underbestyrer på Hotel Fjordheim og søkte bestyrerstillingen i Sjøhuset, og Nils sier i avhøret at bestyrer Berge har hatt den siden oktober og bor i rommet bak butikken. Utklippet fra 1896 forteller at Fjordheim ble kjøpt av Heggelunds firma. Berge sa i avhøret at han aldri hadde sett Heggelund før, men han var oppsagt fra Fjordheim, som konsulen kjøpte. Lappen i peisen er signert N. S., men skriften er hans egen, den samme som i søknaden.",
+                    hint: "Snu lappen fra peisen. Hvor kommer papiret fra, og hvem hadde det etter klokken åtte?",
+                    explanation: "Baksiden av lappen begynner med «Transport fra forr. Side: 14,35», og det er nøyaktig summen nederst på siden for 23. august i Sjøhusets kassebok. Arket som mangler etter den siden, er lappen. Transporten ble ført da Berge gjorde opp kassen ved stengetid klokken åtte, og deretter låste han boken inn i kammerset sitt, der ingen andre har nøkkel. Bare han kunne rive ut arket den kvelden. Den som skrev lappen, møtte Heggelund halv elleve og tok lappen fra ham etterpå.",
                     followUp: {
-                        question: "Hva avslører ham?",
-                        answer: ["skriften", "håndskriften", "håndskrift", "lappen"],
-                        answerContains: ["skrift", "håndskrift", "lapp"],
-                        hint: "Se nøye på skriften på lappen og i søknaden.",
-                        explanation: "Lappen var signert N. S., men skriften er Kristoffers, den samme som i søknaden hans."
+                        question: "Berge sa han aldri hadde sett Heggelund før. Hva hadde konsulen tatt fra ham?",
+                        answer: ["Fjordheim", "Hotel Fjordheim", "jobben", "jobben hans", "stillingen", "stillingen hans",
+                                 "arbeidet", "levebrødet", "hotellet", "rottene", "rotter"],
+                        answerContains: ["fjordheim", "jobb", "stilling", "oppsagt", "arbeid", "levebrød", "rotte", "underbestyrer"],
+                        hint: "Les søknaden igjen, og sammenlign med avisen fra september 1896 og notesboken.",
+                        explanation: "Berge var underbestyrer på Hotel Fjordheim. Heggelund slapp rotter løs der («Fjordheim 96: fungerte bedre»), kjøpte hotellet på tvangsauksjon, og personalet ble oppsagt med øyeblikkelig virkning. Berge mistet stillingen, og er i dag enkemann."
                     }
                 }
             ],
-            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Han var tidligere underbestyrer på Hotel Fjordheim i Bergen, som konsul Heggelund ødela med rotter og kjøpte for en slikk og ingenting i 1896. Kristoffer mistet jobben, og kona Hilde døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente Kristoffer ham igjen.\n\nHan skrev en lapp i direktørens navn og la den under døren til Heggelund: «Møt meg alene i Sjøhuset.» Heggelund gikk tidlig ned og ventet på Nils ved pulten. Sent på kvelden kom Kristoffer i stedet. Han tok et messinglodd fra butikkvekten og slo ham ned. Så iscenesatte han et innbrudd: han knuste vinduet utover og stilte lommeuret tilbake til 21:32. Lappen tok han fra lommen og brant i peisen, men ilden ga opp før papiret gjorde det.\n\nDet som felte ham, var skriften. Lappen var signert N. S., men håndskriften var Kristoffers, den samme som i søknaden hans. Glasskårene lå utenfor, og Marit hørte et dump sent på kvelden.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Sjøhuset. Den skyldige er Kristoffer Berge, bestyreren av Sjøhuset. Han var underbestyrer på Hotel Fjordheim i Bergen, som konsul Heggelund ødela med rotter og kjøpte på tvangsauksjon i 1896. Kristoffer mistet stillingen, og kona døde vinteren etter. Da Heggelund dukket opp på Sandven, kjente han ham igjen.\n\nDrapskvelden stengte han butikken klokken åtte, gjorde opp kassen og førte transporten øverst på neste side i kassaboken. Så rev han ut det arket, skrev en lapp i direktørens navn og la den under døren til Heggelunds rom: «Møt meg alene i Sjøhuset klokken halv elleve.» Heggelund ventet på Nils, og Whitcombe så ham stå i døren til Sjøhuset nettopp da. Kristoffer kom i stedet, tok et messinglodd fra butikkvekten og slo ham ned. Så iscenesatte han et innbrudd: han knuste vinduet utover og stilte lommeuret tilbake til 21:32.\n\nLappen tok han fra lommen til Heggelund og prøvde å brenne den i peisen på hotellet. Om den ble funnet, skulle den peke mot Nils. Men ilden ga opp før papiret gjorde det, og på baksiden sto transporten fra kassaboken: 14,35. Boken lå innelåst i kammerset hans fra klokken åtte. Ingen andre kunne ha revet ut det arket.\n\nNils, Synneva, Whitcombe og Bredesen hadde alle sine grunner, men ingen av dem drepte ham. Takk for strålende etterforskningsarbeid!"
         }
     ],
     penaltyPerHint: 5 * 60 * 1000,
