@@ -1524,7 +1524,7 @@ const CONFIG = {
                         label: "Rogers telefon",
                         prompt: "Sperret med firesifret kode. Kriminalteknisk seksjon kom aldri inn.",
                         placeholder: "Kode",
-                        lockedNote: "Koden er skrevet ned et sted, men ikke som et tall.",
+                        lockedNote: "Fire sifre. Gjetting hjelper lite, koden må regnes ut.",
                         unlockedNote: "Meldinger med Cecilie Schjander, fredag 22. mai 2026.",
                         errorText: "Feil kode.",
                         images: [{
@@ -1615,7 +1615,7 @@ const CONFIG = {
                         label: "Lenes telefon",
                         prompt: "Sperret med firesifret kode. Kriminalteknisk seksjon kom aldri inn.",
                         placeholder: "Kode",
-                        lockedNote: "Koden er skrevet ned et sted, men ikke som et tall.",
+                        lockedNote: "Fire sifre. Gjetting hjelper lite, koden må regnes ut.",
                         unlockedNote: "Meldinger med Marianne Jacobsen, fredag 22. mai 2026.",
                         errorText: "Feil kode.",
                         images: [{
