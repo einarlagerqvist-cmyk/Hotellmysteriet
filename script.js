@@ -1495,7 +1495,7 @@ const CONFIG = {
                                          "rettvinkel", "rettevinkel", "snittvinkel", "ingenkutt"],
                         rejectContains: ["ikkedominant", "ikke-dominant", "ikkjedominant", "venstrehånd", "venstrehandledd",
                                          "venstrehåndledd", "venstrehendt"],
-                        hint: "Se nøye på bildene av Roger Skoglund for å løse denne oppgaven.",
+                        hint: "Les obduksjonsrapporten en gang til.",
                         explanation: "Selvpåførte kutt sitter normalt i den ikke-dominante hånden, har flere overflatiske prøvekutt, og har en skrå snittvinkel. Her satt kuttet i den dominante høyre hånden, det fantes ingen prøvekutt, og vinkelen var helt rett."
                     }
                 },
@@ -1512,7 +1512,7 @@ const CONFIG = {
                                  "heisen var i vedlikeholdsmodus", "baren var stengt"],
                         answerContains: ["heis", "vedlikehold", "låst", "last",
                                          "stostille", "stodstille", "barenvarstengt"],
-                        hint: "Se på klokkeslettene i den interne kommunikasjonen, og hold dem mot klokkeslettet han oppga.",
+                        hint: "Les avhøret av Erlend Høie en gang til.",
                         explanation: "Beskjeden i Uniconsult Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og at ingen kunne bruke den i det tidsrommet. Erlend Høie hevdet at han tok heisen ned klokken 23:15."
                     }
                 },
@@ -1533,7 +1533,7 @@ const CONFIG = {
                             caption: "Tråden med Cecilie Schjander"
                         }]
                     },
-                    hint: "De fleste bruker noe kjent og lett å huske som kode på egen mobil, sjelden noe tilfeldig. Se om noe av det dere allerede vet om Roger lar seg uttrykke med fire sifre.",
+                    hint: "Les obduksjonsrapporten en gang til.",
                     explanation: "Koden er Rogers fødselsår. Obduksjonsrapporten viser at han var 51 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 51 gir fødselsåret 1975."
                 },
                 {
@@ -1551,7 +1551,7 @@ const CONFIG = {
                         answerContains: ["håndskrift", "handskrift", "skriften", "sammeskrift", "skrevbrevet",
                                          "skrevavskjedsbrevet", "forfalsket", "signatur", "underskrift",
                                          "sammehånd", "sammehand", "bokstav"],
-                        hint: "Legg avskjedsbrevet ved siden av signaturen nederst på velferdsbudsjettet og sammenlign bokstavformene.",
+                        hint: "Se en gang til på velferdsbudsjettet.",
                         explanation: "Håndskriften i avskjedsbrevet er identisk med Cecilie Schjanders signatur på velferdsbudsjettet. Roger skrev aldri brevet."
                     }
                 }
@@ -1586,7 +1586,7 @@ const CONFIG = {
                                          "rettvinkel", "rettevinkel", "snittvinkel", "ingenkutt"],
                         rejectContains: ["ikkedominant", "ikke-dominant", "ikkjedominant", "venstrehånd", "venstrehandledd",
                                          "venstrehåndledd", "venstrehendt"],
-                        hint: "Se nøye på bildene av Lene Isaksen for å løse denne oppgaven.",
+                        hint: "Les obduksjonsrapporten en gang til.",
                         explanation: "Selvpåførte kutt sitter normalt i den ikke-dominante hånden, har flere overflatiske prøvekutt, og har en skrå snittvinkel. Her satt kuttet i den dominante høyre hånden, det fantes ingen prøvekutt, og vinkelen var helt rett."
                     }
                 },
@@ -1603,7 +1603,7 @@ const CONFIG = {
                                  "heisen var i vedlikeholdsmodus", "baren var stengt"],
                         answerContains: ["heis", "vedlikehold", "låst", "last",
                                          "stostille", "stodstille", "barenvarstengt"],
-                        hint: "Se på klokkeslettene i den interne kommunikasjonen, og hold dem mot klokkeslettet han oppga.",
+                        hint: "Les avhøret av Robin Sanden en gang til.",
                         explanation: "Beskjeden i Aon Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og at ingen kunne bruke den i det tidsrommet. Robin Sanden hevdet at han tok heisen ned klokken 23:15."
                     }
                 },
@@ -1624,7 +1624,7 @@ const CONFIG = {
                             caption: "Tråden med Marianne Jacobsen"
                         }]
                     },
-                    hint: "De fleste bruker noe kjent og lett å huske som kode på egen mobil, sjelden noe tilfeldig. Se om noe av det dere allerede vet om Lene lar seg uttrykke med fire sifre.",
+                    hint: "Les obduksjonsrapporten en gang til.",
                     explanation: "Koden er Lenes fødselsår. Obduksjonsrapporten viser at hun var 51 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 51 gir fødselsåret 1975."
                 },
                 {
@@ -1642,7 +1642,7 @@ const CONFIG = {
                         answerContains: ["håndskrift", "handskrift", "skriften", "sammeskrift", "skrevbrevet",
                                          "skrevavskjedsbrevet", "forfalsket", "signatur", "underskrift",
                                          "sammehånd", "sammehand", "bokstav"],
-                        hint: "Legg avskjedsbrevet ved siden av signaturen nederst på velferdsbudsjettet og sammenlign bokstavformene.",
+                        hint: "Se en gang til på velferdsbudsjettet.",
                         explanation: "Håndskriften i avskjedsbrevet er identisk med Marianne Jacobsens signatur på velferdsbudsjettet. Lene skrev aldri brevet."
                     }
                 }
