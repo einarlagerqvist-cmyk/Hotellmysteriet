@@ -1677,13 +1677,14 @@ const CONFIG = {
                     explanation: "Lappen er signert N. S. og lokker Heggelund alene til Sjøhuset med løfte om å signere kontrakten. Den later til å komme fra Nils Sandven."
                 },
                 {
-                    question: "Behold fortsatt konvolutt 2.\n\nLommeuret viser 21:32, men dere vet allerede at åstedet er iscenesatt. Når ble Heggelund egentlig drept?",
-                    answer: ["halv elleve", "klokken halv elleve", "klokka halv elleve", "kl. halv elleve", "kl halv elleve",
-                             "22:30", "22.30", "2230", "kl. 22:30", "kl 22:30", "klokken 22:30", "10:30", "10.30"],
-                    answerContains: ["halv elleve", "halv 11", "22:3", "22.3", "2230", "10:3", "10.3"],
-                    rejectContains: ["ikkehalvelleve", "ikke22"],
-                    hint: "Når ble lykten på bryggen tent, og hva så Whitcombe fra vinduet sitt?",
-                    explanation: "Marit tente lykten på bryggen klokken ti, og Whitcombe så konsulen stå i døren til Sjøhuset under lykten. Han levde altså etter klokken ti, lenge etter 21:32. Lappen fra peisen forteller hvorfor han sto der: han ventet på et møte klokken halv elleve. Uret ble stilt tilbake for å gi innbruddet et falskt tidspunkt."
+                    question: "Behold fortsatt konvolutt 2.\n\nLommeuret viser 21:32, men dere vet allerede at åstedet er iscenesatt. Etter hvilket klokkeslett må Heggelund ha blitt drept?",
+                    answer: ["ti", "10", "22", "klokken ti", "klokka ti", "kl. ti", "kl ti", "etter ti", "etter klokken ti",
+                             "22:00", "22.00", "2200", "kl. 22", "kl 22", "klokken 22", "etter 22", "10:00", "10.00"],
+                    answerContains: ["klokkenti", "klokkati", "kl.ti", "klti", "etterti", "22:00", "22.00", "2200",
+                                     "kl.22", "kl22", "klokken22", "klokka22", "etter22", "10:00", "10.00", "lykten", "lykta"],
+                    rejectContains: ["ikketi", "ikke22", "halv", "22:3", "22.3", "2230", "10:3", "10.3", "21:3", "21.3"],
+                    hint: "Se på lyset da konsulen sist ble sett i live.",
+                    explanation: "Marit tente lykten på bryggen klokken ti, og Whitcombe så konsulen stå i døren til Sjøhuset under lykten. Han levde altså etter klokken ti, lenge etter 21:32. Uret ble stilt tilbake for å gi innbruddet et falskt tidspunkt."
                 },
                 {
                     question: "Åpne konvolutt 3.\n\nLappen er signert N. S., men noen andre enn Nils kan ha skrevet den. Hvem drepte Heggelund?",
