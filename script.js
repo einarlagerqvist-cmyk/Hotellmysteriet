@@ -1609,9 +1609,9 @@ const CONFIG = {
                 },
                 {
                     question: "Lenes telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHva er koden?",
-                    answer: ["1975"],
+                    answer: ["1974"],
                     codeLock: {
-                        code: ["1975"],
+                        code: ["1974"],
                         label: "Lenes telefon",
                         prompt: "Sperret med firesifret kode. Kriminalteknisk seksjon kom aldri inn.",
                         placeholder: "Kode",
@@ -1625,7 +1625,7 @@ const CONFIG = {
                         }]
                     },
                     hint: "Les obduksjonsrapporten en gang til.",
-                    explanation: "Koden er Lenes fødselsår. Obduksjonsrapporten viser at hun var 51 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 51 gir fødselsåret 1975."
+                    explanation: "Koden er Lenes fødselsår. Obduksjonsrapporten viser at hun var 52 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 52 gir fødselsåret 1974."
                 },
                 {
                     question: "Åpne konvolutt 3.\n\nNå har dere nok info til å finne morderen. Hvem drepte Lene Isaksen?",
