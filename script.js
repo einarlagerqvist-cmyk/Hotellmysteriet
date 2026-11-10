@@ -1559,6 +1559,97 @@ const CONFIG = {
             finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er partner Cecilie Schjander. I lengre tid hadde hun underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da Roger Skoglund oppdaget underslaget samme kveld, kalte han henne til et møte i Glassburet klokken 23:05. Han ga henne en sjanse til å forklare seg, bare de to, uten at det ble en sak. Hun brukte den til å drepe ham.\n\nHun iscenesatte selvmord ved å kutte håndleddet hans og skrev et avskjedsbrev i hans navn. Men kuttet satt i hans dominante hånd, uten prøvekutt og med helt rett snittvinkel, og zopiklonet i blodet kom i ham bare cirka en time før han døde.\n\nKjernebeviset var håndskriften: avskjedsbrevet er skrevet med samme hånd som godkjenningssignaturen hennes nederst på velferdsbudsjettet. Hun skrev brevet selv.\n\nErlend Høie var sint og full, og forklaringen hans om heisen holdt ikke. Men han sov av seg rusen inne i bygget, og han drepte ingen. Audun Dragland skjulte hva han egentlig gjorde der midt på natten, men det hadde ingenting med drapet å gjøre. Og GHB-en i blodprøven stammet fra gallamiddagen onsdag kveld, 48 timer tidligere (fire halveringstider), ikke fra drapskvelden.\n\nTakk for strålende etterforskningsarbeid!"
         },
         {
+            id: "sicra",
+            name: "Mysteriet i Glassburet",
+            intro: "Daglig leder Gaute Lien er funnet livløs i møterommet «Glassburet» hos Sicra. Politiet konkluderte raskt med selvmord og lukket saken.\n\nMen familien tror ikke på det, og har hyret dere inn for å gå gjennom bevisene på nytt.\n\nKlokken tikker.",
+            tasks: [
+                {
+                    question: "Åpne konvolutt 1.\n\nPolitiet konkluderte med selvmord. Undersøk de rettsmedisinske funnene nøye. Var dette selvmord, eller ble den daglige lederen myrdet?",
+                    answer: ["drap", "myrdet", "mord", "drept", "det var drap", "det var mord", "det var et drap",
+                             "det var et mord", "han ble myrdet", "han ble drept", "noen drepte ham",
+                             "han ble drept av noen", "det var overlagt drap", "overlagt drap",
+                             "ikke selvmord", "det var ikke selvmord", "nei, det var ikke selvmord"],
+                    answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
+                    rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
+                                     "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
+                    answerHint: "Svar «selvmord» eller «drap», ikke bare «ja»/«nei».",
+                    hint: "Se nøye på bildene av Gaute Lien for å løse denne oppgaven.",
+                    explanation: "Gaute Lien var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i ham cirka en time før han døde, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
+                    followUp: {
+                        question: "Hva i obduksjonsrapporten utelukker selvmord?",
+                        answer: ["høyre hånd", "høyre håndledd", "feil hånd", "dominant hånd", "den dominante hånden",
+                                 "han var høyrehendt", "kuttet satt i høyre hånd", "kuttet var i høyre håndledd",
+                                 "ingen prøvekutt", "mangler prøvekutt", "rett vinkel", "snittvinkelen",
+                                 "alt sammen", "alle tre"],
+                        answerContains: ["høyrehånd", "hoyrehand", "høyrehåndledd", "hoyrehandledd", "høyrehendt", "hoyrehendt",
+                                         "dominant", "feilhånd", "feilhand", "prøvekutt", "provekutt",
+                                         "rettvinkel", "rettevinkel", "snittvinkel", "ingenkutt"],
+                        rejectContains: ["ikkedominant", "ikke-dominant", "ikkjedominant", "venstrehånd", "venstrehandledd",
+                                         "venstrehåndledd", "venstrehendt"],
+                        hint: "Les obduksjonsrapporten en gang til.",
+                        explanation: "Selvpåførte kutt sitter normalt i den ikke-dominante hånden, har flere overflatiske prøvekutt, og har en skrå snittvinkel. Her satt kuttet i den dominante høyre hånden, det fantes ingen prøvekutt, og vinkelen var helt rett."
+                    }
+                },
+                {
+                    question: "Åpne konvolutt 2.\n\nNoen forklarer seg i strid med dokumentene i mappen.\n\nHvem?",
+                    answer: ["Thomas Eide", "Eide", "Thomas Eide salgssjef", "salgssjef Thomas Eide", "Thomas E", "Tomas Eide"],
+                    answerContains: ["eide"],
+                    hint: "Det er noe i den interne kommunikasjonen i Sicra som strider mot avhørene.",
+                    explanation: "Thomas Eide forklarte at han tok heisen ned kvart over elleve. Beskjeden i Sicra Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og ikke kunne brukes av noen. Han var fortsatt i bygget: oppkastet ved herretoalettet, som Jonas Fagerli Arentz kjente lukten av, og lydene Thomas Årstadsvold hørte etter midnatt peker mot at han sov av seg rusen der.",
+                    followUp: {
+                        question: "Hva avslører at forklaringen hans ikke kan stemme?",
+                        answer: ["heisen", "heis a", "vedlikeholdsloggen", "vedlikeholdslogg",
+                                 "heisen var låst", "heisen sto stille", "heisen var ute av drift",
+                                 "heisen var i vedlikeholdsmodus", "baren var stengt"],
+                        answerContains: ["heis", "vedlikehold", "låst", "last",
+                                         "stostille", "stodstille", "barenvarstengt"],
+                        hint: "Les avhøret av Thomas Eide en gang til.",
+                        explanation: "Beskjeden i Sicra Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og at ingen kunne bruke den i det tidsrommet. Thomas Eide hevdet at han tok heisen ned klokken 23:15."
+                    }
+                },
+                {
+                    question: "Gautes telefon ble aldri låst opp. Den er sperret med en firesifret kode, og koden står ingen steder i mappen. Dere har likevel alt dere trenger for å regne den ut.\n\nHva er koden?",
+                    answer: ["1974"],
+                    codeLock: {
+                        code: ["1974"],
+                        label: "Gautes telefon",
+                        prompt: "Sperret med firesifret kode. Kriminalteknisk seksjon kom aldri inn.",
+                        placeholder: "Kode",
+                        lockedNote: "Fire sifre. Gjetting hjelper lite, koden må regnes ut.",
+                        unlockedNote: "Meldinger med Jan Kristian Osland, fredag 22. mai 2026.",
+                        errorText: "Feil kode.",
+                        images: [{
+                            src: "img/sicra/telefon-chat.png",
+                            alt: "Meldingstråd mellom Gaute Lien og Jan Kristian Osland fredag 22. mai 2026. Gaute ber ham møte seg i Glassburet klokken 23:05. Jan Kristian svarer klokken 23:52.",
+                            caption: "Tråden med Jan Kristian Osland"
+                        }]
+                    },
+                    hint: "Les obduksjonsrapporten en gang til.",
+                    explanation: "Koden er Gautes fødselsår. Obduksjonsrapporten viser at han var 52 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 52 gir fødselsåret 1974."
+                },
+                {
+                    question: "Åpne konvolutt 3.\n\nNå har dere nok info til å finne morderen. Hvem drepte Gaute Lien?",
+                    answer: ["Jan Kristian Osland", "Jan Kristian", "Osland", "Jan Kristian Oslan", "Jan-Kristian Osland", "løsningsarkitekt Jan Kristian Osland"],
+                    answerContains: ["osland", "jankristian", "jan-kristian"],
+                    hint: "Det er noe rart med avskjedsbrevet.",
+                    explanation: "Avskjedsbrevet er ikke skrevet av Gaute. Håndskriften er den samme som i den håndskrevne signaturen til Jan Kristian Osland nederst på velferdsbudsjettet. Konto 6540 viser tre utbetalinger på til sammen 125 500 kroner til «Teambuilding leverandør AS», en fiktiv leverandør, alle signert av Jan Kristian Osland. Han påstod at han dro rett hjem klokken ti, men Gaute ba ham møte seg i Glassburet klokken 23:05. Han skrev brevet selv for å iscenesette et selvmord, og han drepte Gaute for å skjule underslaget. Utskriftsloggen viser at Thomas Årstadsvold skrev ut sin egen oppsigelse samme natt, pinlig, men uten sammenheng med drapet.",
+                    followUp: {
+                        question: "Hvordan avslørte dere ham?",
+                        answer: ["håndskriften", "handskriften", "håndskrift", "skriften", "skriften hans",
+                                 "han skrev avskjedsbrevet", "han forfalsket brevet", "han skrev brevet",
+                                 "samme håndskrift", "signaturen", "signaturen hans",
+                                 "signaturen på budsjettet", "godkjenningssignaturen"],
+                        answerContains: ["håndskrift", "handskrift", "skriften", "sammeskrift", "skrevbrevet",
+                                         "skrevavskjedsbrevet", "forfalsket", "signatur", "underskrift",
+                                         "sammehånd", "sammehand", "bokstav"],
+                        hint: "Se en gang til på velferdsbudsjettet.",
+                        explanation: "Håndskriften i avskjedsbrevet er identisk med Jan Kristian Oslands signatur på velferdsbudsjettet. Gaute skrev aldri brevet."
+                    }
+                }
+            ],
+            finalMessage: "Mysteriet er løst: Gratulerer, etterforskere!\n\nDere har avslørt sannheten bak dødsfallet i Glassburet. Den skyldige er løsningsarkitekt Jan Kristian Osland. I lengre tid hadde han underslått midler fra velferdsbudsjettet gjennom en fiktiv leverandør, «Teambuilding leverandør AS». Da Gaute Lien oppdaget underslaget samme kveld, kalte han Jan Kristian inn til et møte i Glassburet klokken 23:05. Gaute ga ham en sjanse til å forklare seg, bare de to, uten at det ble en sak. Jan Kristian brukte den til å drepe ham.\n\nHan iscenesatte selvmord ved å kutte håndleddet til Gaute og skrev et avskjedsbrev i hans navn. Men kuttet satt i Gautes dominante hånd, uten prøvekutt og med helt rett snittvinkel, og zopiklonet i blodet kom i ham bare cirka en time før han døde.\n\nKjernebeviset var håndskriften: avskjedsbrevet er skrevet med samme hånd som godkjenningssignaturen hans nederst på velferdsbudsjettet. Han skrev brevet selv.\n\nThomas Eide var sint og full, og forklaringen hans om heisen holdt ikke. Men han sov av seg rusen inne i bygget, og han drepte ingen. Thomas Årstadsvold skjulte hva han egentlig gjorde der midt på natten, men det hadde ingenting med drapet å gjøre. Og GHB-en i blodprøven stammet fra gallamiddagen onsdag kveld, 48 timer tidligere (fire halveringstider), ikke fra drapskvelden.\n\nTakk for strålende etterforskningsarbeid!"
+        },
+        {
             id: "aon",
             name: "Mysteriet i Glassburet",
             intro: "Daglig leder Lene Isaksen er funnet livløs i møterommet «Glassburet» hos Aon. Politiet konkluderte raskt med selvmord og lukket saken.\n\nMen familien tror ikke på det, og har hyret dere inn for å gå gjennom bevisene på nytt.\n\nKlokken tikker.",
