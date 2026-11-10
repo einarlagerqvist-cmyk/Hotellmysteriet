@@ -1625,7 +1625,7 @@ const CONFIG = {
                         }]
                     },
                     hint: "Les obduksjonsrapporten en gang til.",
-                    explanation: "Koden er Lenes fødselsår. Obduksjonsrapporten viser at hun var 52 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 52 gir fødselsåret 1974."
+                    explanation: "Koden er Lenes fødselsår. Obduksjonsrapporten viser at hun var 52 år og fylte år 27. januar, og dødsfallet ble erklært 23.05.2026. 2026 minus 52 gir fødselsåret 1974."
                 },
                 {
                     question: "Åpne konvolutt 3.\n\nNå har dere nok info til å finne morderen. Hvem drepte Lene Isaksen?",
