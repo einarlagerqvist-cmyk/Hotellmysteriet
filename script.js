@@ -1481,7 +1481,7 @@ const CONFIG = {
                     answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
                     rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
                                      "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
-                    answerHint: "Svar «selvmord» eller «drap», ikke bare «ja»/«nei».",
+                    answerHint: "Stikkord holder.",
                     hint: "Se nøye på bildene av Roger Skoglund for å løse denne oppgaven.",
                     explanation: "Roger Skoglund var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i ham cirka en time før han døde, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
@@ -1572,6 +1572,7 @@ const CONFIG = {
                     answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
                     rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
                                      "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
+                    answerHint: "Stikkord holder.",
                     hint: "Se nøye på bildene av Gaute Lien for å løse denne oppgaven.",
                     explanation: "Gaute Lien var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i ham cirka en time før han døde, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
@@ -1593,6 +1594,7 @@ const CONFIG = {
                     question: "Åpne konvolutt 2.\n\nNoen forklarer seg i strid med dokumentene i mappen.\n\nHvem?",
                     answer: ["Thomas Eide", "Eide", "Thomas Eide salgssjef", "salgssjef Thomas Eide", "Thomas E", "Tomas Eide"],
                     answerContains: ["eide"],
+                    answerHint: "Skriv både for- og etternavn. Det er to ansatte som heter Thomas.",
                     hint: "Det er noe i den interne kommunikasjonen i Sicra som strider mot avhørene.",
                     explanation: "Thomas Eide forklarte at han tok heisen ned kvart over elleve. Beskjeden i Sicra Internt viser at heisen i bygget var i vedlikeholdsmodus fra 16:30 fredag til søndag, og ikke kunne brukes av noen. Han var fortsatt i bygget: oppkastet ved herretoalettet, som Jonas Fagerli Arentz kjente lukten av, og lydene Thomas Årstadsvold hørte etter midnatt peker mot at han sov av seg rusen der.",
                     followUp: {
@@ -1662,6 +1664,7 @@ const CONFIG = {
                     answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
                     rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
                                      "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
+                    answerHint: "Stikkord holder.",
                     hint: "Se nøye på bildene av Lene Isaksen for å løse denne oppgaven.",
                     explanation: "Lene Isaksen var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i henne cirka en time før hun døde, og hun hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
