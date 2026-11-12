@@ -1662,7 +1662,6 @@ const CONFIG = {
                     answerContains: ["myrdet", "myrder", "drap", "drept", "drepte", "ikke selvmord", "ikkje selvmord"],
                     rejectContains: ["ikkedrap", "ikkemord", "ikkemyrdet", "ikkedrept", "ingendrap",
                                      "varselvmord", "detvarselvmord", "jadetvarselvmord", "selvpåført", "selvpaaført"],
-                    answerHint: "Svar «selvmord» eller «drap», ikke bare «ja»/«nei».",
                     hint: "Se nøye på bildene av Lene Isaksen for å løse denne oppgaven.",
                     explanation: "Lene Isaksen var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i henne cirka en time før hun døde, og hun hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
