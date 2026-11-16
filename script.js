@@ -1626,7 +1626,7 @@ const CONFIG = {
                         }]
                     },
                     hint: "Les obduksjonsrapporten en gang til.",
-                    explanation: "Koden er Gautes fødselsår. Obduksjonsrapporten viser at han var 52 år og fylte år 14. mars, og dødsfallet ble erklært 23.05.2026. 2026 minus 52 gir fødselsåret 1974."
+                    explanation: "Koden er Gautes fødselsår. Obduksjonsrapporten viser at han var 51 år og fyller 52 år 10. september, altså etter dødsfallet som ble erklært 23.05.2026. Han fyller dermed 52 i 2026, og 2026 minus 52 gir fødselsåret 1974."
                 },
                 {
                     question: "Åpne konvolutt 3.\n\nNå har dere nok info til å finne morderen. Hvem drepte Gaute Lien?",
