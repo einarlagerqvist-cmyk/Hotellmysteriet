@@ -1485,7 +1485,7 @@ const CONFIG = {
                     hint: "Se nøye på bildene av Roger Skoglund for å løse denne oppgaven.",
                     explanation: "Roger Skoglund var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i ham cirka en time før han døde, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
-                        question: "Hva i obduksjonsrapporten utelukker selvmord?",
+                        question: "Hva i obduksjonsrapporten tyder på at det ikke var selvmord?",
                         answer: ["høyre hånd", "høyre håndledd", "feil hånd", "dominant hånd", "den dominante hånden",
                                  "han var høyrehendt", "kuttet satt i høyre hånd", "kuttet var i høyre håndledd",
                                  "ingen prøvekutt", "mangler prøvekutt", "rett vinkel", "snittvinkelen",
@@ -1576,7 +1576,7 @@ const CONFIG = {
                     hint: "Se nøye på bildene av Gaute Lien for å løse denne oppgaven.",
                     explanation: "Gaute Lien var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i ham cirka en time før han døde, og han hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
-                        question: "Hva i obduksjonsrapporten utelukker selvmord?",
+                        question: "Hva i obduksjonsrapporten tyder på at det ikke var selvmord?",
                         answer: ["høyre hånd", "høyre håndledd", "feil hånd", "dominant hånd", "den dominante hånden",
                                  "han var høyrehendt", "kuttet satt i høyre hånd", "kuttet var i høyre håndledd",
                                  "ingen prøvekutt", "mangler prøvekutt", "rett vinkel", "snittvinkelen",
@@ -1668,7 +1668,7 @@ const CONFIG = {
                     hint: "Se nøye på bildene av Lene Isaksen for å løse denne oppgaven.",
                     explanation: "Lene Isaksen var høyrehendt, men kuttet satt i høyre håndledd, altså i den dominante hånden. Snittet hadde helt rett vinkel, og det fantes ingen overflatiske prøvekutt. I tillegg lå det zopiklon i blodet på et nivå som, regnet fra antatt dødstidspunkt (fredag kveld, ca. 23:00–24:00), betyr at dosen kom i henne cirka en time før hun døde, og hun hadde en fersk hevelse bak venstre øre. Noen andre holdt kniven.",
                     followUp: {
-                        question: "Hva i obduksjonsrapporten utelukker selvmord?",
+                        question: "Hva i obduksjonsrapporten tyder på at det ikke var selvmord?",
                         answer: ["høyre hånd", "høyre håndledd", "feil hånd", "dominant hånd", "den dominante hånden",
                                  "hun var høyrehendt", "kuttet satt i høyre hånd", "kuttet var i høyre håndledd",
                                  "ingen prøvekutt", "mangler prøvekutt", "rett vinkel", "snittvinkelen",
